@@ -11,12 +11,15 @@
 
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import IsolationForest
 import io
 import traceback
+import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 app = FastAPI(title="AuditMind API", version="1.0.0")
 
@@ -27,6 +30,30 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# Get the directory where main.py is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+@app.get("/")
+def serve_home():
+    return FileResponse(os.path.join(BASE_DIR, "Home.html"))
+
+@app.get("/login")
+def serve_login():
+    return FileResponse(os.path.join(BASE_DIR, "login.html"))
+
+@app.get("/upload")
+def serve_upload():
+    return FileResponse(os.path.join(BASE_DIR, "upload.html"))
+
+@app.get("/results")
+def serve_results():
+    return FileResponse(os.path.join(BASE_DIR, "results.html"))
+
+
+# Serve static files
+app.mount("/static", StaticFiles(directory="."), name="static")
 
 # ============================================================
 # VALID USERS  — add more users here if needed
