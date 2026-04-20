@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AuditMind — Upload</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B1120;--gold:#B8922A;--gold2:#D4AE58;--goldp:#F5EDD3;--cream:#F2F3F5;--white:#fff;--grey:#5A6478;--greyl:#8D97A8;--red:#C0392B;--red-bg:#FDF0EF;--green:#1A7A4A;--green-bg:#EEFAF3;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;}
+
+/* TOPBAR */
+.topbar{background:var(--navy);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(184,146,42,0.12);}
+.tb-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.tb-logo{width:32px;height:32px;}
+.tb-name{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:#fff;}
+.tb-sub{font-size:8.5px;color:var(--gold2);letter-spacing:0.12em;text-transform:uppercase;margin-top:1px;}
+.tb-right{display:flex;align-items:center;gap:12px;}
+.tb-user{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:5px 14px 5px 8px;}
+.tb-avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--navy);}
+.tb-uname{font-size:12px;font-weight:500;color:rgba(255,255,255,0.75);}
+.btn-out{background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.55);padding:6px 14px;border-radius:5px;font-size:12px;font-weight:500;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;}
+.btn-out:hover{color:#fff;border-color:rgba(255,255,255,0.3);}
+
+/* LAYOUT */
+.layout{display:flex;min-height:calc(100vh - 60px);}
+
+/* SIDEBAR */
+.sidebar{width:210px;flex-shrink:0;background:var(--white);border-right:1px solid rgba(11,17,32,0.07);padding:24px 0;}
+.sb-label{font-size:9.5px;font-weight:700;color:var(--greyl);letter-spacing:0.13em;text-transform:uppercase;padding:0 18px;margin-bottom:8px;display:block;}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 18px;font-size:13px;font-weight:500;color:var(--grey);cursor:pointer;transition:background 0.15s,color 0.15s;text-decoration:none;border-left:3px solid transparent;}
+.sb-item svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0;}
+.sb-item:hover{background:var(--goldp);color:var(--navy);}
+.sb-item.active{background:var(--goldp);color:var(--gold);font-weight:600;border-left-color:var(--gold);}
+
+/* MAIN */
+.main{flex:1;padding:32px 36px;}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--navy);margin-bottom:5px;}
+.page-sub{font-size:14px;color:var(--grey);margin-bottom:24px;}
+
+/* STATUS BAR */
+.status-bar{display:inline-flex;align-items:center;gap:8px;background:var(--white);border:1px solid rgba(11,17,32,0.1);border-radius:6px;padding:8px 14px;font-size:13px;color:var(--grey);margin-bottom:24px;}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;}
+
+/* UPLOAD CARD */
+.card{background:var(--white);border-radius:14px;border:1px solid rgba(11,17,32,0.07);box-shadow:0 2px 10px rgba(11,17,32,0.04);padding:28px;margin-bottom:20px;}
+.card-title{font-size:13.5px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:8px;margin-bottom:18px;}
+.card-title svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:1.8;}
+
+/* ZONE */
+.zone{border:2px dashed rgba(11,17,32,0.14);border-radius:12px;padding:52px 28px;text-align:center;cursor:pointer;background:var(--cream);transition:border-color 0.2s,background 0.2s;}
+.zone:hover,.zone.drag{border-color:var(--gold);background:var(--goldp);}
+.zone input{display:none;}
+.zone-icon{width:48px;height:48px;margin:0 auto 14px;opacity:0.35;}
+.zone h3{font-size:16px;font-weight:600;color:var(--navy);margin-bottom:7px;}
+.zone p{font-size:13px;color:var(--greyl);line-height:1.6;}
+code{background:rgba(11,17,32,0.06);padding:2px 6px;border-radius:3px;font-size:11.5px;font-family:monospace;}
+
+/* PROCESSING */
+.processing{display:none;text-align:center;padding:44px;}
+.spinner{width:38px;height:38px;border:3px solid rgba(184,146,42,0.2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.processing p{font-size:14px;color:var(--grey);}
+
+/* ERROR */
+.err-box{display:none;background:var(--red-bg);border-left:3px solid var(--red);border-radius:0 7px 7px 0;padding:11px 14px;font-size:13px;color:var(--red);margin-bottom:16px;}
+
+/* SAMPLE BUTTON */
+.sample-btn{background:none;border:none;color:var(--gold);font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:'Outfit',sans-serif;margin-top:12px;padding:0;}
+.sample-btn:hover{color:var(--gold2);}
+.sample-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
+
+/* SCHEMA */
+.schema{display:grid;grid-template-columns:1fr 1fr;gap:14px;background:var(--goldp);border-radius:10px;padding:18px;margin-top:18px;}
+.schema strong{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:9px;}
+.schema li{list-style:none;font-size:13px;color:var(--grey);margin-bottom:4px;}
+.schema li::before{content:'·  ';color:var(--gold);font-weight:700;}
+
+/* INFO CARDS */
+.info-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+@media(max-width:700px){.info-row{grid-template-columns:1fr;}.layout{flex-direction:column;}.sidebar{width:100%;border-right:none;border-bottom:1px solid rgba(11,17,32,0.07);}}
+.info-card{background:var(--white);border-radius:12px;padding:20px;border:1px solid rgba(11,17,32,0.07);}
+.info-card h4{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+.info-card h4 svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:1.8;}
+.info-card li{list-style:none;font-size:12.5px;color:var(--grey);margin-bottom:5px;display:flex;align-items:flex-start;gap:6px;}
+.info-card li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <a href="Home.html" class="tb-brand">
+    <svg class="tb-logo" viewBox="0 0 120 120">
+      <defs><linearGradient id="t1" x1="30%" y1="10%" x2="70%" y2="90%"><stop offset="0%" stop-color="#1E3A6E"/><stop offset="100%" stop-color="#0B1628"/></linearGradient><linearGradient id="t2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C9A84C"/><stop offset="100%" stop-color="#E8C97A"/></linearGradient></defs>
+      <circle cx="60" cy="60" r="58" fill="url(#t1)" stroke="#C9A84C" stroke-opacity=".3" stroke-width="1.5"/>
+      <polygon points="60,22 93,41 93,79 60,98 27,79 27,41" fill="none" stroke="url(#t2)" stroke-width="2.2" stroke-opacity=".9"/>
+      <line x1="60" y1="32" x2="38" y2="84" stroke="url(#t2)" stroke-width="7" stroke-linecap="round"/>
+      <line x1="60" y1="32" x2="82" y2="84" stroke="url(#t2)" stroke-width="7" stroke-linecap="round"/>
+      <line x1="44" y1="66" x2="76" y2="66" stroke="url(#t2)" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="60" cy="32" r="4" fill="#E8C97A"/>
+    </svg>
+    <div><div class="tb-name">AuditMind</div><div class="tb-sub">Intelligence Ltd</div></div>
+  </a>
+  <div class="tb-right">
+    <div class="tb-user">
+      <div class="tb-avatar" id="avatar">A</div>
+      <span class="tb-uname" id="uname">admin</span>
+    </div>
+    <button class="btn-out" onclick="signOut()">Sign Out</button>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <span class="sb-label">Navigation</span>
+    <a class="sb-item active" href="upload.html">
+      <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Upload Data
+    </a>
+    <a class="sb-item" href="results.html">
+      <svg viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Results
+    </a>
+    <a class="sb-item" href="Home.html" style="margin-top:16px;">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="9 22 9 12 15 12 15 22" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to Website
+    </a>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-title">Upload Transaction Data</div>
+    <div class="page-sub">Upload your CSV file to run the full AI risk analysis. Results open automatically on the next page.</div>
+
+    <!-- Backend status -->
+    <div class="status-bar">
+      <span class="status-dot" id="sdot"></span>
+      <span id="smsg">Checking backend connection…</span>
+    </div>
+
+    <!-- Error -->
+    <div class="err-box" id="err-box"></div>
+
+    <!-- Upload -->
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Upload CSV File
+      </div>
+
+      <div class="zone" id="zone"
+        onclick="document.getElementById('file-in').click()"
+        ondragover="doDrag(event)" ondragleave="doLeave()" ondrop="doDrop(event)">
+        <svg class="zone-icon" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.3"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Drop your CSV here or click to browse</h3>
+        <p>Accepts <code>.csv</code> files only<br>Required columns: <code>Amount, Invoice_ID, VAT_Code, Supplier_Type</code></p>
+        <input type="file" id="file-in" accept=".csv" onchange="handleFile(event)">
+      </div>
+
+      <!-- Processing spinner -->
+      <div class="processing" id="proc">
+        <div class="spinner"></div>
+        <p>Running AI risk analysis on your data…</p>
+      </div>
+
+      <button class="sample-btn" onclick="getSample()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download sample CSV to test with
+      </button>
+
+      <div class="schema">
+        <div>
+          <strong>Required Columns</strong>
+          <ul>
+            <li>Amount</li>
+            <li>Invoice_ID</li>
+            <li>VAT_Code</li>
+            <li>Supplier_Type</li>
+          </ul>
+        </div>
+        <div>
+          <strong>Valid Values</strong>
+          <ul>
+            <li>VAT: Standard, Reverse, Zero</li>
+            <li>Supplier: Subcontractor = CIS flag</li>
+            <li>Amount: any number</li>
+            <li>Invoice_ID: any text</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info cards -->
+    <div class="info-row">
+      <div class="info-card">
+        <h4><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>What gets analysed</h4>
+        <ul>
+          <li>Anomaly detection via Isolation Forest ML</li>
+          <li>ML confidence score per transaction</li>
+          <li>Duplicate invoice identification</li>
+          <li>VAT code inconsistency detection</li>
+          <li>CIS subcontractor risk flagging</li>
+          <li>Full rulebook: CIS-001, DUP-001, VAT-001, ANO-001/002</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4><svg viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>What you get back</h4>
+        <ul>
+          <li>Risk level per transaction (High/Medium/Low)</li>
+          <li>SME simplified flagged view</li>
+          <li>Accountant full detail view</li>
+          <li>Compliance rulebook fired log</li>
+          <li>4 charts including confidence distribution</li>
+          <li>3 downloadable CSV reports</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:8000';
+
+// Auth guard — redirect to login if not signed in
+if (!sessionStorage.getItem('am_auth')) { window.location.href = 'login.html'; }
+const u = sessionStorage.getItem('am_user') || 'admin';
+document.getElementById('uname').textContent = u;
+document.getElementById('avatar').textContent = u[0].toUpperCase();
+
+function signOut() { sessionStorage.clear(); window.location.href = 'login.html'; }
+
+// Check backend health
+async function checkHealth() {
+  const dot = document.getElementById('sdot');
+  const msg = document.getElementById('smsg');
+  try {
+    const res = await fetch(API + '/api/health', { signal: AbortSignal.timeout(3000) });
+    if (res.ok) {
+      dot.style.background = '#1A7A4A'; msg.textContent = 'Backend connected — ready to analyse'; msg.style.color = '#1A7A4A';
+    } else throw new Error();
+  } catch {
+    dot.style.background = '#C0392B';
+    msg.textContent = 'Backend offline — run: python -m uvicorn main:app --reload --port 8000';
+    msg.style.color = '#C0392B';
+  }
+}
+checkHealth();
+
+// Drag & drop
+function doDrag(e) { e.preventDefault(); document.getElementById('zone').classList.add('drag'); }
+function doLeave()  { document.getElementById('zone').classList.remove('drag'); }
+function doDrop(e)  { e.preventDefault(); doLeave(); if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]); }
+function handleFile(e) { if (e.target.files[0]) processFile(e.target.files[0]); }
+
+async function processFile(file) {
+  if (!file.name.toLowerCase().endsWith('.csv')) { showErr('Please upload a .csv file.'); return; }
+  document.getElementById('zone').style.display = 'none';
+  document.getElementById('proc').style.display = 'block';
+  document.getElementById('err-box').style.display = 'none';
+
+  const fd = new FormData();
+  fd.append('file', file);
+
+  try {
+    const res = await fetch(API + '/api/analyse', { method: 'POST', body: fd });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.detail || 'Analysis failed'); }
+    const data = await res.json();
+    sessionStorage.setItem('am_results', JSON.stringify(data));
+    window.location.href = 'results.html';
+  } catch (err) {
+    document.getElementById('proc').style.display = 'none';
+    document.getElementById('zone').style.display = 'block';
+    showErr('Error: ' + err.message + '. Is the backend running on port 8000?');
+  }
+}
+
+function showErr(msg) {
+  const el = document.getElementById('err-box');
+  el.textContent = msg; el.style.display = 'block';
+}
+
+function getSample() {
+  const csv = `Invoice_ID,Amount,VAT_Code,Supplier_Type
+INV-001,15000,Standard,Subcontractor
+INV-002,850,Reverse,Supplier
+INV-003,15000,Standard,Subcontractor
+INV-004,42000,INVALID,Subcontractor
+INV-005,500,Zero,Supplier
+INV-006,99500,Standard,Subcontractor
+INV-007,320,Reverse,Supplier
+INV-008,850,Reverse,Supplier
+INV-009,7500,Standard,Subcontractor
+INV-010,125000,Zero,Subcontractor`;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+  a.download = 'auditmind_sample.csv'; a.click();
+}
+</script>
+</body>
+</html>
