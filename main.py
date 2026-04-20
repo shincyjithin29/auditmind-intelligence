@@ -1,29 +1,41 @@
 # ============================================================
-# AuditMind Intelligence Ltd — main.py (FastAPI Backend)
+# AuditMind Intelligence Ltd — main.py
 # ============================================================
-# HOW TO RUN:
-#   python -m uvicorn main:app --reload --port 8000
+# LOCAL:   python -m uvicorn main:app --reload --port 8000
+# RENDER:  python -m uvicorn main:app --host 0.0.0.0 --port 8000
 #
-# ENDPOINTS:
-#   GET  /api/health   — check if server is running
-#   POST /api/analyse  — upload CSV, get risk analysis back
+# PAGES:
+#   GET  /           -> Home.html
+#   GET  /login      -> login.html
+#   GET  /upload     -> upload.html
+#   GET  /results    -> results.html
+#
+# API:
+#   GET  /api/health    -> health check
+#   GET  /debug         -> shows files on server (remove after testing)
+#   POST /api/analyse   -> CSV upload and risk analysis
 # ============================================================
+
+import os
+import io
+import traceback
 
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import JSONResponse, HTMLResponse
+
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import IsolationForest
-import io
-import traceback
-import os
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 
-app = FastAPI(title="AuditMind API", version="1.0.0")
+# ── Locate folder where main.py lives ────────────────────────
+BASE = os.path.dirname(os.path.abspath(__file__))
 
-# Allow HTML files to call this API from the browser
+# ============================================================
+# APP SETUP
+# ============================================================
+app = FastAPI(title="AuditMind Intelligence API", version="1.0.0")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -31,55 +43,31 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-# Get the directory where main.py is located
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-@app.get("/")
-def serve_home():
-    return FileResponse(os.path.join(BASE_DIR, "Home.html"))
-
-@app.get("/login")
-def serve_login():
-    return FileResponse(os.path.join(BASE_DIR, "login.html"))
-
-@app.get("/upload")
-def serve_upload():
-    return FileResponse(os.path.join(BASE_DIR, "upload.html"))
-
-@app.get("/results")
-def serve_results():
-    return FileResponse(os.path.join(BASE_DIR, "results.html"))
-
-
-# Serve static files
-app.mount("/static", StaticFiles(directory="."), name="static")
-
 # ============================================================
-# VALID USERS  — add more users here if needed
+# VALID USERS
 # ============================================================
-VALID_USERS = {
-    "admin": "secure123"
-}
+VALID_USERS = {"admin": "secure123"}
 
 # ============================================================
 # COMPLIANCE RULEBOOK
-# Each rule has an id, description, condition, and severity.
-# To add a new rule just append a new dict to this list.
 # ============================================================
 RULEBOOK = [
     {
         "id": "CIS-001",
-        "description": "Subcontractor invoice over £5,000",
-        "condition": lambda r: str(r.get("Supplier_Type","")).strip().lower() == "subcontractor"
-                               and float(r.get("Amount", 0)) > 5000,
+        "description": "Subcontractor invoice over 5000",
+        "condition": lambda r: (
+            str(r.get("Supplier_Type", "")).strip().lower() == "subcontractor"
+            and float(r.get("Amount", 0)) > 5000
+        ),
         "risk": "CIS Risk — high-value subcontractor payment",
         "severity": "High",
     },
     {
         "id": "CIS-002",
         "description": "Any subcontractor payment — CIS registration check required",
-        "condition": lambda r: str(r.get("Supplier_Type","")).strip().lower() == "subcontractor",
+        "condition": lambda r: (
+            str(r.get("Supplier_Type", "")).strip().lower() == "subcontractor"
+        ),
         "risk": "CIS Risk — verify subcontractor registration status with HMRC",
         "severity": "Medium",
     },
@@ -101,29 +89,47 @@ RULEBOOK = [
         "id": "ANO-001",
         "description": "ML anomaly — unusual transaction amount detected",
         "condition": lambda r: r.get("high_anomaly", 0) == 1,
-        "risk": "Statistical anomaly — amount deviates significantly from peer transactions",
+        "risk": "Statistical anomaly — amount deviates significantly from peers",
         "severity": "High",
     },
     {
         "id": "ANO-002",
-        "description": "High ML confidence anomaly score (0.70 or above)",
+        "description": "High ML confidence anomaly score 0.70 or above",
         "condition": lambda r: float(r.get("confidence_score", 0)) >= 0.70,
-        "risk": "High confidence anomaly — model is strongly flagging this transaction",
+        "risk": "High confidence anomaly — model strongly flags this transaction",
         "severity": "High",
     },
 ]
 
+# ============================================================
+# HELPERS
+# ============================================================
 
-def apply_rulebook(df):
+def read_html(filename: str) -> str:
+    """Read an HTML file from the same folder as main.py."""
+    filepath = os.path.join(BASE, filename)
+    if not os.path.exists(filepath):
+        return f"""
+        <html><body style="font-family:sans-serif;padding:40px;background:#0B1120;color:#fff;">
+        <h2 style="color:#B8922A;">AuditMind — File Not Found</h2>
+        <p>Could not find: <code>{filepath}</code></p>
+        <p>Files available: {os.listdir(BASE)}</p>
+        </body></html>
+        """
+    with open(filepath, "r", encoding="utf-8") as f:
+        return f.read()
+
+
+def apply_rulebook(df: pd.DataFrame):
     fired = []
     for _, row in df.iterrows():
-        row_dict = row.to_dict()
+        rd = row.to_dict()
         for rule in RULEBOOK:
             try:
-                if rule["condition"](row_dict):
+                if rule["condition"](rd):
                     fired.append({
-                        "invoice_id":  str(row_dict.get("Invoice_ID", "")),
-                        "amount":      round(float(row_dict.get("Amount", 0)), 2),
+                        "invoice_id":  str(rd.get("Invoice_ID", "")),
+                        "amount":      round(float(rd.get("Amount", 0)), 2),
                         "rule_id":     rule["id"],
                         "description": rule["description"],
                         "risk_detail": rule["risk"],
@@ -134,7 +140,7 @@ def apply_rulebook(df):
     return fired
 
 
-def confidence_label(score):
+def confidence_label(score: float) -> str:
     if score >= 0.70:
         return "High"
     elif score >= 0.50:
@@ -143,16 +149,18 @@ def confidence_label(score):
 
 
 # ============================================================
-# CORE ANALYSIS ENGINE
+# ANALYSIS ENGINE
 # ============================================================
-def analyse_dataframe(df):
-    # Validate required columns
+
+def analyse_dataframe(df: pd.DataFrame) -> dict:
+
+    # Validate columns
     required = ["Amount", "Invoice_ID", "VAT_Code", "Supplier_Type"]
     missing = [c for c in required if c not in df.columns]
     if missing:
         raise ValueError(f"Missing required columns: {missing}")
 
-    # Clean data
+    # Clean
     df["Amount"]        = pd.to_numeric(df["Amount"], errors="coerce")
     df                  = df.dropna(subset=["Amount"]).copy()
     df["Invoice_ID"]    = df["Invoice_ID"].astype(str).str.strip()
@@ -162,17 +170,25 @@ def analyse_dataframe(df):
     # Feature engineering
     df["log_amount"] = np.log1p(df["Amount"])
 
-    # Isolation Forest — anomaly detection + confidence score
+    # Isolation Forest
     model = IsolationForest(contamination=0.05, random_state=42)
     model.fit(df[["Amount", "log_amount"]])
     df["anomaly_raw"]      = model.predict(df[["Amount", "log_amount"]])
-    df["high_anomaly"]     = df["anomaly_raw"].apply(lambda x: 1 if x == -1 else 0)
-    df["confidence_score"] = np.clip(1 - model.decision_function(df[["Amount", "log_amount"]]), 0, 1)
+    df["high_anomaly"]     = (df["anomaly_raw"] == -1).astype(int)
+    df["confidence_score"] = np.clip(
+        1 - model.decision_function(df[["Amount", "log_amount"]]), 0, 1
+    )
 
-    # Rule-based checks
-    df["duplicate"] = df.duplicated(subset=["Invoice_ID", "Amount"], keep=False).astype(int)
-    df["vat_issue"] = (~df["VAT_Code"].isin(["Standard", "Reverse", "Zero"])).astype(int)
-    df["cis_issue"] = (df["Supplier_Type"].str.strip().str.lower() == "subcontractor").astype(int)
+    # Rule checks
+    df["duplicate"] = df.duplicated(
+        subset=["Invoice_ID", "Amount"], keep=False
+    ).astype(int)
+    df["vat_issue"] = (
+        ~df["VAT_Code"].isin(["Standard", "Reverse", "Zero"])
+    ).astype(int)
+    df["cis_issue"] = (
+        df["Supplier_Type"].str.strip().str.lower() == "subcontractor"
+    ).astype(int)
 
     # Composite risk score
     df["risk_score"] = (
@@ -182,37 +198,39 @@ def analyse_dataframe(df):
         df["cis_issue"]    * 1
     )
 
-    def classify(score):
-        if score >= 4: return "High"
-        if score >= 2: return "Medium"
+    def classify(s):
+        if s >= 4: return "High"
+        if s >= 2: return "Medium"
         return "Low"
 
     df["risk_level"] = df["risk_score"].apply(classify)
 
-    # Explanations
     def explain(row):
-        reasons = []
-        if row["high_anomaly"]: reasons.append("High anomaly detected")
-        if row["duplicate"]:    reasons.append("Duplicate transaction")
-        if row["vat_issue"]:    reasons.append("VAT inconsistency")
-        if row["cis_issue"]:    reasons.append("CIS risk")
-        return ", ".join(reasons) if reasons else "No risk"
+        r = []
+        if row["high_anomaly"]: r.append("High anomaly detected")
+        if row["duplicate"]:    r.append("Duplicate transaction")
+        if row["vat_issue"]:    r.append("VAT inconsistency")
+        if row["cis_issue"]:    r.append("CIS risk")
+        return ", ".join(r) if r else "No risk"
 
     def recommend(row):
-        actions = []
-        if row["duplicate"]:    actions.append("Check for duplicate payment before approval")
-        if row["vat_issue"]:    actions.append("Verify VAT code against transaction type")
-        if row["cis_issue"]:    actions.append("Review subcontractor CIS compliance and deductions")
-        if row["high_anomaly"]: actions.append("Investigate unusual transaction amount or pattern")
-        return " | ".join(actions) if actions else "No action needed"
+        a = []
+        if row["duplicate"]:    a.append("Check for duplicate payment before approval")
+        if row["vat_issue"]:    a.append("Verify VAT code against transaction type")
+        if row["cis_issue"]:    a.append("Review subcontractor CIS compliance and deductions")
+        if row["high_anomaly"]: a.append("Investigate unusual transaction amount or pattern")
+        return " | ".join(a) if a else "No action needed"
 
     df["explanation"] = df.apply(explain, axis=1)
     df["action"]      = df.apply(recommend, axis=1)
 
-    # Sort — highest risk first
-    df = df.sort_values(by=["risk_score", "confidence_score", "Amount"], ascending=[False, False, False])
+    # Sort highest risk first
+    df = df.sort_values(
+        by=["risk_score", "confidence_score", "Amount"],
+        ascending=[False, False, False]
+    )
 
-    # Build results
+    # Build results list
     results = []
     for _, row in df.iterrows():
         results.append({
@@ -231,43 +249,80 @@ def analyse_dataframe(df):
 
     flagged = [r for r in results if r["explanation"] != "No risk"]
 
-    # Summary
     summary = {
         "total":          len(results),
         "flagged":        len(flagged),
-        "high_risk":      sum(1 for r in results if r["risk_level"] == "High"),
-        "medium_risk":    sum(1 for r in results if r["risk_level"] == "Medium"),
-        "low_risk":       sum(1 for r in results if r["risk_level"] == "Low"),
-        "high_anomalies": sum(1 for r in results if r["high_anomaly"] == "Yes"),
-        "duplicates":     sum(1 for r in results if r["duplicate"]    == "Yes"),
-        "vat_issues":     sum(1 for r in results if r["vat_issue"]    == "Yes"),
-        "cis_issues":     sum(1 for r in results if r["cis_issue"]    == "Yes"),
+        "high_risk":      sum(1 for r in results if r["risk_level"]       == "High"),
+        "medium_risk":    sum(1 for r in results if r["risk_level"]       == "Medium"),
+        "low_risk":       sum(1 for r in results if r["risk_level"]       == "Low"),
+        "high_anomalies": sum(1 for r in results if r["high_anomaly"]     == "Yes"),
+        "duplicates":     sum(1 for r in results if r["duplicate"]        == "Yes"),
+        "vat_issues":     sum(1 for r in results if r["vat_issue"]        == "Yes"),
+        "cis_issues":     sum(1 for r in results if r["cis_issue"]        == "Yes"),
         "avg_confidence": round(float(df["confidence_score"].mean()), 4),
         "high_conf":      sum(1 for r in results if r["confidence_level"] == "High"),
         "medium_conf":    sum(1 for r in results if r["confidence_level"] == "Medium"),
         "low_conf":       sum(1 for r in results if r["confidence_level"] == "Low"),
     }
 
-    # Rulebook
     rules_fired = apply_rulebook(df)
-    rules_summary_dict = {}
+    rs_dict = {}
     for rf in rules_fired:
         rid = rf["rule_id"]
-        if rid not in rules_summary_dict:
-            rules_summary_dict[rid] = {
+        if rid not in rs_dict:
+            rs_dict[rid] = {
                 "rule_id":     rid,
                 "description": rf["description"],
                 "severity":    rf["severity"],
                 "times_fired": 0,
             }
-        rules_summary_dict[rid]["times_fired"] += 1
+        rs_dict[rid]["times_fired"] += 1
 
     return {
         "summary":       summary,
         "results":       results,
         "flagged":       flagged,
         "rules_fired":   rules_fired,
-        "rules_summary": list(rules_summary_dict.values()),
+        "rules_summary": list(rs_dict.values()),
+    }
+
+
+# ============================================================
+# HTML PAGE ROUTES
+# Uses HTMLResponse — reads HTML files as text and returns them.
+# This is more reliable than FileResponse on cloud servers.
+# ============================================================
+
+@app.get("/", response_class=HTMLResponse)
+def serve_home():
+    return HTMLResponse(content=read_html("Home.html"))
+
+
+@app.get("/login", response_class=HTMLResponse)
+def serve_login():
+    return HTMLResponse(content=read_html("login.html"))
+
+
+@app.get("/upload", response_class=HTMLResponse)
+def serve_upload():
+    return HTMLResponse(content=read_html("upload.html"))
+
+
+@app.get("/results", response_class=HTMLResponse)
+def serve_results():
+    return HTMLResponse(content=read_html("results.html"))
+
+
+# ============================================================
+# DEBUG ENDPOINT — visit /debug to see what files Render sees
+# Remove this after confirming everything works
+# ============================================================
+
+@app.get("/debug")
+def debug():
+    return {
+        "base_dir":    BASE,
+        "files_found": sorted(os.listdir(BASE))
     }
 
 
@@ -277,13 +332,15 @@ def analyse_dataframe(df):
 
 @app.get("/api/health")
 def health():
-    """Check if the server is running."""
-    return {"status": "ok", "service": "AuditMind Intelligence API", "version": "1.0.0"}
+    return {
+        "status":  "ok",
+        "service": "AuditMind Intelligence API",
+        "version": "1.0.0"
+    }
 
 
 @app.post("/api/login")
 async def login(credentials: dict):
-    """Validate username and password."""
     username = credentials.get("username", "")
     password = credentials.get("password", "")
     if VALID_USERS.get(username) == password:
@@ -293,7 +350,7 @@ async def login(credentials: dict):
 
 @app.post("/api/analyse")
 async def analyse(file: UploadFile = File(...)):
-    """Upload a CSV file and receive full risk analysis."""
+    """Upload CSV and receive full AI risk analysis."""
     if not file.filename.lower().endswith(".csv"):
         raise HTTPException(status_code=400, detail="Only CSV files are accepted.")
     try:
@@ -304,4 +361,7 @@ async def analyse(file: UploadFile = File(...)):
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e))
     except Exception:
-        raise HTTPException(status_code=500, detail=f"Analysis failed: {traceback.format_exc()}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Analysis failed: {traceback.format_exc()}"
+        )
