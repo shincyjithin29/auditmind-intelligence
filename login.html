@@ -40,7 +40,7 @@ body{font-family:'Outfit',sans-serif;background:var(--navy);min-height:100vh;dis
 <div class="bg"></div>
 <div class="bg-grid"></div>
 <div class="card">
-  <a href="Home.html" class="back">
+  <a href="/" class="back">
     <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
     Back to website
   </a>
@@ -91,7 +91,7 @@ function doLogin() {
     err.style.display = 'none';
     sessionStorage.setItem('am_auth', 'true');
     sessionStorage.setItem('am_user', u);
-    window.location.href = 'upload.html';
+    window.location.href='/upload';
   } else {
     err.style.display = 'block';
     document.getElementById('password').value = '';

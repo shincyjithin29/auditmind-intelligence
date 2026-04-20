@@ -120,7 +120,7 @@ tbody td{padding:10px 13px;vertical-align:top;}
 
 <!-- TOPBAR -->
 <div class="topbar">
-  <a href="Home.html" class="tb-brand">
+  <a href="/" class="tb-brand">
     <svg class="tb-logo" viewBox="0 0 120 120">
       <defs><linearGradient id="t1" x1="30%" y1="10%" x2="70%" y2="90%"><stop offset="0%" stop-color="#1E3A6E"/><stop offset="100%" stop-color="#0B1628"/></linearGradient><linearGradient id="t2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C9A84C"/><stop offset="100%" stop-color="#E8C97A"/></linearGradient></defs>
       <circle cx="60" cy="60" r="58" fill="url(#t1)" stroke="#C9A84C" stroke-opacity=".3" stroke-width="1.5"/>
@@ -145,15 +145,15 @@ tbody td{padding:10px 13px;vertical-align:top;}
   <!-- SIDEBAR -->
   <div class="sidebar">
     <span class="sb-label">Navigation</span>
-    <a class="sb-item" href="upload.html">
+    <a class="sb-item" href="/upload">
       <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Upload Data
     </a>
-    <a class="sb-item active" href="results.html">
+    <a class="sb-item active" href="/results">
       <svg viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Results
     </a>
-    <a class="sb-item" href="Home.html" style="margin-top:16px;">
+    <a class="sb-item" href="/" style="margin-top:16px;">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="9 22 9 12 15 12 15 22" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Back to Website
     </a>
@@ -166,7 +166,7 @@ tbody td{padding:10px 13px;vertical-align:top;}
         <h1>Risk Analysis Results</h1>
         <p id="sub-title">Loading…</p>
       </div>
-      <button class="btn-new" onclick="window.location.href='upload.html'">
+      <button class="btn-new" onclick="window.location.href='/upload'">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Upload New File
       </button>
@@ -249,15 +249,15 @@ tbody td{padding:10px 13px;vertical-align:top;}
 
 <script>
 // Auth guard
-if (!sessionStorage.getItem('am_auth')) { window.location.href = 'login.html'; }
+if (!sessionStorage.getItem('am_auth')) { window.location.href='/login'; }
 const u = sessionStorage.getItem('am_user') || 'admin';
 document.getElementById('uname').textContent = u;
 document.getElementById('avatar').textContent = u[0].toUpperCase();
-function signOut() { sessionStorage.clear(); window.location.href = 'login.html'; }
+function signOut() { sessionStorage.clear(); window.location.href='/login'; }
 
 // Load results from session storage
 const raw = sessionStorage.getItem('am_results');
-if (!raw) { window.location.href = 'upload.html'; }
+if (!raw) { window.location.href='/upload'; }
 const D = JSON.parse(raw);
 const { summary: S, results: R, flagged: F, rules_fired: RF, rules_summary: RS } = D;
 
