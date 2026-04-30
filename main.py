@@ -83,7 +83,7 @@ app.add_middleware(
 # Never store plaintext passwords in a production system.
 # ============================================================
 VALID_USERS = {
-    "admin": os.getenv("AUDITMIND_ADMIN_PASSWORD", "secure123")
+    "admin": os.getenv("AUDITMIND_ADMIN_PASSWORD", "")
 }
 
 # ============================================================

@@ -19,8 +19,6 @@ body{font-family:'Outfit',sans-serif;background:var(--navy);min-height:100vh;dis
 .logo-circle{width:64px;height:64px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
 .logo-area h2{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--navy);}
 .logo-area span{font-size:11.5px;color:var(--greyl);margin-top:3px;}
-.hint{background:var(--goldp);border:1px solid rgba(184,146,42,0.3);border-radius:8px;padding:10px 14px;font-size:12.5px;color:var(--grey);margin-bottom:22px;display:flex;align-items:center;gap:8px;}
-.hint svg{width:14px;height:14px;stroke:var(--gold);fill:none;flex-shrink:0;stroke-width:2;}
 .error-box{display:none;background:var(--red-bg);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:18px;}
 .field{margin-bottom:18px;}
 .field label{display:block;font-size:11px;font-weight:700;color:var(--greyl);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:7px;}
@@ -28,12 +26,7 @@ body{font-family:'Outfit',sans-serif;background:var(--navy);min-height:100vh;dis
 .field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,146,42,0.1);}
 .btn-login{width:100%;height:46px;border:none;background:var(--navy);color:#fff;font-size:15px;font-weight:700;letter-spacing:0.04em;border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;transition:background 0.2s;}
 .btn-login:hover{background:#1a2a42;}
-.quick{margin-top:20px;border-top:1px solid rgba(11,17,32,0.08);padding-top:18px;}
-.quick p{font-size:10.5px;font-weight:700;color:var(--greyl);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;}
-.quick-btn{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:7px;background:#FAFAF7;border:1px solid rgba(11,17,32,0.07);cursor:pointer;transition:background 0.15s;width:100%;font-family:'Outfit',sans-serif;}
-.quick-btn:hover{background:var(--goldp);}
-.quick-btn span{font-size:13px;font-weight:600;color:var(--navy);}
-.quick-btn em{font-size:11px;font-style:normal;color:var(--greyl);background:rgba(11,17,32,0.06);padding:3px 8px;border-radius:3px;}
+.btn-login:disabled{background:#8D97A8;cursor:not-allowed;}
 </style>
 </head>
 <body>
@@ -58,10 +51,6 @@ body{font-family:'Outfit',sans-serif;background:var(--navy);min-height:100vh;dis
     <h2>AuditMind Intelligence Ltd</h2>
     <span>Secure Platform Access</span>
   </div>
-  <div class="hint">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01" stroke-linecap="round"/></svg>
-    Demo credentials: <strong>&nbsp;admin&nbsp;</strong> / <strong>&nbsp;secure123</strong>
-  </div>
   <div class="error-box" id="error-box">Invalid username or password. Please try again.</div>
   <div class="field">
     <label>Username</label>
@@ -71,38 +60,54 @@ body{font-family:'Outfit',sans-serif;background:var(--navy);min-height:100vh;dis
     <label>Password</label>
     <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password">
   </div>
-  <button class="btn-login" onclick="doLogin()">Sign In</button>
-  <div class="quick">
-    <p>Quick sign in</p>
-    <button class="quick-btn" onclick="quickLogin('admin','secure123')">
-      <span>admin</span><em>Administrator</em>
-    </button>
-  </div>
+  <button class="btn-login" id="login-btn" onclick="doLogin()">Sign In</button>
 </div>
 <script>
-// Credentials must match main.py VALID_USERS
-const USERS = { 'admin': 'secure123' };
-
-function doLogin() {
-  const u = document.getElementById('username').value.trim();
-  const p = document.getElementById('password').value.trim();
+async function doLogin() {
+  const u   = document.getElementById('username').value.trim();
+  const p   = document.getElementById('password').value;
   const err = document.getElementById('error-box');
-  if (USERS[u] && USERS[u] === p) {
-    err.style.display = 'none';
-    sessionStorage.setItem('am_auth', 'true');
-    sessionStorage.setItem('am_user', u);
-    window.location.href='/upload';
-  } else {
+  const btn = document.getElementById('login-btn');
+
+  if (!u || !p) {
+    err.textContent = 'Please enter your username and password.';
     err.style.display = 'block';
-    document.getElementById('password').value = '';
-    document.getElementById('password').focus();
+    return;
+  }
+
+  // Disable button during request to prevent double-submit
+  btn.disabled = true;
+  btn.textContent = 'Signing in…';
+  err.style.display = 'none';
+
+  try {
+    // Authenticate against the server — credentials are never stored in this file
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p })
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      sessionStorage.setItem('am_auth', 'true');
+      sessionStorage.setItem('am_user', data.username || u);
+      window.location.href = '/upload';
+    } else {
+      err.textContent = 'Invalid username or password. Please try again.';
+      err.style.display = 'block';
+      document.getElementById('password').value = '';
+      document.getElementById('password').focus();
+    }
+  } catch (e) {
+    err.textContent = 'Connection error. Please check your network and try again.';
+    err.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Sign In';
   }
 }
-function quickLogin(u, p) {
-  document.getElementById('username').value = u;
-  document.getElementById('password').value = p;
-  doLogin();
-}
+
 document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 </script>
 </body>
