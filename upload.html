@@ -6,16 +6,9 @@
 <title>AuditMind — Upload</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --navy:#0B1120;--gold:#B8922A;--gold2:#D4AE58;--goldp:#F5EDD3;
-  --cream:#F2F3F5;--white:#fff;--grey:#5A6478;--greyl:#8D97A8;
-  --red:#C0392B;--red-bg:#FDF0EF;--green:#1A7A4A;--green-bg:#EEFAF3;
-  --blue:#1B5FA8;--blue-bg:#EDF4FC;--amber:#D4730A;--amber-bg:#FEF3E7;
-}
+:root{--navy:#0B1120;--gold:#B8922A;--gold2:#D4AE58;--goldp:#F5EDD3;--cream:#F2F3F5;--white:#fff;--grey:#5A6478;--greyl:#8D97A8;--red:#C0392B;--red-bg:#FDF0EF;--green:#1A7A4A;--green-bg:#EEFAF3;--blue:#1B5FA8;--blue-bg:#EDF4FC;--amber:#D4730A;--amber-bg:#FEF3E7;--purple:#534AB7;--purple-bg:#EEEDFE;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;}
-
-/* TOPBAR */
 .topbar{background:var(--navy);height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(184,146,42,.12);}
 .tb-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
 .tb-logo{width:32px;height:32px;}
@@ -27,125 +20,116 @@ body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--navy);m
 .tb-uname{font-size:12px;font-weight:500;color:rgba(255,255,255,.75);}
 .btn-out{background:none;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55);padding:6px 14px;border-radius:5px;font-size:12px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;}
 .btn-out:hover{color:#fff;border-color:rgba(255,255,255,.3);}
-
-/* LAYOUT */
 .layout{display:flex;min-height:calc(100vh - 60px);}
-
 /* SIDEBAR */
-.sidebar{width:210px;flex-shrink:0;background:var(--white);border-right:1px solid rgba(11,17,32,.07);padding:24px 0;}
-.sb-label{font-size:9.5px;font-weight:700;color:var(--greyl);letter-spacing:.13em;text-transform:uppercase;padding:0 18px;margin-bottom:8px;display:block;}
-.sb-item{display:flex;align-items:center;gap:10px;padding:10px 18px;font-size:13px;font-weight:500;color:var(--grey);text-decoration:none;border-left:3px solid transparent;transition:background .15s,color .15s;}
+.sidebar{width:220px;flex-shrink:0;background:var(--white);border-right:1px solid rgba(11,17,32,.07);padding:20px 0;overflow-y:auto;}
+.sb-label{font-size:9.5px;font-weight:700;color:var(--greyl);letter-spacing:.13em;text-transform:uppercase;padding:0 16px;margin-bottom:6px;display:block;}
+.sb-item{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:13px;font-weight:500;color:var(--grey);text-decoration:none;border-left:3px solid transparent;transition:background .15s,color .15s;cursor:pointer;}
 .sb-item svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0;}
 .sb-item:hover{background:var(--goldp);color:var(--navy);}
 .sb-item.active{background:var(--goldp);color:var(--gold);font-weight:600;border-left-color:var(--gold);}
-
+.sb-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;margin-left:auto;flex-shrink:0;}
+.sb-badge.new{background:var(--amber-bg);color:var(--amber);}
+.sb-badge.beta{background:var(--purple-bg);color:var(--purple);}
+.sb-divider{height:1px;background:rgba(11,17,32,.06);margin:10px 16px;}
 /* MAIN */
-.main{flex:1;padding:32px 36px;overflow-x:hidden;}
-.page-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--navy);margin-bottom:5px;}
-.page-sub{font-size:14px;color:var(--grey);margin-bottom:24px;}
-
-/* STATUS BAR */
-.status-bar{display:inline-flex;align-items:center;gap:8px;background:var(--white);border:1px solid rgba(11,17,32,.1);border-radius:6px;padding:8px 14px;font-size:13px;color:var(--grey);margin-bottom:24px;}
+.main{flex:1;padding:28px 32px;overflow-x:hidden;}
+/* PAGE PANELS */
+.panel{display:none;}
+.panel.active{display:block;}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--navy);margin-bottom:4px;}
+.page-sub{font-size:13.5px;color:var(--grey);margin-bottom:20px;}
+.status-bar{display:inline-flex;align-items:center;gap:8px;background:var(--white);border:1px solid rgba(11,17,32,.1);border-radius:6px;padding:7px 13px;font-size:13px;color:var(--grey);margin-bottom:20px;}
 .status-dot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;}
-
-/* STEPS INDICATOR */
-.steps-bar{display:flex;align-items:center;gap:0;margin-bottom:28px;}
-.step-item{display:flex;align-items:center;gap:8px;}
-.step-num{width:28px;height:28px;border-radius:50%;background:rgba(11,17,32,.08);color:var(--grey);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+/* STEPS */
+.steps-bar{display:flex;align-items:center;gap:0;margin-bottom:24px;}
+.step-item{display:flex;align-items:center;gap:7px;}
+.step-num{width:26px;height:26px;border-radius:50%;background:rgba(11,17,32,.08);color:var(--grey);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
 .step-num.done{background:var(--green);color:#fff;}
 .step-num.active{background:var(--navy);color:#fff;}
-.step-label{font-size:12.5px;font-weight:500;color:var(--greyl);}
+.step-label{font-size:12px;font-weight:500;color:var(--greyl);}
 .step-label.active{color:var(--navy);font-weight:600;}
 .step-label.done{color:var(--green);}
-.step-line{width:40px;height:1px;background:rgba(11,17,32,.1);margin:0 8px;flex-shrink:0;}
-
+.step-line{width:36px;height:1px;background:rgba(11,17,32,.1);margin:0 6px;flex-shrink:0;}
 /* CARDS */
-.card{background:var(--white);border-radius:14px;border:1px solid rgba(11,17,32,.07);box-shadow:0 2px 10px rgba(11,17,32,.04);padding:28px;margin-bottom:20px;}
-.card-title{font-size:13.5px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:8px;margin-bottom:18px;}
-.card-title svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:1.8;}
-
-/* UPLOAD ZONE */
-.zone{border:2px dashed rgba(11,17,32,.14);border-radius:12px;padding:52px 28px;text-align:center;cursor:pointer;background:var(--cream);transition:border-color .2s,background .2s;}
+.card{background:var(--white);border-radius:12px;border:1px solid rgba(11,17,32,.07);box-shadow:0 2px 8px rgba(11,17,32,.04);padding:24px;margin-bottom:18px;}
+.card-title{font-size:13px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+.card-title svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:1.8;}
+/* ZONE */
+.zone{border:2px dashed rgba(11,17,32,.14);border-radius:10px;padding:44px 24px;text-align:center;cursor:pointer;background:var(--cream);transition:border-color .2s,background .2s;}
 .zone:hover,.zone.drag{border-color:var(--gold);background:var(--goldp);}
 .zone input{display:none;}
-.zone-icon{width:48px;height:48px;margin:0 auto 14px;opacity:.35;}
-.zone h3{font-size:16px;font-weight:600;color:var(--navy);margin-bottom:7px;}
-.zone p{font-size:13px;color:var(--greyl);line-height:1.6;}
-code{background:rgba(11,17,32,.06);padding:2px 6px;border-radius:3px;font-size:11.5px;font-family:'JetBrains Mono',monospace;}
-
-/* PROCESSING */
-.processing{display:none;text-align:center;padding:44px;}
-.spinner{width:38px;height:38px;border:3px solid rgba(184,146,42,.2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px;}
+.zone-icon{width:44px;height:44px;margin:0 auto 12px;opacity:.35;}
+.zone h3{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+.zone p{font-size:12.5px;color:var(--greyl);line-height:1.6;}
+code{background:rgba(11,17,32,.06);padding:2px 5px;border-radius:3px;font-size:11px;font-family:'JetBrains Mono',monospace;}
+.processing{display:none;text-align:center;padding:40px;}
+.spinner{width:36px;height:36px;border:3px solid rgba(184,146,42,.2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.processing p{font-size:14px;color:var(--grey);}
-
-/* ERROR */
-.err-box{display:none;background:var(--red-bg);border-left:3px solid var(--red);border-radius:0 7px 7px 0;padding:11px 14px;font-size:13px;color:var(--red);margin-bottom:16px;}
-
-/* SUCCESS */
-.success-box{display:none;background:var(--green-bg);border-left:3px solid var(--green);border-radius:0 7px 7px 0;padding:11px 14px;font-size:13px;color:var(--green);margin-bottom:16px;}
-
-/* COLUMN MAPPING SECTION */
+.processing p{font-size:13.5px;color:var(--grey);}
+.err-box{display:none;background:var(--red-bg);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 13px;font-size:13px;color:var(--red);margin-bottom:14px;}
+.success-box{display:none;background:var(--green-bg);border-left:3px solid var(--green);border-radius:0 6px 6px 0;padding:10px 13px;font-size:13px;color:var(--green);margin-bottom:14px;}
 .mapping-section{display:none;}
-.mapping-header{margin-bottom:20px;}
-.mapping-header h3{font-size:18px;font-weight:600;color:var(--navy);margin-bottom:6px;}
-.mapping-header p{font-size:13.5px;color:var(--grey);line-height:1.6;}
-.file-badge{display:inline-flex;align-items:center;gap:7px;background:var(--goldp);border:1px solid rgba(184,146,42,.3);border-radius:6px;padding:6px 12px;font-size:12.5px;font-weight:600;color:var(--gold);margin-top:10px;}
-.file-badge svg{width:13px;height:13px;stroke:var(--gold);fill:none;}
-
-.map-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.file-badge{display:inline-flex;align-items:center;gap:7px;background:var(--goldp);border:1px solid rgba(184,146,42,.3);border-radius:6px;padding:5px 11px;font-size:12px;font-weight:600;color:var(--gold);margin-top:8px;}
+.map-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
 @media(max-width:600px){.map-grid{grid-template-columns:1fr;}}
-
-.map-field{background:var(--cream);border-radius:10px;padding:18px;}
-.map-field-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-.map-badge{font-size:9.5px;font-weight:700;padding:3px 8px;border-radius:3px;letter-spacing:.08em;text-transform:uppercase;}
+.map-field{background:var(--cream);border-radius:8px;padding:16px;}
+.map-field-header{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
+.map-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:.07em;text-transform:uppercase;}
 .map-badge.required{background:var(--red-bg);color:var(--red);}
 .map-badge.optional{background:var(--blue-bg);color:var(--blue);}
-.map-field label{font-size:13px;font-weight:600;color:var(--navy);}
-.map-field p{font-size:11.5px;color:var(--greyl);margin-top:3px;line-height:1.5;}
-.map-select{width:100%;height:40px;border:1.5px solid rgba(11,17,32,.12);border-radius:7px;padding:0 12px;font-size:13.5px;color:var(--navy);background:var(--white);outline:none;font-family:'Outfit',sans-serif;margin-top:10px;cursor:pointer;transition:border-color .2s;}
+.map-field label{font-size:12.5px;font-weight:600;color:var(--navy);}
+.map-field p{font-size:11px;color:var(--greyl);margin-top:3px;line-height:1.5;}
+.map-select{width:100%;height:38px;border:1.5px solid rgba(11,17,32,.12);border-radius:6px;padding:0 10px;font-size:13px;color:var(--navy);background:var(--white);outline:none;font-family:'Outfit',sans-serif;margin-top:8px;cursor:pointer;transition:border-color .2s;}
 .map-select:focus{border-color:var(--gold);}
 .map-select.mapped{border-color:var(--green);background:var(--green-bg);}
 .map-select.warning{border-color:var(--amber);background:var(--amber-bg);}
-
-/* PREVIEW TABLE */
-.preview-section{margin-top:20px;}
-.preview-label{font-size:11px;font-weight:700;color:var(--greyl);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
-.preview-wrap{overflow-x:auto;border-radius:8px;border:1px solid rgba(11,17,32,.08);}
-.preview-table{width:100%;border-collapse:collapse;font-size:12px;}
-.preview-table th{background:var(--navy);color:rgba(255,255,255,.65);padding:9px 12px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
-.preview-table td{padding:8px 12px;border-bottom:1px solid rgba(11,17,32,.05);color:var(--grey);font-family:'JetBrains Mono',monospace;}
+.preview-section{margin-top:16px;}
+.preview-label{font-size:10.5px;font-weight:700;color:var(--greyl);letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px;}
+.preview-wrap{overflow-x:auto;border-radius:7px;border:1px solid rgba(11,17,32,.08);}
+.preview-table{width:100%;border-collapse:collapse;font-size:11.5px;}
+.preview-table th{background:var(--navy);color:rgba(255,255,255,.65);padding:8px 10px;text-align:left;font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;}
+.preview-table td{padding:7px 10px;border-bottom:1px solid rgba(11,17,32,.05);color:var(--grey);font-family:'JetBrains Mono',monospace;}
 .preview-table tr:last-child td{border-bottom:none;}
 .preview-table tr:hover td{background:var(--goldp);}
-
-/* ANALYSE BUTTON */
-.btn-analyse{display:inline-flex;align-items:center;gap:9px;background:var(--navy);color:#fff;padding:13px 28px;border-radius:8px;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .2s,transform .15s;width:100%;justify-content:center;margin-top:4px;}
+.btn-analyse{display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:#fff;padding:12px 24px;border-radius:7px;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .2s,transform .15s;width:100%;justify-content:center;margin-top:4px;}
 .btn-analyse:hover{background:#1a2a42;transform:translateY(-1px);}
 .btn-analyse:disabled{background:var(--greyl);cursor:not-allowed;transform:none;}
-.btn-analyse svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;}
-
-/* CHANGE FILE */
-.btn-change{background:none;border:1px solid rgba(11,17,32,.15);color:var(--grey);padding:8px 16px;border-radius:6px;font-size:12.5px;cursor:pointer;font-family:'Outfit',sans-serif;margin-top:12px;transition:all .2s;}
+.btn-analyse svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;}
+.btn-change{background:none;border:1px solid rgba(11,17,32,.15);color:var(--grey);padding:7px 14px;border-radius:5px;font-size:12px;cursor:pointer;font-family:'Outfit',sans-serif;margin-top:10px;transition:all .2s;}
 .btn-change:hover{border-color:var(--gold);color:var(--gold);}
-
-/* SAMPLE BUTTON */
-.sample-btn{background:none;border:none;color:var(--gold);font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:'Outfit',sans-serif;margin-top:12px;padding:0;}
+.sample-btn{background:none;border:none;color:var(--gold);font-size:12.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-family:'Outfit',sans-serif;margin-top:10px;padding:0;}
 .sample-btn:hover{color:var(--gold2);}
-.sample-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;}
-
-/* INFO CARDS */
-.info-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
-@media(max-width:700px){.info-row{grid-template-columns:1fr;}.layout{flex-direction:column;}.sidebar{width:100%;border-right:none;border-bottom:1px solid rgba(11,17,32,.07);}}
-.info-card{background:var(--white);border-radius:12px;padding:20px;border:1px solid rgba(11,17,32,.07);}
-.info-card h4{font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:7px;}
-.info-card h4 svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:1.8;}
-.info-card li{list-style:none;font-size:12.5px;color:var(--grey);margin-bottom:5px;display:flex;align-items:flex-start;gap:6px;}
-.info-card li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
-</style>
+/* XERO DEMO BANNER */
+.xero-banner{background:linear-gradient(135deg,#1B3A6E 0%,#0B1120 100%);border-radius:12px;padding:20px 24px;margin-bottom:18px;display:flex;align-items:center;gap:20px;border:1px solid rgba(184,146,42,.2);}
+.xero-logo{width:52px;height:52px;background:#13B5EA;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Outfit',sans-serif;font-weight:900;font-size:18px;color:#fff;letter-spacing:-1px;}
+.xero-text h3{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;}
+.xero-text p{font-size:12px;color:rgba(255,255,255,.55);line-height:1.5;}
+.xero-btn{margin-left:auto;flex-shrink:0;background:rgba(19,181,234,.15);border:1.5px solid rgba(19,181,234,.4);color:#13B5EA;padding:9px 18px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;white-space:nowrap;}
+.xero-btn:hover{background:rgba(19,181,234,.25);}
+.demo-badge{background:var(--amber-bg);color:var(--amber);font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:8px;letter-spacing:.06em;text-transform:uppercase;}
+/* COMPLIANCE DASHBOARD */
+.compliance-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.comp-card{background:var(--white);border-radius:10px;border:1px solid rgba(11,17,32,.07);padding:16px;}
+.comp-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.comp-card-title{font-size:12.5px;font-weight:700;color:var(--navy);}
+.comp-status{font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;text-transform:uppercase;}
+.comp-status.ok{background:var(--green-bg);color:var(--green);}
+.comp-status.warn{background:var(--amber-bg);color:var(--amber);}
+.comp-status.overdue{background:var(--red-bg);color:var(--red);}
+.comp-status.roadmap{background:var(--purple-bg);color:var(--purple);}
+.comp-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(11,17,32,.05);font-size:12px;color:var(--grey);}
+.comp-item:last-child{border-bottom:none;}
+.comp-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.comp-dot.green{background:var(--green);}
+.comp-dot.amber{background:var(--amber);}
+.comp-dot.red{background:var(--red);}
+.comp-dot.grey{background:var(--greyl);}
+.roadmap-note{background:var(--purple-bg);border-radius:8px;padding:12px 16px;font-size:12px;color:var(--purple);margin-top:14px;display:flex;align-items:center;gap:8px;}
+.roadmap-note svg{width:14px;height:14px;stroke:currentColor;fill:none;flex-shrink:0;}
+@media(max-width:700px){.compliance-grid{grid-template-columns:1fr;}.layout{flex-direction:column;}.sidebar{width:100%;border-right:none;border-bottom:1px solid rgba(11,17,32,.07);}}</style>
 </head>
 <body>
-
-<!-- TOPBAR -->
 <div class="topbar">
   <a href="/" class="tb-brand">
     <svg class="tb-logo" viewBox="0 0 120 120">
@@ -160,506 +144,341 @@ code{background:rgba(11,17,32,.06);padding:2px 6px;border-radius:3px;font-size:1
     <div><div class="tb-name">AuditMind</div><div class="tb-sub">Intelligence Ltd</div></div>
   </a>
   <div class="tb-right">
-    <div class="tb-user">
-      <div class="tb-avatar" id="avatar">A</div>
-      <span class="tb-uname" id="uname">admin</span>
-    </div>
+    <div class="tb-user"><div class="tb-avatar" id="avatar">A</div><span class="tb-uname" id="uname">admin</span></div>
     <button class="btn-out" onclick="signOut()">Sign Out</button>
   </div>
 </div>
 
 <div class="layout">
-  <!-- SIDEBAR -->
   <div class="sidebar">
-    <span class="sb-label">Navigation</span>
-    <a class="sb-item active" href="/upload">
+    <span class="sb-label">Analysis</span>
+    <a class="sb-item active" id="nav-upload" onclick="showPanel('upload')">
       <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Upload Data
     </a>
-    <a class="sb-item" href="/results">
+    <a class="sb-item" id="nav-results" onclick="goResults()">
       <svg viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Results
     </a>
-    <a class="sb-item" href="/" style="margin-top:16px;">
+    <div class="sb-divider"></div>
+    <span class="sb-label">Compliance</span>
+    <a class="sb-item" id="nav-compliance" onclick="showPanel('compliance')">
+      <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Compliance Dashboard
+      <span class="sb-badge new">NEW</span>
+    </a>
+    <div class="sb-divider"></div>
+    <span class="sb-label">Integrations</span>
+    <a class="sb-item" id="nav-xero" onclick="showPanel('xero')">
+      <svg viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Xero Integration
+      <span class="sb-badge beta">DEMO</span>
+    </a>
+    <div class="sb-divider"></div>
+    <a class="sb-item" href="/">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="9 22 9 12 15 12 15 22" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Back to Website
     </a>
   </div>
 
-  <!-- MAIN -->
   <div class="main">
-    <div class="page-title">Upload Transaction Data</div>
-    <div class="page-sub">Upload your CSV file, map your columns, then run the AI risk analysis.</div>
 
-    <!-- Backend status -->
-    <div class="status-bar">
-      <span class="status-dot" id="sdot"></span>
-      <span id="smsg">Checking backend connection…</span>
-    </div>
-
-    <!-- Steps indicator -->
-    <div class="steps-bar">
-      <div class="step-item">
-        <div class="step-num active" id="step1-num">1</div>
-        <span class="step-label active" id="step1-lbl">Upload CSV</span>
+    <!-- ── UPLOAD PANEL ── -->
+    <div class="panel active" id="panel-upload">
+      <div class="page-title">Upload Transaction Data</div>
+      <div class="page-sub">Upload your CSV file, map your columns, then run the AI risk analysis.</div>
+      <div class="status-bar"><span class="status-dot" id="sdot"></span><span id="smsg">Checking backend…</span></div>
+      <div class="steps-bar">
+        <div class="step-item"><div class="step-num active" id="step1-num">1</div><span class="step-label active" id="step1-lbl">Upload CSV</span></div>
+        <div class="step-line"></div>
+        <div class="step-item"><div class="step-num" id="step2-num">2</div><span class="step-label" id="step2-lbl">Map Columns</span></div>
+        <div class="step-line"></div>
+        <div class="step-item"><div class="step-num" id="step3-num">3</div><span class="step-label" id="step3-lbl">Run Analysis</span></div>
       </div>
-      <div class="step-line"></div>
-      <div class="step-item">
-        <div class="step-num" id="step2-num">2</div>
-        <span class="step-label" id="step2-lbl">Map Columns</span>
-      </div>
-      <div class="step-line"></div>
-      <div class="step-item">
-        <div class="step-num" id="step3-num">3</div>
-        <span class="step-label" id="step3-lbl">Run Analysis</span>
-      </div>
-    </div>
+      <div class="err-box" id="err-box"></div>
+      <div class="success-box" id="success-box"></div>
 
-    <!-- Error / success -->
-    <div class="err-box" id="err-box"></div>
-    <div class="success-box" id="success-box"></div>
-
-    <!-- ── STEP 1: UPLOAD ZONE ── -->
-    <div class="card" id="step1-card">
-      <div class="card-title">
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Step 1 — Upload your CSV file
-      </div>
-
-      <div class="zone" id="zone"
-        onclick="document.getElementById('file-in').click()"
-        ondragover="doDrag(event)" ondragleave="doLeave()" ondrop="doDrop(event)">
-        <svg class="zone-icon" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.3">
-          <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <h3>Drop your CSV file here or click to browse</h3>
-        <p>Accepts <code>.csv</code> files only<br>Any column names — you will map them in the next step</p>
-        <input type="file" id="file-in" accept=".csv" onchange="handleFile(event)">
-      </div>
-
-      <div class="processing" id="upload-proc">
-        <div class="spinner"></div>
-        <p>Reading your CSV file…</p>
-      </div>
-
-      <button class="sample-btn" onclick="getSample()">
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Download sample CSV to test with
-      </button>
-    </div>
-
-    <!-- ── STEP 2: COLUMN MAPPING ── -->
-    <div class="card mapping-section" id="step2-card">
-      <div class="card-title">
-        <svg viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Step 2 — Map your column names
-      </div>
-
-      <div class="mapping-header">
-        <h3>Tell us which column is which</h3>
-        <p>Your CSV has been read. Select which of your columns corresponds to each field AuditMind needs. If your CSV already uses our standard names, the dropdowns will be pre-selected automatically.</p>
-        <div class="file-badge" id="file-badge">
-          <svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span id="file-name-badge">filename.csv</span>
+      <div class="card" id="step1-card">
+        <div class="card-title"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-linecap="round" stroke-linejoin="round"/></svg>Step 1 — Upload your CSV file</div>
+        <div class="zone" id="zone" onclick="document.getElementById('file-in').click()" ondragover="doDrag(event)" ondragleave="doLeave()" ondrop="doDrop(event)">
+          <svg class="zone-icon" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.3"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Drop your CSV file here or click to browse</h3>
+          <p>Accepts <code>.csv</code> files only · Max 5MB<br>Any column names — map them in the next step</p>
+          <input type="file" id="file-in" accept=".csv" onchange="handleFile(event)">
         </div>
-      </div>
-
-      <div class="map-grid">
-        <!-- Amount -->
-        <div class="map-field">
-          <div class="map-field-header">
-            <span class="map-badge required">Required</span>
-            <label>Amount / Value Column</label>
-          </div>
-          <p>The column containing invoice or transaction amounts (numbers).</p>
-          <select class="map-select" id="map-amount" onchange="updateSelectStyle(this)">
-            <option value="">— select column —</option>
-          </select>
-        </div>
-
-        <!-- Invoice ID -->
-        <div class="map-field">
-          <div class="map-field-header">
-            <span class="map-badge optional">Optional</span>
-            <label>Invoice ID / Reference Column</label>
-          </div>
-          <p>Unique reference for each transaction. If not available, row numbers will be used.</p>
-          <select class="map-select" id="map-invoice" onchange="updateSelectStyle(this)">
-            <option value="__none__">— not in my CSV, use row numbers —</option>
-          </select>
-        </div>
-
-        <!-- VAT Code -->
-        <div class="map-field">
-          <div class="map-field-header">
-            <span class="map-badge optional">Optional</span>
-            <label>VAT Code / Tax Type Column</label>
-          </div>
-          <p>Column containing VAT codes (Standard, Reverse, Zero). If missing, all will default to Standard.</p>
-          <select class="map-select" id="map-vat" onchange="updateSelectStyle(this)">
-            <option value="__none__">— not in my CSV, default to Standard —</option>
-          </select>
-        </div>
-
-        <!-- Supplier Type -->
-        <div class="map-field">
-          <div class="map-field-header">
-            <span class="map-badge optional">Optional</span>
-            <label>Supplier / Contractor Type Column</label>
-          </div>
-          <p>Column identifying if the supplier is a Subcontractor (triggers CIS checks) or regular Supplier.</p>
-          <select class="map-select" id="map-supplier" onchange="updateSelectStyle(this)">
-            <option value="__none__">— not in my CSV, default to Supplier —</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Data preview -->
-      <div class="preview-section">
-        <div class="preview-label">Data Preview — first 3 rows of your CSV</div>
-        <div class="preview-wrap">
-          <table class="preview-table" id="preview-table">
-            <thead id="preview-head"></thead>
-            <tbody id="preview-body"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div style="margin-top:20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-        <button class="btn-change" onclick="resetUpload()">
-          ← Change File
+        <div class="processing" id="upload-proc"><div class="spinner"></div><p>Reading your CSV file…</p></div>
+        <button class="sample-btn" onclick="getSample()">
+          <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download sample CSV
         </button>
-        <div style="flex:1;font-size:12.5px;color:var(--greyl);">
-          Select at minimum the <strong>Amount</strong> column to continue.
+      </div>
+
+      <div class="card mapping-section" id="step2-card">
+        <div class="card-title"><svg viewBox="0 0 24 24"><path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>Step 2 — Map your column names</div>
+        <p style="font-size:13px;color:var(--grey);margin-bottom:10px;">Select which columns correspond to each field. Standard names are auto-detected.</p>
+        <div class="file-badge" id="file-badge"><svg viewBox="0 0 24 24" width="13" height="13" stroke="var(--gold)" fill="none"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586l5.414 5.414V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="file-name-badge">filename.csv</span></div>
+        <div class="map-grid" style="margin-top:16px;">
+          <div class="map-field"><div class="map-field-header"><span class="map-badge required">Required</span><label>Amount</label></div><p>Invoice or transaction amounts.</p><select class="map-select" id="map-amount" onchange="updateSelectStyle(this)"><option value="">— select —</option></select></div>
+          <div class="map-field"><div class="map-field-header"><span class="map-badge optional">Optional</span><label>Invoice ID</label></div><p>Unique reference. Row numbers used if absent.</p><select class="map-select" id="map-invoice" onchange="updateSelectStyle(this)"><option value="__none__">— use row numbers —</option></select></div>
+          <div class="map-field"><div class="map-field-header"><span class="map-badge optional">Optional</span><label>VAT Code</label></div><p>VAT treatment code. Defaults to Standard.</p><select class="map-select" id="map-vat" onchange="updateSelectStyle(this)"><option value="__none__">— default Standard —</option></select></div>
+          <div class="map-field"><div class="map-field-header"><span class="map-badge optional">Optional</span><label>Supplier Type</label></div><p>Subcontractor triggers CIS checks.</p><select class="map-select" id="map-supplier" onchange="updateSelectStyle(this)"><option value="__none__">— default Supplier —</option></select></div>
+        </div>
+        <div class="preview-section"><div class="preview-label">Data Preview — first 3 rows</div><div class="preview-wrap"><table class="preview-table"><thead id="preview-head"></thead><tbody id="preview-body"></tbody></table></div></div>
+        <div style="margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;"><button class="btn-change" onclick="resetUpload()">← Change File</button><div style="flex:1;font-size:12px;color:var(--greyl);">Select <strong>Amount</strong> column to continue.</div></div>
+      </div>
+
+      <div class="card mapping-section" id="step3-card">
+        <div class="card-title"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" stroke-linecap="round" stroke-linejoin="round"/></svg>Step 3 — Run Analysis</div>
+        <div id="mapping-summary" style="background:var(--goldp);border-radius:8px;padding:14px 18px;margin-bottom:16px;font-size:13px;color:var(--grey);line-height:1.8;"></div>
+        <div class="processing" id="analyse-proc" style="display:none;padding:28px;"><div class="spinner"></div><p>Running AI analysis — anomaly detection, CIS, VAT, duplicate checks…</p></div>
+        <button class="btn-analyse" id="analyse-btn" onclick="runAnalysis()"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"/></svg>Run Risk Analysis</button>
+        <p style="font-size:11.5px;color:var(--greyl);margin-top:10px;line-height:1.6;">Decision-support tool only. All results require professional review before action is taken.</p>
+      </div>
+    </div>
+
+    <!-- ── COMPLIANCE DASHBOARD PANEL ── -->
+    <div class="panel" id="panel-compliance">
+      <div class="page-title">Compliance Dashboard</div>
+      <div class="page-sub">Track UK construction regulatory compliance across all key frameworks.</div>
+
+      <div class="compliance-grid">
+        <!-- CIS -->
+        <div class="comp-card">
+          <div class="comp-card-header"><div class="comp-card-title">Construction Industry Scheme (CIS)</div><span class="comp-status warn">Review</span></div>
+          <div class="comp-item"><span class="comp-dot amber"></span>Subcontractor verification status</div>
+          <div class="comp-item"><span class="comp-dot amber"></span>Monthly CIS return due — 19th</div>
+          <div class="comp-item"><span class="comp-dot green"></span>Deduction rates applied</div>
+          <div class="comp-item"><span class="comp-dot green"></span>Gross payment status checks</div>
+        </div>
+        <!-- VAT DRC -->
+        <div class="comp-card">
+          <div class="comp-card-header"><div class="comp-card-title">VAT Domestic Reverse Charge</div><span class="comp-status warn">Review</span></div>
+          <div class="comp-item"><span class="comp-dot amber"></span>DRC vs Standard coding consistency</div>
+          <div class="comp-item"><span class="comp-dot amber"></span>End-user declaration status</div>
+          <div class="comp-item"><span class="comp-dot green"></span>VAT registration cross-check</div>
+          <div class="comp-item"><span class="comp-dot green"></span>HMRC Notice 708/6 alignment</div>
+        </div>
+        <!-- JCT/NEC -->
+        <div class="comp-card">
+          <div class="comp-card-header"><div class="comp-card-title">JCT / NEC Payment Notices</div><span class="comp-status roadmap">Roadmap</span></div>
+          <div class="comp-item"><span class="comp-dot grey"></span>Payment notice timescale monitoring</div>
+          <div class="comp-item"><span class="comp-dot grey"></span>Pay-less notice compliance</div>
+          <div class="comp-item"><span class="comp-dot grey"></span>HGCRA 1996 s.110-111 alignment</div>
+          <div class="comp-item"><span class="comp-dot grey"></span>Contract terms tracking</div>
+        </div>
+        <!-- Housing Grants Act -->
+        <div class="comp-card">
+          <div class="comp-card-header"><div class="comp-card-title">Housing Grants Act</div><span class="comp-status roadmap">Roadmap</span></div>
+          <div class="comp-item"><span class="comp-dot grey"></span>Adjudication rights monitoring</div>
+          <div class="comp-item"><span class="comp-dot grey"></span>Payment withholding pattern detection</div>
+          <div class="comp-item"><span class="comp-dot grey"></span>HGCRA s.108 compliance</div>
+          <div class="comp-item"><span class="comp-dot grey"></span>Dispute exposure alerts</div>
+        </div>
+        <!-- Building Safety Act -->
+        <div class="comp-card">
+          <div class="comp-card-header"><div class="comp-card-title">Building Safety Act 2022</div><span class="comp-status roadmap">Roadmap</span></div>
+          <div class="comp-item"><span class="comp-dot grey"></span>Retention liability exposure</div>
+          <div class="comp-item"><span class="comp-dot grey"></span>Higher-risk building contracts</div>
+          <div class="comp-item"><span class="comp-dot grey"></span>ss.38-39 liability accumulation</div>
+          <div class="comp-item"><span class="comp-dot grey"></span>Defects period tracking</div>
+        </div>
+        <!-- HMRC Winding Up -->
+        <div class="comp-card">
+          <div class="comp-card-header"><div class="comp-card-title">HMRC Winding-Up Petition Patterns</div><span class="comp-status roadmap">Roadmap</span></div>
+          <div class="comp-item"><span class="comp-dot grey"></span>Late payment deterioration signals</div>
+          <div class="comp-item"><span class="comp-dot grey"></span>Partial payment pattern detection</div>
+          <div class="comp-item"><span class="comp-dot grey"></span>Rounding anomaly correlation</div>
+          <div class="comp-item"><span class="comp-dot grey"></span>Pre-petition risk scoring</div>
+        </div>
+      </div>
+
+      <div class="roadmap-note">
+        <svg viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span><strong>CIS and VAT DRC checks</strong> are live in the current MVP. JCT/NEC payment notices, Housing Grants Act adjudication monitoring, Building Safety Act retention tracking, and HMRC petition pattern detection are in development — targeted for Phase 2 (months 6–12).</span>
+      </div>
+
+      <div class="card" style="margin-top:18px;">
+        <div class="card-title"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>Upload data to run live compliance checks</div>
+        <p style="font-size:13px;color:var(--grey);margin-bottom:14px;">Upload a CSV file to generate CIS and VAT compliance findings with transaction-level evidence and recommended actions.</p>
+        <button class="btn-analyse" onclick="showPanel('upload')" style="max-width:260px;"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-linecap="round" stroke-linejoin="round"/></svg>Go to Upload</button>
+      </div>
+    </div>
+
+    <!-- ── XERO INTEGRATION PANEL ── -->
+    <div class="panel" id="panel-xero">
+      <div class="page-title">Xero Integration <span style="font-size:13px;background:var(--amber-bg);color:var(--amber);padding:3px 10px;border-radius:10px;font-weight:700;margin-left:10px;vertical-align:middle;">DEMO</span></div>
+      <div class="page-sub">Direct API connection to Xero — automatic financial data sync and real-time risk analysis.</div>
+
+      <div class="xero-banner">
+        <div class="xero-logo">X</div>
+        <div class="xero-text">
+          <h3>Connect your Xero account <span class="demo-badge">Coming M12</span></h3>
+          <p>Once connected, AuditMind will automatically pull invoices, purchase orders, bank transactions, and VAT data from Xero — no CSV upload required.</p>
+        </div>
+        <button class="xero-btn" onclick="showXeroDemo()">Demo Connection</button>
+      </div>
+
+      <div class="card" id="xero-demo-card" style="display:none;">
+        <div class="card-title"><svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"/></svg>Xero OAuth2 Connection Flow — Demo</div>
+        <div style="background:#F8FFFE;border:1px solid #13B5EA30;border-radius:8px;padding:16px;font-size:13px;color:var(--grey);line-height:2;">
+          <div id="xero-step-1" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.05);">
+            <span style="width:24px;height:24px;border-radius:50%;background:#13B5EA;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">1</span>
+            <span>User clicks <strong>Connect Xero</strong> — redirected to Xero login page</span>
+            <span style="margin-left:auto;color:var(--green);font-weight:700;font-size:11px;" id="step1-status">✓ Complete</span>
+          </div>
+          <div id="xero-step-2" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.05);">
+            <span style="width:24px;height:24px;border-radius:50%;background:#13B5EA;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">2</span>
+            <span>User approves AuditMind read-only access — OAuth2 token issued</span>
+            <span style="margin-left:auto;color:var(--green);font-weight:700;font-size:11px;" id="step2-status">✓ Complete</span>
+          </div>
+          <div id="xero-step-3" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.05);">
+            <span style="width:24px;height:24px;border-radius:50%;background:#13B5EA;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">3</span>
+            <span>AuditMind pulls: invoices, purchase orders, bank transactions, VAT data</span>
+            <span style="margin-left:auto;color:var(--amber);font-weight:700;font-size:11px;" id="step3-status">⏳ In progress…</span>
+          </div>
+          <div id="xero-step-4" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,.05);">
+            <span style="width:24px;height:24px;border-radius:50%;background:var(--greyl);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">4</span>
+            <span>Normalisation engine maps Xero VAT codes → Standard/Reverse/Zero</span>
+            <span style="margin-left:auto;color:var(--greyl);font-weight:700;font-size:11px;" id="step4-status">Pending</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;">
+            <span style="width:24px;height:24px;border-radius:50%;background:var(--greyl);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">5</span>
+            <span>AI analysis runs automatically — results delivered to dashboard and email</span>
+            <span style="margin-left:auto;color:var(--greyl);font-weight:700;font-size:11px;" id="step5-status">Pending</span>
+          </div>
+        </div>
+        <div id="xero-complete" style="display:none;background:var(--green-bg);border-radius:8px;padding:14px;margin-top:14px;font-size:13px;color:var(--green);font-weight:600;">✓ Demo complete — in production this would trigger automatic CIS, VAT, and anomaly analysis within 60 seconds of connection.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>Integration Status</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+          <div style="background:var(--green-bg);border-radius:8px;padding:14px;text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Xero</div><div style="font-size:12px;color:var(--green);">Developer registered<br>OAuth configured</div></div>
+          <div style="background:var(--amber-bg);border-radius:8px;padding:14px;text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">QuickBooks</div><div style="font-size:12px;color:var(--amber);">Registration<br>in progress</div></div>
+          <div style="background:var(--purple-bg);border-radius:8px;padding:14px;text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Sage</div><div style="font-size:12px;color:var(--purple);">Planned<br>Month 18</div></div>
         </div>
       </div>
     </div>
 
-    <!-- ── STEP 3: RUN ANALYSIS ── -->
-    <div class="card mapping-section" id="step3-card">
-      <div class="card-title">
-        <svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Step 3 — Run AI Risk Analysis
-      </div>
-
-      <div id="mapping-summary" style="background:var(--goldp);border-radius:10px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:var(--grey);line-height:1.8;"></div>
-
-      <div class="processing" id="analyse-proc" style="display:none;padding:32px;">
-        <div class="spinner"></div>
-        <p>Running AI risk analysis — anomaly detection, duplicate checks, VAT validation, CIS compliance…</p>
-      </div>
-
-      <button class="btn-analyse" id="analyse-btn" onclick="runAnalysis()">
-        <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Run Risk Analysis
-      </button>
-    </div>
-
-    <!-- Info cards -->
-    <div class="info-row" id="info-cards">
-      <div class="info-card">
-        <h4><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>What gets analysed</h4>
-        <ul>
-          <li>Anomaly detection via Isolation Forest ML (7 features)</li>
-          <li>ML confidence score per transaction</li>
-          <li>Duplicate payment detection (Amount + Supplier)</li>
-          <li>VAT code inconsistency detection</li>
-          <li>CIS subcontractor risk flagging</li>
-          <li>Round number fraud signal detection</li>
-          <li>Extreme value detection (10x average)</li>
-          <li>Full rulebook: CIS-001/002, DUP-001, VAT-001, ANO-001/002, RND-001, HVL-001</li>
-        </ul>
-      </div>
-      <div class="info-card">
-        <h4><svg viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>What you get back</h4>
-        <ul>
-          <li>Risk level: High / Medium / Low per transaction</li>
-          <li>SME simplified flagged view</li>
-          <li>Accountant full detail view</li>
-          <li>Compliance rulebook fired log</li>
-          <li>4 interactive charts</li>
-          <li>3 downloadable CSV reports</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+  </div><!-- /main -->
+</div><!-- /layout -->
 
 <script>
-const API = '';  // Empty = same domain (works on Render and locally via uvicorn)
-
-// ── Auth guard ──────────────────────────────────────────────
+const API = '';
 if (!sessionStorage.getItem('am_auth')) { window.location.href = '/login'; }
 const u = sessionStorage.getItem('am_user') || 'admin';
 document.getElementById('uname').textContent = u;
 document.getElementById('avatar').textContent = u[0].toUpperCase();
 function signOut() { sessionStorage.clear(); window.location.href = '/login'; }
 
-// ── State ───────────────────────────────────────────────────
-let uploadedFile = null;
-let csvColumns   = [];
-let csvPreview   = [];
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('nav-'+name).classList.add('active');
+}
+function goResults() {
+  if (sessionStorage.getItem('am_results')) window.location.href='/results';
+  else { showErr('Please upload and analyse data first.'); showPanel('upload'); }
+}
 
-// ── Health check ────────────────────────────────────────────
+let uploadedFile=null, csvColumns=[], csvPreview=[];
+
 async function checkHealth() {
-  const dot = document.getElementById('sdot');
-  const msg = document.getElementById('smsg');
+  const dot=document.getElementById('sdot'), msg=document.getElementById('smsg');
   try {
-    const res = await fetch(API + '/api/health', { signal: AbortSignal.timeout(4000) });
-    if (res.ok) {
-      dot.style.background = '#1A7A4A';
-      msg.textContent = 'Backend connected — ready to analyse';
-      msg.style.color = '#1A7A4A';
-    } else throw new Error();
-  } catch {
-    dot.style.background = '#C0392B';
-    msg.textContent = 'Backend offline — run: python -m uvicorn main:app --reload --port 8000';
-    msg.style.color = '#C0392B';
-  }
+    const res=await fetch(API+'/api/health',{signal:AbortSignal.timeout(4000)});
+    if(res.ok){const d=await res.json();dot.style.background='#1A7A4A';msg.textContent=`Backend connected — v${d.version||'?'}`;msg.style.color='#1A7A4A';}
+    else throw new Error();
+  } catch{dot.style.background='#C0392B';msg.textContent='Backend offline — run: python -m uvicorn main:app --reload --port 8000';msg.style.color='#C0392B';}
 }
 checkHealth();
 
-// ── Step indicator ──────────────────────────────────────────
-function setStep(n) {
-  for (let i = 1; i <= 3; i++) {
-    const num = document.getElementById(`step${i}-num`);
-    const lbl = document.getElementById(`step${i}-lbl`);
-    if (i < n) {
-      num.className = 'step-num done'; num.textContent = '✓';
-      lbl.className = 'step-label done';
-    } else if (i === n) {
-      num.className = 'step-num active'; num.textContent = i;
-      lbl.className = 'step-label active';
-    } else {
-      num.className = 'step-num'; num.textContent = i;
-      lbl.className = 'step-label';
-    }
-  }
-}
+function setStep(n){for(let i=1;i<=3;i++){const num=document.getElementById(`step${i}-num`),lbl=document.getElementById(`step${i}-lbl`);if(i<n){num.className='step-num done';num.textContent='✓';lbl.className='step-label done';}else if(i===n){num.className='step-num active';num.textContent=i;lbl.className='step-label active';}else{num.className='step-num';num.textContent=i;lbl.className='step-label';}}}
+function doDrag(e){e.preventDefault();document.getElementById('zone').classList.add('drag');}
+function doLeave(){document.getElementById('zone').classList.remove('drag');}
+function doDrop(e){e.preventDefault();doLeave();if(e.dataTransfer.files[0])processUpload(e.dataTransfer.files[0]);}
+function handleFile(e){if(e.target.files[0])processUpload(e.target.files[0]);}
 
-// ── Drag & drop ─────────────────────────────────────────────
-function doDrag(e) { e.preventDefault(); document.getElementById('zone').classList.add('drag'); }
-function doLeave()  { document.getElementById('zone').classList.remove('drag'); }
-function doDrop(e)  { e.preventDefault(); doLeave(); if (e.dataTransfer.files[0]) processUpload(e.dataTransfer.files[0]); }
-function handleFile(e) { if (e.target.files[0]) processUpload(e.target.files[0]); }
-
-// ── Step 1: Upload file and read columns ────────────────────
 async function processUpload(file) {
-  if (!file.name.toLowerCase().endsWith('.csv')) {
-    showErr('Please upload a .csv file.'); return;
-  }
-
-  uploadedFile = file;
-  document.getElementById('zone').style.display = 'none';
-  document.getElementById('upload-proc').style.display = 'block';
+  if(!file.name.toLowerCase().endsWith('.csv')){showErr('Please upload a .csv file.');return;}
+  if(file.size>5*1024*1024){showErr('File exceeds 5MB limit.');return;}
+  uploadedFile=file;
+  document.getElementById('zone').style.display='none';
+  document.getElementById('upload-proc').style.display='block';
   clearMessages();
-
-  const fd = new FormData();
-  fd.append('file', file);
-
+  const fd=new FormData(); fd.append('file',file);
   try {
-    const res = await fetch(API + '/api/columns', { method: 'POST', body: fd });
-    if (!res.ok) { const e = await res.json(); throw new Error(e.detail || 'Could not read CSV'); }
-    const data = await res.json();
-
-    csvColumns = data.columns;
-    csvPreview = data.preview;
-
-    document.getElementById('upload-proc').style.display = 'none';
-    showColumnMapping();
-    setStep(2);
-
-  } catch (err) {
-    document.getElementById('upload-proc').style.display = 'none';
-    document.getElementById('zone').style.display = 'block';
-    showErr('Error reading CSV: ' + err.message);
-  }
+    const res=await fetch(API+'/api/columns',{method:'POST',body:fd});
+    if(!res.ok){const e=await res.json();throw new Error(e.detail||'Could not read CSV');}
+    const data=await res.json();
+    csvColumns=data.columns; csvPreview=data.preview;
+    document.getElementById('upload-proc').style.display='none';
+    showColumnMapping(); setStep(2);
+  } catch(err){document.getElementById('upload-proc').style.display='none';document.getElementById('zone').style.display='block';showErr('Error reading CSV: '+err.message);}
 }
 
-// ── Step 2: Show column mapping UI ─────────────────────────
-function showColumnMapping() {
-  document.getElementById('step2-card').style.display = 'block';
-  document.getElementById('step3-card').style.display = 'block';
-  document.getElementById('step2-card').classList.add('mapping-section');
-  document.getElementById('step3-card').classList.add('mapping-section');
-
-  document.getElementById('file-name-badge').textContent = uploadedFile.name;
-
-  // Populate all four dropdowns with CSV column names
-  const selects = ['map-amount', 'map-invoice', 'map-vat', 'map-supplier'];
-  const defaults = {
-    'map-amount':   ['Amount','amount','AMOUNT','Total','total','Value','value','Cost','cost','Price','price','Net_Amount','Gross_Amount','Payment_Amount','Transaction_Amount'],
-    'map-invoice':  ['Invoice_ID','invoice_id','InvoiceID','Invoice','Reference','Ref','ref','ID','id','Transaction_ID'],
-    'map-vat':      ['VAT_Code','vat_code','VAT','vat','Tax_Code','TaxCode','VAT_Type','Tax_Type'],
-    'map-supplier': ['Supplier_Type','supplier_type','SupplierType','Supplier','supplier','Vendor_Type','Type','type','Contractor_Type'],
-  };
-
-  selects.forEach(selId => {
-    const sel = document.getElementById(selId);
-    // Keep first option then clear rest
-    while (sel.options.length > 1) sel.remove(1);
-    // Add CSV columns as options
-    csvColumns.forEach(col => {
-      const opt = document.createElement('option');
-      opt.value = col; opt.textContent = col;
-      sel.appendChild(opt);
-    });
-    // Auto-select if column name matches known alias
-    const aliases = defaults[selId] || [];
-    for (const alias of aliases) {
-      if (csvColumns.includes(alias)) {
-        sel.value = alias;
-        sel.classList.add('mapped');
-        break;
-      }
-    }
+function showColumnMapping(){
+  document.getElementById('step2-card').style.display='block';
+  document.getElementById('step3-card').style.display='block';
+  document.getElementById('file-name-badge').textContent=uploadedFile.name;
+  const selects=['map-amount','map-invoice','map-vat','map-supplier'];
+  const defaults={'map-amount':['Amount','amount','Total','Value','Cost','Price','Net_Amount'],'map-invoice':['Invoice_ID','invoice_id','Invoice','Reference','Ref','ID'],'map-vat':['VAT_Code','vat_code','VAT','Tax_Code','TaxType'],'map-supplier':['Supplier_Type','supplier_type','Supplier','Vendor_Type','Type']};
+  selects.forEach(selId=>{
+    const sel=document.getElementById(selId);
+    while(sel.options.length>1)sel.remove(1);
+    csvColumns.forEach(col=>{const opt=document.createElement('option');opt.value=col;opt.textContent=col;sel.appendChild(opt);});
+    for(const alias of(defaults[selId]||[])){if(csvColumns.includes(alias)){sel.value=alias;sel.classList.add('mapped');break;}}
   });
-
-  // Render preview table
-  renderPreview();
-  updateMappingSummary();
+  renderPreview(); updateMappingSummary();
 }
-
-function renderPreview() {
-  const thead = document.getElementById('preview-head');
-  const tbody = document.getElementById('preview-body');
-  thead.innerHTML = '<tr>' + csvColumns.map(c => `<th>${c}</th>`).join('') + '</tr>';
-  tbody.innerHTML = csvPreview.map(row =>
-    '<tr>' + csvColumns.map(c => `<td>${row[c] !== undefined ? row[c] : ''}</td>`).join('') + '</tr>'
-  ).join('');
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function renderPreview(){
+  document.getElementById('preview-head').innerHTML='<tr>'+csvColumns.map(c=>`<th>${escHtml(c)}</th>`).join('')+'</tr>';
+  document.getElementById('preview-body').innerHTML=csvPreview.map(row=>'<tr>'+csvColumns.map(c=>`<td>${escHtml(String(row[c]!==undefined?row[c]:''))}</td>`).join('')+'</tr>').join('');
 }
-
-function updateSelectStyle(sel) {
-  if (sel.value && sel.value !== '__none__') {
-    sel.classList.add('mapped'); sel.classList.remove('warning');
-  } else if (sel.id === 'map-amount') {
-    sel.classList.add('warning'); sel.classList.remove('mapped');
-  } else {
-    sel.classList.remove('mapped', 'warning');
-  }
-  updateMappingSummary();
+function updateSelectStyle(sel){if(sel.value&&sel.value!=='__none__'){sel.classList.add('mapped');sel.classList.remove('warning');}else if(sel.id==='map-amount'){sel.classList.add('warning');sel.classList.remove('mapped');}else{sel.classList.remove('mapped','warning');}updateMappingSummary();}
+function updateMappingSummary(){
+  const a=document.getElementById('map-amount').value,i=document.getElementById('map-invoice').value,v=document.getElementById('map-vat').value,s=document.getElementById('map-supplier').value;
+  const lines=[];
+  if(a&&a!=='__none__')lines.push(`<strong>Amount:</strong> "${escHtml(a)}"`);
+  else lines.push(`<span style="color:var(--red)"><strong>Amount:</strong> not selected — required</span>`);
+  lines.push(`<strong>Invoice ID:</strong> ${i&&i!=='__none__'?`"${escHtml(i)}"`:' row numbers'}`);
+  lines.push(`<strong>VAT Code:</strong> ${v&&v!=='__none__'?`"${escHtml(v)}"`:' default Standard'}`);
+  lines.push(`<strong>Supplier Type:</strong> ${s&&s!=='__none__'?`"${escHtml(s)}"`:' default Supplier'}`);
+  document.getElementById('mapping-summary').innerHTML=lines.join('<br>');
+  document.getElementById('analyse-btn').disabled=!a||a==='__none__';
 }
-
-function updateMappingSummary() {
-  const amountCol   = document.getElementById('map-amount').value;
-  const invoiceCol  = document.getElementById('map-invoice').value;
-  const vatCol      = document.getElementById('map-vat').value;
-  const supplierCol = document.getElementById('map-supplier').value;
-  const btn         = document.getElementById('analyse-btn');
-
-  const lines = [];
-  if (amountCol && amountCol !== '__none__') {
-    lines.push(`<strong>Amount column:</strong> "${amountCol}"`);
-  } else {
-    lines.push(`<span style="color:var(--red)"><strong>Amount column:</strong> not selected — required</span>`);
-  }
-  lines.push(`<strong>Invoice ID column:</strong> ${invoiceCol && invoiceCol !== '__none__' ? `"${invoiceCol}"` : 'not selected — row numbers will be used'}`);
-  lines.push(`<strong>VAT Code column:</strong> ${vatCol && vatCol !== '__none__' ? `"${vatCol}"` : 'not selected — all will default to Standard'}`);
-  lines.push(`<strong>Supplier Type column:</strong> ${supplierCol && supplierCol !== '__none__' ? `"${supplierCol}"` : 'not selected — all will default to Supplier'}`);
-
-  document.getElementById('mapping-summary').innerHTML = lines.join('<br>');
-  btn.disabled = !amountCol || amountCol === '__none__';
-}
-
-// ── Step 3: Run analysis ─────────────────────────────────────
-async function runAnalysis() {
-  const amountCol   = document.getElementById('map-amount').value;
-  const invoiceCol  = document.getElementById('map-invoice').value;
-  const vatCol      = document.getElementById('map-vat').value;
-  const supplierCol = document.getElementById('map-supplier').value;
-
-  if (!amountCol || amountCol === '__none__') {
-    showErr('Please select the Amount column before running analysis.');
-    return;
-  }
-
+async function runAnalysis(){
+  const a=document.getElementById('map-amount').value,i=document.getElementById('map-invoice').value,v=document.getElementById('map-vat').value,s=document.getElementById('map-supplier').value;
+  if(!a||a==='__none__'){showErr('Please select the Amount column.');return;}
   clearMessages();
-  document.getElementById('analyse-btn').style.display = 'none';
-  document.getElementById('analyse-proc').style.display = 'block';
+  document.getElementById('analyse-btn').style.display='none';
+  document.getElementById('analyse-proc').style.display='block';
   setStep(3);
-
-  const fd = new FormData();
-  fd.append('file', uploadedFile);
-  fd.append('amount_col',   amountCol);
-  fd.append('invoice_col',  invoiceCol !== '__none__' ? invoiceCol  : '');
-  fd.append('vat_col',      vatCol     !== '__none__' ? vatCol      : '');
-  fd.append('supplier_col', supplierCol !== '__none__' ? supplierCol : '');
-
+  const fd=new FormData();
+  fd.append('file',uploadedFile);fd.append('amount_col',a);fd.append('invoice_col',i!=='__none__'?i:'');fd.append('vat_col',v!=='__none__'?v:'');fd.append('supplier_col',s!=='__none__'?s:'');
   try {
-    const res = await fetch(API + '/api/analyse', { method: 'POST', body: fd });
-    if (!res.ok) { const e = await res.json(); throw new Error(e.detail || 'Analysis failed'); }
-    const data = await res.json();
-
-    sessionStorage.setItem('am_results', JSON.stringify(data));
+    const res=await fetch(API+'/api/analyse',{method:'POST',body:fd});
+    if(!res.ok){const e=await res.json();throw new Error(e.detail||'Analysis failed');}
+    const data=await res.json();
+    sessionStorage.setItem('am_results',JSON.stringify(data));
     showSuccess('Analysis complete! Redirecting to results…');
-    setTimeout(() => { window.location.href = '/results'; }, 800);
+    setTimeout(()=>{window.location.href='/results';},800);
+  } catch(err){document.getElementById('analyse-proc').style.display='none';document.getElementById('analyse-btn').style.display='flex';setStep(2);showErr('Analysis error: '+err.message);}
+}
+function resetUpload(){uploadedFile=null;csvColumns=[];csvPreview=[];document.getElementById('zone').style.display='block';document.getElementById('upload-proc').style.display='none';document.getElementById('step2-card').style.display='none';document.getElementById('step3-card').style.display='none';document.getElementById('file-in').value='';document.getElementById('analyse-btn').style.display='flex';document.getElementById('analyse-proc').style.display='none';clearMessages();setStep(1);}
+function showErr(msg){const el=document.getElementById('err-box');el.textContent=msg;el.style.display='block';document.getElementById('success-box').style.display='none';}
+function showSuccess(msg){const el=document.getElementById('success-box');el.textContent=msg;el.style.display='block';document.getElementById('err-box').style.display='none';}
+function clearMessages(){document.getElementById('err-box').style.display='none';document.getElementById('success-box').style.display='none';}
+function getSample(){const csv=`Invoice_ID,Amount,VAT_Code,Supplier_Type\nINV-001,15000,Standard,Subcontractor\nINV-002,850,Reverse,Supplier\nINV-003,15000,Standard,Subcontractor\nINV-004,42000,INVALID,Subcontractor\nINV-005,500,Zero,Supplier\nINV-006,99500,Standard,Subcontractor\nINV-007,320,Reverse,Supplier\nINV-008,850,Reverse,Supplier\nINV-009,7500,Standard,Subcontractor\nINV-010,125000,Zero,Subcontractor`;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='auditmind_sample.csv';a.click();}
 
-  } catch (err) {
-    document.getElementById('analyse-proc').style.display = 'none';
-    document.getElementById('analyse-btn').style.display = 'flex';
-    setStep(2);
-    showErr('Analysis error: ' + err.message);
-  }
-}
-
-// ── Reset upload ─────────────────────────────────────────────
-function resetUpload() {
-  uploadedFile = null;
-  csvColumns   = [];
-  csvPreview   = [];
-  document.getElementById('zone').style.display = 'block';
-  document.getElementById('upload-proc').style.display = 'none';
-  document.getElementById('step2-card').style.display = 'none';
-  document.getElementById('step3-card').style.display = 'none';
-  document.getElementById('file-in').value = '';
-  document.getElementById('analyse-btn').style.display = 'flex';
-  document.getElementById('analyse-proc').style.display = 'none';
-  clearMessages();
-  setStep(1);
-}
-
-// ── Messages ─────────────────────────────────────────────────
-function showErr(msg) {
-  const el = document.getElementById('err-box');
-  el.textContent = msg; el.style.display = 'block';
-  document.getElementById('success-box').style.display = 'none';
-}
-function showSuccess(msg) {
-  const el = document.getElementById('success-box');
-  el.textContent = msg; el.style.display = 'block';
-  document.getElementById('err-box').style.display = 'none';
-}
-function clearMessages() {
-  document.getElementById('err-box').style.display = 'none';
-  document.getElementById('success-box').style.display = 'none';
-}
-
-// ── Sample CSV download ──────────────────────────────────────
-function getSample() {
-  const csv = `Invoice_ID,Amount,VAT_Code,Supplier_Type
-INV-001,15000,Standard,Subcontractor
-INV-002,850,Reverse,Supplier
-INV-003,15000,Standard,Subcontractor
-INV-004,42000,INVALID,Subcontractor
-INV-005,500,Zero,Supplier
-INV-006,99500,Standard,Subcontractor
-INV-007,320,Reverse,Supplier
-INV-008,850,Reverse,Supplier
-INV-009,7500,Standard,Subcontractor
-INV-010,125000,Zero,Subcontractor
-INV-011,1200,Standard,Supplier
-INV-012,3500,Reverse,Subcontractor
-INV-013,250000,Standard,Subcontractor
-INV-014,780,Zero,Supplier
-INV-015,42000,INVALID,Subcontractor
-INV-016,6200,Standard,Subcontractor
-INV-017,450,Reverse,Supplier
-INV-018,18000,Standard,Subcontractor
-INV-019,920,Zero,Supplier
-INV-020,7500,Standard,Subcontractor`;
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
-  a.download = 'auditmind_sample.csv'; a.click();
+// Xero demo animation
+function showXeroDemo(){
+  document.getElementById('xero-demo-card').style.display='block';
+  setTimeout(()=>{document.getElementById('step3-status').textContent='✓ Complete';document.getElementById('step3-status').style.color='var(--green)';document.getElementById('step4-status').textContent='⏳ Mapping…';document.getElementById('step4-status').style.color='var(--amber)';},1200);
+  setTimeout(()=>{document.getElementById('step4-status').textContent='✓ Complete';document.getElementById('step4-status').style.color='var(--green)';document.getElementById('step5-status').textContent='⏳ Running…';document.getElementById('step5-status').style.color='var(--amber)';},2400);
+  setTimeout(()=>{document.getElementById('step5-status').textContent='✓ Complete';document.getElementById('step5-status').style.color='var(--green)';document.getElementById('xero-complete').style.display='block';},3600);
 }
 </script>
 </body>
