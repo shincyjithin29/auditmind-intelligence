@@ -6,27 +6,52 @@
 <title>AuditMind — Sign In</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root { --navy:#0B1120; --gold:#B8922A; --gold2:#D4AE58; --goldp:#F5EDD3; --grey:#5A6478; --greyl:#8D97A8; --red:#C0392B; --red-bg:#FDF0EF; }
+:root{--navy:#0B1120;--gold:#B8922A;--gold2:#D4AE58;--goldp:#F5EDD3;--grey:#5A6478;--greyl:#8D97A8;--red:#C0392B;--red-bg:#FDF0EF;--green:#1A7A4A;--green-bg:#EEFAF3;--amber:#D4730A;--amber-bg:#FEF3E7;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Outfit',sans-serif;background:var(--navy);min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
 .bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 50% at 75% 25%,rgba(184,146,42,0.08) 0%,transparent 55%),radial-gradient(ellipse 45% 55% at 20% 75%,rgba(27,95,168,0.07) 0%,transparent 55%);}
 .bg-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:56px 56px;}
-.card{position:relative;z-index:10;background:#fff;border-radius:16px;padding:44px 40px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.35);}
-.back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--greyl);text-decoration:none;margin-bottom:28px;transition:color 0.2s;}
+.card{position:relative;z-index:10;background:#fff;border-radius:16px;padding:40px 36px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.35);}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--greyl);text-decoration:none;margin-bottom:24px;transition:color 0.2s;}
 .back:hover{color:var(--gold);}
 .back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
-.logo-area{display:flex;flex-direction:column;align-items:center;margin-bottom:32px;}
-.logo-circle{width:64px;height:64px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+.logo-area{display:flex;flex-direction:column;align-items:center;margin-bottom:28px;}
+.logo-circle{width:60px;height:60px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
 .logo-area h2{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--navy);}
 .logo-area span{font-size:11.5px;color:var(--greyl);margin-top:3px;}
-.error-box{display:none;background:var(--red-bg);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:18px;}
-.field{margin-bottom:18px;}
+/* Tabs */
+.tabs{display:flex;background:#F2F3F5;border-radius:10px;padding:3px;margin-bottom:24px;}
+.tab{flex:1;padding:9px 12px;border:none;background:none;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;color:var(--greyl);border-radius:8px;cursor:pointer;transition:all .2s;}
+.tab.active{background:#fff;color:var(--navy);font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+.form-section{display:none;}
+.form-section.active{display:block;}
+.error-box{display:none;background:var(--red-bg);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:16px;}
+.success-box{display:none;background:var(--green-bg);border-left:3px solid var(--green);border-radius:0 6px 6px 0;padding:10px 14px;font-size:13px;color:var(--green);margin-bottom:16px;}
+.loading-box{display:none;background:var(--green-bg);border-left:3px solid var(--green);border-radius:0 6px 6px 0;padding:10px 14px;font-size:13px;color:var(--green);margin-bottom:16px;align-items:center;gap:8px;}
+.mini-spinner{width:14px;height:14px;border:2px solid rgba(26,122,74,0.3);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.field{margin-bottom:16px;}
 .field label{display:block;font-size:11px;font-weight:700;color:var(--greyl);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:7px;}
-.field input{width:100%;height:44px;border:1.5px solid rgba(11,17,32,0.12);border-radius:8px;padding:0 14px;font-size:15px;color:var(--navy);background:#FAFAF7;outline:none;font-family:'Outfit',sans-serif;transition:border-color 0.2s,box-shadow 0.2s;}
-.field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,146,42,0.1);}
-.btn-login{width:100%;height:46px;border:none;background:var(--navy);color:#fff;font-size:15px;font-weight:700;letter-spacing:0.04em;border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;transition:background 0.2s;}
-.btn-login:hover{background:#1a2a42;}
-.btn-login:disabled{background:#8D97A8;cursor:not-allowed;}
+.field input,.field select{width:100%;height:42px;border:1.5px solid rgba(11,17,32,0.12);border-radius:8px;padding:0 14px;font-size:14px;color:var(--navy);background:#FAFAF7;outline:none;font-family:'Outfit',sans-serif;transition:border-color 0.2s;}
+.field input:focus,.field select:focus{border-color:var(--gold);}
+.field input:disabled{opacity:0.6;cursor:not-allowed;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.btn-primary{width:100%;height:44px;border:none;background:var(--navy);color:#fff;font-size:14px;font-weight:700;border-radius:8px;cursor:pointer;font-family:'Outfit',sans-serif;transition:background 0.2s;margin-top:4px;}
+.btn-primary:hover:not(:disabled){background:#1a2a42;}
+.btn-primary:disabled{background:var(--greyl);cursor:not-allowed;}
+.divider{display:flex;align-items:center;gap:10px;margin:16px 0;}
+.divider span{font-size:12px;color:var(--greyl);}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(11,17,32,.1);}
+.quick{margin-top:16px;}
+.quick p{font-size:10.5px;font-weight:700;color:var(--greyl);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+.quick-btn{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:7px;background:#FAFAF7;border:1px solid rgba(11,17,32,0.07);cursor:pointer;transition:background .15s;width:100%;font-family:'Outfit',sans-serif;}
+.quick-btn:hover:not(:disabled){background:var(--goldp);}
+.quick-btn span{font-size:13px;font-weight:600;color:var(--navy);}
+.quick-btn em{font-size:11px;font-style:normal;color:var(--greyl);background:rgba(11,17,32,.06);padding:2px 7px;border-radius:3px;}
+.hint{background:var(--goldp);border:1px solid rgba(184,146,42,0.3);border-radius:8px;padding:9px 12px;font-size:12px;color:var(--grey);margin-bottom:18px;display:flex;align-items:center;gap:7px;}
+.hint svg{width:13px;height:13px;stroke:var(--gold);fill:none;flex-shrink:0;stroke-width:2;}
+.terms{font-size:11.5px;color:var(--greyl);text-align:center;margin-top:12px;line-height:1.5;}
+.terms a{color:var(--gold);text-decoration:none;}
 </style>
 </head>
 <body>
@@ -39,7 +64,7 @@ body{font-family:'Outfit',sans-serif;background:var(--navy);min-height:100vh;dis
   </a>
   <div class="logo-area">
     <div class="logo-circle">
-      <svg width="36" height="36" viewBox="0 0 120 120">
+      <svg width="34" height="34" viewBox="0 0 120 120">
         <defs><linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C9A84C"/><stop offset="100%" stop-color="#E8C97A"/></linearGradient></defs>
         <polygon points="60,22 93,41 93,79 60,98 27,79 27,41" fill="none" stroke="url(#lg)" stroke-width="2.5" stroke-opacity=".9"/>
         <line x1="60" y1="32" x2="38" y2="84" stroke="url(#lg)" stroke-width="8" stroke-linecap="round"/>
@@ -51,64 +76,143 @@ body{font-family:'Outfit',sans-serif;background:var(--navy);min-height:100vh;dis
     <h2>AuditMind Intelligence Ltd</h2>
     <span>Secure Platform Access</span>
   </div>
-  <div class="error-box" id="error-box">Invalid username or password. Please try again.</div>
-  <div class="field">
-    <label>Username</label>
-    <input type="text" id="username" placeholder="Enter your username" autocomplete="username">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('login')">Sign In</button>
+    <button class="tab" onclick="switchTab('register')">Register Company</button>
   </div>
-  <div class="field">
-    <label>Password</label>
-    <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password">
+
+  <!-- LOGIN FORM -->
+  <div class="form-section active" id="login-section">
+    <div class="hint">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01" stroke-linecap="round"/></svg>
+      Demo: <strong>&nbsp;admin&nbsp;</strong> / <strong>&nbsp;secure123</strong>
+    </div>
+    <div class="error-box" id="login-error"></div>
+    <div class="loading-box" id="login-loading"><div class="mini-spinner"></div>Signing in…</div>
+    <div class="field"><label>Username</label><input type="text" id="username" placeholder="Enter your username" autocomplete="username"></div>
+    <div class="field"><label>Password</label><input type="password" id="password" placeholder="Enter your password" autocomplete="current-password"></div>
+    <button class="btn-primary" id="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="divider"><span>or</span></div>
+    <div class="quick">
+      <p>Quick sign in</p>
+      <button class="quick-btn" id="quick-btn" onclick="quickLogin('admin','secure123')">
+        <span>admin</span><em>Administrator</em>
+      </button>
+    </div>
   </div>
-  <button class="btn-login" id="login-btn" onclick="doLogin()">Sign In</button>
+
+  <!-- REGISTER FORM -->
+  <div class="form-section" id="register-section">
+    <div class="error-box" id="reg-error"></div>
+    <div class="success-box" id="reg-success"></div>
+    <div class="field-row">
+      <div class="field"><label>First Name</label><input type="text" id="reg-first" placeholder="First name"></div>
+      <div class="field"><label>Last Name</label><input type="text" id="reg-last" placeholder="Last name"></div>
+    </div>
+    <div class="field"><label>Company Name</label><input type="text" id="reg-company" placeholder="Your construction company name"></div>
+    <div class="field"><label>Companies House Number</label><input type="text" id="reg-ch" placeholder="e.g. 12345678" maxlength="8"></div>
+    <div class="field"><label>Email Address</label><input type="email" id="reg-email" placeholder="you@company.co.uk"></div>
+    <div class="field-row">
+      <div class="field"><label>Username</label><input type="text" id="reg-user" placeholder="Choose a username"></div>
+      <div class="field"><label>Password</label><input type="password" id="reg-pass" placeholder="Choose a password"></div>
+    </div>
+    <div class="field">
+      <label>Company Type</label>
+      <select id="reg-type">
+        <option value="">Select company type</option>
+        <option>General Building Contractor</option>
+        <option>Specialist Subcontractor</option>
+        <option>Civil Engineering Contractor</option>
+        <option>M&E Contractor</option>
+        <option>Residential Developer</option>
+        <option>Commercial Fit-Out</option>
+        <option>Accountancy Practice</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <button class="btn-primary" id="reg-btn" onclick="doRegister()">Create Account</button>
+    <p class="terms">By registering you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.<br>AuditMind Intelligence Ltd · Company No. 17085435</p>
+  </div>
 </div>
+
 <script>
-async function doLogin() {
-  const u   = document.getElementById('username').value.trim();
-  const p   = document.getElementById('password').value;
-  const err = document.getElementById('error-box');
-  const btn = document.getElementById('login-btn');
+const API = '';
 
-  if (!u || !p) {
-    err.textContent = 'Please enter your username and password.';
-    err.style.display = 'block';
-    return;
-  }
-
-  // Disable button during request to prevent double-submit
-  btn.disabled = true;
-  btn.textContent = 'Signing in…';
-  err.style.display = 'none';
-
-  try {
-    // Authenticate against the server — credentials are never stored in this file
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: u, password: p })
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      sessionStorage.setItem('am_auth', 'true');
-      sessionStorage.setItem('am_user', data.username || u);
-      window.location.href = '/upload';
-    } else {
-      err.textContent = 'Invalid username or password. Please try again.';
-      err.style.display = 'block';
-      document.getElementById('password').value = '';
-      document.getElementById('password').focus();
-    }
-  } catch (e) {
-    err.textContent = 'Connection error. Please check your network and try again.';
-    err.style.display = 'block';
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Sign In';
-  }
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===(tab==='login'?0:1)));
+  document.getElementById('login-section').classList.toggle('active', tab==='login');
+  document.getElementById('register-section').classList.toggle('active', tab==='register');
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+// ── Auth guard — already logged in? ──────────────────────────
+if (sessionStorage.getItem('am_auth') && sessionStorage.getItem('am_token')) {
+  window.location.href = '/upload';
+}
+
+function setLoginLoading(on) {
+  document.getElementById('login-btn').disabled = on;
+  document.getElementById('quick-btn').disabled = on;
+  document.getElementById('username').disabled  = on;
+  document.getElementById('password').disabled  = on;
+  document.getElementById('login-loading').style.display = on ? 'flex' : 'none';
+  if (on) document.getElementById('login-error').style.display = 'none';
+}
+
+function showLoginError(msg) {
+  const el = document.getElementById('login-error');
+  el.textContent = msg; el.style.display = 'block';
+  document.getElementById('password').value = '';
+}
+
+async function doLogin() {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  if (!username) { showLoginError('Please enter your username.'); return; }
+  if (!password) { showLoginError('Please enter your password.'); return; }
+  setLoginLoading(true);
+  try {
+    const res  = await fetch(API + '/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({username, password}) });
+    const data = await res.json();
+    if (!res.ok) { showLoginError(data.detail || 'Invalid username or password.'); setLoginLoading(false); return; }
+    sessionStorage.setItem('am_auth',  'true');
+    sessionStorage.setItem('am_user',  data.username || username);
+    sessionStorage.setItem('am_token', data.access_token || username);
+    window.location.href = '/upload';
+  } catch { showLoginError('Cannot reach the server. Make sure the backend is running.'); setLoginLoading(false); }
+}
+
+function quickLogin(u,p) { document.getElementById('username').value=u; document.getElementById('password').value=p; doLogin(); }
+
+async function doRegister() {
+  const first   = document.getElementById('reg-first').value.trim();
+  const last    = document.getElementById('reg-last').value.trim();
+  const company = document.getElementById('reg-company').value.trim();
+  const ch      = document.getElementById('reg-ch').value.trim();
+  const email   = document.getElementById('reg-email').value.trim();
+  const user    = document.getElementById('reg-user').value.trim();
+  const pass    = document.getElementById('reg-pass').value.trim();
+  const type    = document.getElementById('reg-type').value;
+  const errEl   = document.getElementById('reg-error');
+  const sucEl   = document.getElementById('reg-success');
+  errEl.style.display = 'none'; sucEl.style.display = 'none';
+  if (!first||!last||!company||!email||!user||!pass||!type) { errEl.textContent='Please fill in all required fields.'; errEl.style.display='block'; return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errEl.textContent='Please enter a valid email address.'; errEl.style.display='block'; return; }
+  if (pass.length < 6) { errEl.textContent='Password must be at least 6 characters.'; errEl.style.display='block'; return; }
+  document.getElementById('reg-btn').disabled = true;
+  // MVP: Registration is stored locally and shown as success
+  // In production this would call /api/register
+  await new Promise(r=>setTimeout(r,800));
+  sucEl.textContent = `Account created for ${company}. For this MVP demo, please use the admin / secure123 credentials to sign in.`;
+  sucEl.style.display = 'block';
+  document.getElementById('reg-btn').disabled = false;
+  setTimeout(()=>switchTab('login'),3000);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key==='Enter' && !document.getElementById('login-btn').disabled) doLogin();
+});
 </script>
 </body>
 </html>

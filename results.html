@@ -200,6 +200,7 @@ tbody td{padding:10px 13px;vertical-align:top;}
         <button class="tab on"  onclick="switchTab('sme',this)">SME View — Flagged Only</button>
         <button class="tab"     onclick="switchTab('acc',this)">Accountant View — Full Detail</button>
         <button class="tab"     onclick="switchTab('rules',this)">Compliance Rulebook</button>
+        <button class="tab"     onclick="switchTab('fsi',this)"><button class="tab"     onclick="switchTab('rules',this)">Compliance Rulebook</button>#x26A0; Insolvency Dashboard</button>
       </div>
 
       <!-- SME -->
@@ -218,6 +219,12 @@ tbody td{padding:10px 13px;vertical-align:top;}
           <thead><tr><th>Invoice ID</th><th>Amount (£)</th><th>Risk</th><th>Anomaly</th><th>Duplicate</th><th>VAT Issue</th><th>CIS Issue</th><th>Conf. Score</th><th>Conf. Level</th><th>Explanation</th><th>Action</th></tr></thead>
           <tbody id="tb-acc"></tbody>
         </table></div>
+      </div>
+
+      <!-- FSI PANEL -->
+      <div id="p-fsi" class="panel">
+        <p style="font-size:13px;color:var(--grey);margin-bottom:16px;">Financial Stress Indicator — derived from transaction patterns. Not a formal insolvency assessment. All findings require review by a qualified accountant.</p>
+        <div id="fsi-content"><p style="color:var(--greyl);font-size:13px;">No financial stress data available. Upload a dataset to generate the FSI.</p></div>
       </div>
 
       <!-- RULES -->
@@ -249,15 +256,15 @@ tbody td{padding:10px 13px;vertical-align:top;}
 
 <script>
 // Auth guard
-if (!sessionStorage.getItem('am_auth')) { window.location.href='/login'; }
+if (!sessionStorage.getItem('am_auth')) { window.location.href = '/login'; }
 const u = sessionStorage.getItem('am_user') || 'admin';
 document.getElementById('uname').textContent = u;
 document.getElementById('avatar').textContent = u[0].toUpperCase();
-function signOut() { sessionStorage.clear(); window.location.href='/login'; }
+function signOut() { sessionStorage.clear(); window.location.href = '/login'; }
 
 // Load results from session storage
 const raw = sessionStorage.getItem('am_results');
-if (!raw) { window.location.href='/upload'; }
+if (!raw) { window.location.href = '/upload'; }
 const D = JSON.parse(raw);
 const { summary: S, results: R, flagged: F, rules_fired: RF, rules_summary: RS } = D;
 
@@ -362,6 +369,57 @@ new Chart(document.getElementById('ch-rules'), {
   data:{labels:RS.length?RS.map(r=>r.rule_id):['None'],datasets:[{data:RS.length?RS.map(r=>r.times_fired):[0],backgroundColor:'rgba(184,146,42,0.2)',borderColor:'#B8922A',borderWidth:2,borderRadius:4}]},
   options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#5A6478',font:{family:'Outfit',size:11}}},y:{grid:{color:'rgba(11,17,32,0.06)'},ticks:{color:'#5A6478',font:{family:'Outfit',size:11},stepSize:1}}}}
 });
+
+
+// FSI RENDERING
+(function(){
+  const FSI = D.financial_stress_indicator;
+  if (!FSI) return;
+  const lvlColor = {Low:"#1A7A4A",Moderate:"#D4730A",Elevated:"#C0392B",High:"#7B0000"};
+  const col = lvlColor[FSI.fsi_level] || "#5A6478";
+  const pct = FSI.fsi_score;
+  const signals = FSI.fsi_signals || [];
+  const det = FSI.fsi_details || {};
+  let html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">';
+  html += '<div style="background:var(--white);border:2px solid '+col+';border-radius:12px;padding:20px;text-align:center;">';
+  html += '<div style="font-size:11px;font-weight:700;color:var(--greyl);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">FSI Score</div>';
+  html += '<div style="font-size:52px;font-weight:700;color:'+col+';line-height:1;">'+pct+'</div>';
+  html += '<div style="font-size:14px;font-weight:700;color:'+col+';margin-top:6px;">'+FSI.fsi_level+' Stress</div>';
+  html += '<div style="background:rgba(0,0,0,.06);border-radius:6px;height:10px;margin:12px 0 4px;overflow:hidden;">';
+  html += '<div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:6px;"></div></div>';
+  html += '<div style="font-size:11px;color:var(--greyl);">'+pct+' / 100</div></div>';
+  html += '<div style="background:var(--cream);border-radius:12px;padding:20px;">';
+  html += '<div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:12px;">Five Signal Breakdown</div>';
+  var sigs=[["Supplier Concentration","supplier_concentration","top3_spend_pct","%"],["Payment Escalation","payment_escalation","escalation_ratio","x"],["Round Number Rate","round_number_rate","round_pct","%"],["Duplicate Payment Rate","duplicate_payment_rate","duplicate_pct","%"],["High Value Concentration","high_value_concentration","top3_invoice_pct","%"]];
+  sigs.forEach(function(s){
+    var name=s[0],key=s[1],val=s[2],unit=s[3];
+    var d=det[key]||{},pts=d.points||0,lv=d.risk_level||"None";
+    var lc={High:"#C0392B",Medium:"#D4730A",Low:"#D4730A",None:"#1A7A4A",Insufficient:"#8D97A8"}[lv]||"#8D97A8";
+    var v=d[val]!==undefined?d[val]:"—";
+    html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px;"><span style="flex:1;color:var(--grey);">'+name+'</span><span style="font-weight:700;color:'+lc+';">'+v+unit+'</span><span style="background:'+lc+'22;color:'+lc+';font-weight:700;font-size:10px;padding:2px 7px;border-radius:8px;">'+pts+'pts</span></div>';
+  });
+  html += '</div></div>';
+  if(signals.length){
+    html+='<div style="background:var(--red-bg);border-radius:10px;padding:16px;margin-bottom:14px;">';
+    html+='<div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:8px;">&#x26A0; Warning Signals Detected</div>';
+    signals.forEach(function(s){html+='<div style="font-size:12.5px;color:var(--red);margin-bottom:6px;padding-left:12px;border-left:3px solid var(--red);">'+s+'</div>';});
+    html+='</div>';
+  }
+  html+='<div style="font-size:11.5px;color:var(--greyl);background:var(--cream);border-radius:8px;padding:12px;line-height:1.6;">'+FSI.fsi_disclaimer+'</div>';
+  document.getElementById("fsi-content").innerHTML=html;
+
+  // Radar chart
+  setTimeout(function(){
+    var canvas=document.createElement("canvas");canvas.id="ch-fsi";canvas.height=220;
+    var chartWrap=document.createElement("div");chartWrap.style.cssText="background:var(--white);border-radius:12px;padding:16px;margin-bottom:16px;";
+    chartWrap.innerHTML='<div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:10px;">FSI Signal Scores — Radar Chart</div>';
+    chartWrap.appendChild(canvas);
+    document.getElementById("fsi-content").prepend(chartWrap);
+    var labs=["Supplier Conc.","Payment Escal.","Round Numbers","Duplicate Rate","High Value Conc."];
+    var vals=[(det.supplier_concentration||{}).points||0,(det.payment_escalation||{}).points||0,(det.round_number_rate||{}).points||0,(det.duplicate_payment_rate||{}).points||0,(det.high_value_concentration||{}).points||0];
+    new Chart(canvas,{type:"radar",data:{labels:labs,datasets:[{label:"FSI Score",data:vals,backgroundColor:"rgba(192,57,43,0.15)",borderColor:"#C0392B",borderWidth:2,pointBackgroundColor:"#C0392B"}]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:20,ticks:{stepSize:5,font:{size:10},color:"#8D97A8"},grid:{color:"rgba(11,17,32,.08)"},pointLabels:{font:{size:11},color:"#5A6478"}}},plugins:{legend:{display:false}}}});
+  },100);
+})();
 
 // TAB SWITCH
 function switchTab(name, btn) {

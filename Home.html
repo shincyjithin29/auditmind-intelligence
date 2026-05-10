@@ -3,431 +3,743 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AuditMind Intelligence Ltd</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>AuditMind Intelligence Ltd — AI-Powered Financial Risk Intelligence for UK Construction</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy: #0B1120;
-  --navy2: #132140;
-  --gold:  #B8922A;
-  --gold2: #D4AE58;
-  --goldp: #F5EDD3;
-  --white: #FFFFFF;
-  --cream: #FAFAF7;
-  --grey:  #5A6478;
-  --greyl: #8D97A8;
+:root{
+  --navy:#0B1120;--navy2:#1a2a42;--gold:#B8922A;--gold2:#D4AE58;--goldp:#F5EDD3;
+  --cream:#F2F3F5;--white:#fff;--grey:#5A6478;--greyl:#8D97A8;
+  --red:#C0392B;--green:#1A7A4A;--green-bg:#EEFAF3;
+  --blue:#1B5FA8;--blue-bg:#EDF4FC;--purple:#534AB7;--purple-bg:#EEEDFE;
+  --amber:#D4730A;--amber-bg:#FEF3E7;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { font-family: 'Outfit', sans-serif; background: var(--cream); color: var(--navy); }
-a { text-decoration: none; }
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Outfit',sans-serif;background:var(--white);color:var(--navy);overflow-x:hidden;}
 
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
-  height: 64px; background: rgba(11,17,32,0.97);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 5%; border-bottom: 1px solid rgba(184,146,42,0.15);
-}
-.nav-brand { display: flex; align-items: center; gap: 10px; }
-.nav-logo { width: 38px; height: 38px; }
-.nav-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: #fff; }
-.nav-sub  { font-size: 9px; color: var(--gold2); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 1px; }
-.nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-.nav-links a { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.6); letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; }
-.nav-links a:hover { color: var(--gold2); }
-.nav-btn { background: var(--gold) !important; color: var(--navy) !important; padding: 8px 18px; border-radius: 5px; font-weight: 700 !important; }
-.nav-btn:hover { background: var(--gold2) !important; }
-@media(max-width:768px){ .nav-links { display: none; } }
+/* NAV */
+nav{background:var(--navy);height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(184,146,42,.15);}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo{width:36px;height:36px;}
+.nav-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:#fff;}
+.nav-sub{font-size:8px;color:var(--gold2);letter-spacing:.14em;text-transform:uppercase;margin-top:1px;}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-links a{color:rgba(255,255,255,.65);text-decoration:none;font-size:13.5px;font-weight:500;transition:color .2s;}
+.nav-links a:hover{color:var(--gold2);}
+.nav-cta{background:var(--gold);color:var(--navy)!important;padding:9px 22px;border-radius:6px;font-weight:700!important;font-size:13.5px;transition:background .2s!important;}
+.nav-cta:hover{background:var(--gold2)!important;}
+@media(max-width:700px){.nav-links{gap:14px;}.nav-links a:not(.nav-cta){display:none;}}
 
-/* ── HERO ── */
-.hero {
-  min-height: 100vh; background: var(--navy);
-  display: flex; align-items: center;
-  padding: 100px 5% 80px; position: relative; overflow: hidden;
-}
-.hero-grid {
-  position: absolute; inset: 0; pointer-events: none;
-  background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-.hero-glow {
-  position: absolute; top: -200px; right: -200px;
-  width: 600px; height: 600px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(184,146,42,0.07) 0%, transparent 65%);
-  pointer-events: none;
-}
-.hero-content { position: relative; z-index: 2; max-width: 680px; }
-.hero-logo-row { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
-.hero-logo-big { width: 70px; height: 70px; }
-.hero-logo-text .name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; color: #fff; }
-.hero-logo-text .sub  { font-size: 11px; color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 3px; }
-.hero h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(38px, 5.5vw, 64px); font-weight: 600; color: #fff;
-  line-height: 1.1; margin-bottom: 20px;
-}
-.hero h1 span { color: var(--gold); }
-.hero p {
-  font-size: 17px; font-weight: 300; color: rgba(255,255,255,0.6);
-  line-height: 1.75; max-width: 560px; margin-bottom: 40px;
-}
-.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-.btn-access {
-  display: inline-flex; align-items: center; gap: 9px;
-  background: var(--gold); color: var(--navy);
-  padding: 14px 28px; border-radius: 6px;
-  font-size: 15px; font-weight: 700; border: none; cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
-}
-.btn-access:hover { background: var(--gold2); transform: translateY(-1px); }
-.btn-explore {
-  display: inline-flex; align-items: center; gap: 9px;
-  background: transparent; color: rgba(255,255,255,0.75);
-  padding: 13px 28px; border-radius: 6px;
-  font-size: 15px; font-weight: 500;
-  border: 1px solid rgba(255,255,255,0.22);
-  transition: border-color 0.2s, color 0.2s;
-}
-.btn-explore:hover { border-color: var(--gold); color: var(--gold2); }
-.hero-stats {
-  position: absolute; bottom: 48px; right: 5%;
-  display: flex; gap: 1px; z-index: 2;
-}
-.stat {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.07);
-  padding: 16px 22px; text-align: center;
-}
-.stat:first-child { border-radius: 7px 0 0 7px; }
-.stat:last-child  { border-radius: 0 7px 7px 0; }
-.stat-val { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; color: var(--gold); display: block; }
-.stat-lbl { font-size: 9.5px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 4px; display: block; }
+/* HERO */
+.hero{background:var(--navy);padding:90px 5% 80px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 75% 30%,rgba(184,146,42,.09) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 20% 70%,rgba(27,95,168,.07) 0%,transparent 60%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:60px 60px;}
+.hero-inner{position:relative;z-index:2;max-width:820px;}
+.hero-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(184,146,42,.12);border:1px solid rgba(184,146,42,.3);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--gold2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:24px;}
+.hero-pill span{width:7px;height:7px;border-radius:50%;background:var(--gold);display:inline-block;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,58px);font-weight:700;color:#fff;line-height:1.12;margin-bottom:20px;}
+.hero h1 em{color:var(--gold2);font-style:normal;}
+.hero p{font-size:17px;color:rgba(255,255,255,.6);line-height:1.7;max-width:620px;margin-bottom:36px;}
+.hero-btns{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.btn-hero-primary{background:var(--gold);color:var(--navy);padding:14px 30px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;transition:background .2s,transform .15s;display:inline-flex;align-items:center;gap:8px;}
+.btn-hero-primary:hover{background:var(--gold2);transform:translateY(-1px);}
+.btn-hero-primary svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;}
+.btn-hero-secondary{background:rgba(255,255,255,.08);color:#fff;padding:14px 28px;border-radius:8px;font-size:15px;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.15);transition:background .2s;}
+.btn-hero-secondary:hover{background:rgba(255,255,255,.14);}
+.hero-stats{display:flex;gap:40px;margin-top:52px;padding-top:40px;border-top:1px solid rgba(255,255,255,.08);flex-wrap:wrap;}
+.stat{display:flex;flex-direction:column;}
+.stat-val{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:var(--gold2);}
+.stat-lbl{font-size:12px;color:rgba(255,255,255,.45);margin-top:3px;letter-spacing:.04em;}
 
-/* ── SECTIONS ── */
-.section { padding: 88px 5%; }
-.section.white  { background: #fff; }
-.section.navy   { background: var(--navy); }
-.section.cream  { background: var(--cream); }
-.eyebrow { font-size: 10.5px; font-weight: 600; color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
-.eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--gold); opacity: 0.5; }
-.sec-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(26px, 3.5vw, 40px); font-weight: 600; color: var(--navy); line-height: 1.2; max-width: 600px; margin-bottom: 14px; }
-.sec-title.lt { color: #fff; }
-.sec-body { font-size: 15.5px; font-weight: 300; color: var(--grey); line-height: 1.78; max-width: 580px; margin-bottom: 48px; }
-.sec-body.lt { color: rgba(255,255,255,0.55); }
+/* SECTIONS */
+.section{padding:80px 5%;}
+.section-alt{background:var(--cream);}
+.section-dark{background:var(--navy);}
+.section-label{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.5vw,40px);font-weight:700;color:var(--navy);margin-bottom:16px;line-height:1.2;}
+.section-title.light{color:#fff;}
+.section-sub{font-size:16px;color:var(--grey);line-height:1.7;max-width:620px;}
+.section-sub.light{color:rgba(255,255,255,.55);}
+.section-hdr{margin-bottom:52px;}
+.centered{text-align:center;}.centered .section-sub{margin:0 auto;}
 
-/* PROBLEM GRID */
-.prob-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: rgba(11,17,32,0.1); border-radius: 10px; overflow: hidden; }
-.prob-card { background: #fff; padding: 32px 26px; transition: background 0.2s; }
-.prob-card:hover { background: var(--goldp); }
-.prob-icon { width: 40px; height: 40px; border-radius: 8px; background: var(--goldp); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
-.prob-icon svg { width: 20px; height: 20px; stroke: var(--gold); fill: none; stroke-width: 1.7; }
-.prob-card h3 { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
-.prob-card p  { font-size: 13.5px; color: var(--grey); line-height: 1.65; }
+/* CAPABILITY CARDS */
+.cap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+@media(max-width:900px){.cap-grid{grid-template-columns:1fr;}}
+.cap-card{background:var(--white);border-radius:14px;border:1px solid rgba(11,17,32,.08);padding:28px;box-shadow:0 2px 12px rgba(11,17,32,.05);transition:transform .2s,box-shadow .2s;}
+.cap-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(11,17,32,.1);}
+.cap-icon{width:48px;height:48px;border-radius:10px;background:var(--goldp);display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+.cap-icon svg{width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:1.8;}
+.cap-card h3{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:10px;}
+.cap-card p{font-size:13.5px;color:var(--grey);line-height:1.65;}
+.cap-tag{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;margin-top:14px;letter-spacing:.06em;text-transform:uppercase;}
+.cap-tag.live{background:var(--green-bg);color:var(--green);}
+.cap-tag.dev{background:var(--amber-bg);color:var(--amber);}
+.cap-tag.road{background:var(--purple-bg);color:var(--purple);}
 
 /* FEATURES GRID */
-.feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 48px; }
-.feat-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 28px 24px; transition: border-color 0.2s, transform 0.2s; }
-.feat-card:hover { border-color: rgba(184,146,42,0.3); transform: translateY(-3px); }
-.feat-num { font-size: 10px; color: rgba(184,146,42,0.7); letter-spacing: 0.1em; margin-bottom: 16px; font-family: monospace; }
-.feat-card h3 { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 10px; }
-.feat-card p  { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.7; }
-.feat-tag { display: inline-block; margin-top: 16px; font-size: 10px; font-weight: 600; color: var(--gold); background: rgba(184,146,42,0.12); padding: 3px 10px; border-radius: 3px; letter-spacing: 0.08em; text-transform: uppercase; }
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
+.feat-item{background:var(--white);border-radius:12px;padding:22px;border:1px solid rgba(11,17,32,.07);}
+.feat-item h4{font-size:14.5px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.feat-item h4 svg{width:15px;height:15px;stroke:var(--gold);fill:none;stroke-width:1.8;flex-shrink:0;}
+.feat-item p{font-size:12.5px;color:var(--grey);line-height:1.6;}
+.feat-badge{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:auto;flex-shrink:0;text-transform:uppercase;letter-spacing:.05em;}
+.feat-badge.live{background:var(--green-bg);color:var(--green);}
+.feat-badge.dev{background:var(--amber-bg);color:var(--amber);}
+.feat-badge.road{background:var(--purple-bg);color:var(--purple);}
+
+/* COMPLIANCE TABLE */
+.comp-table{width:100%;border-collapse:collapse;margin-top:8px;}
+.comp-table th{background:var(--navy);color:rgba(255,255,255,.65);padding:12px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;}
+.comp-table td{padding:13px 16px;border-bottom:1px solid rgba(11,17,32,.07);font-size:13px;color:var(--grey);vertical-align:middle;}
+.comp-table tr:hover td{background:var(--goldp);}
+.comp-table .rule-id{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--gold);}
+.sev{font-size:10px;font-weight:700;padding:3px 8px;border-radius:8px;text-transform:uppercase;}
+.sev.critical{background:#FCE4E4;color:#7B0000;}
+.sev.high{background:var(--amber-bg);color:var(--amber);}
+.sev.medium{background:var(--blue-bg);color:var(--blue);}
+
+/* PROBLEMS */
+.prob-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
+.prob-card{background:var(--white);border-radius:12px;padding:22px 20px;border:1px solid rgba(11,17,32,.07);}
+.prob-icon{width:42px;height:42px;border-radius:9px;background:var(--goldp);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.prob-icon svg{width:20px;height:20px;stroke:var(--gold);fill:none;stroke-width:1.8;}
+.prob-card h3{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.prob-card p{font-size:12.5px;color:var(--grey);line-height:1.6;}
+
+/* INTEGRATIONS */
+.int-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+@media(max-width:700px){.int-grid{grid-template-columns:repeat(2,1fr);}}
+.int-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:22px;text-align:center;}
+.int-logo{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;margin:0 auto 12px;}
+.int-card h4{font-size:13.5px;font-weight:700;color:#fff;margin-bottom:4px;}
+.int-card p{font-size:11.5px;color:rgba(255,255,255,.45);}
+.int-status{font-size:10px;font-weight:700;padding:3px 8px;border-radius:8px;margin-top:10px;display:inline-block;text-transform:uppercase;letter-spacing:.05em;}
+.int-status.live{background:rgba(26,122,74,.2);color:#4ADE80;}
+.int-status.dev{background:rgba(212,115,10,.2);color:#FCA853;}
+.int-status.plan{background:rgba(83,74,183,.2);color:#A5A0F0;}
+
+/* PRICING */
+.price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+@media(max-width:900px){.price-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:500px){.price-grid{grid-template-columns:1fr;}}
+.price-card{background:var(--white);border-radius:16px;border:1px solid rgba(11,17,32,.08);padding:28px;position:relative;transition:transform .2s,box-shadow .2s;}
+.price-card:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(11,17,32,.1);}
+.price-card.featured{border:2px solid var(--gold);background:var(--navy);}
+.price-card.featured *:not(.price-tag):not(.price-incl){color:#fff!important;}
+.price-card.featured .price-feat{border-color:rgba(255,255,255,.12)!important;}
+.price-tag{display:inline-block;background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;margin-bottom:14px;letter-spacing:.06em;text-transform:uppercase;}
+.price-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.price-desc{font-size:12px;color:var(--greyl);margin-bottom:20px;line-height:1.5;}
+.price-amount{font-size:42px;font-weight:700;color:var(--navy);line-height:1;}
+.price-amount span{font-size:15px;font-weight:500;color:var(--greyl);}
+.price-period{font-size:12px;color:var(--greyl);margin-bottom:22px;}
+.price-feats{margin-bottom:24px;}
+.price-feat{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid rgba(11,17,32,.06);font-size:12.5px;color:var(--grey);}
+.price-feat:last-child{border-bottom:none;}
+.price-feat::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:1px;}
+.price-incl{font-size:10px;font-weight:700;color:var(--greyl);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px;}
+.btn-price{display:block;text-align:center;padding:12px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;}
+.btn-price.primary{background:var(--gold);color:var(--navy);}
+.btn-price.primary:hover{background:var(--gold2);}
+.btn-price.outline{background:none;border:1.5px solid rgba(11,17,32,.15);color:var(--navy);}
+.btn-price.outline:hover{border-color:var(--gold);color:var(--gold);}
+.btn-price.outline-light{background:none;border:1.5px solid rgba(255,255,255,.25);color:#fff;}
+.btn-price.outline-light:hover{border-color:var(--gold);color:var(--gold);}
 
 /* HOW IT WORKS */
-.steps { max-width: 820px; margin: 0 auto; }
-.step { display: flex; gap: 28px; padding: 24px 0; border-bottom: 1px solid rgba(11,17,32,0.07); }
-.step:last-child { border-bottom: none; }
-.step-num { flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--gold); background: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--navy); }
-.step-body { padding-top: 14px; }
-.step-body h3 { font-size: 17px; font-weight: 600; color: var(--navy); margin-bottom: 7px; }
-.step-body p  { font-size: 14px; color: var(--grey); line-height: 1.7; max-width: 560px; }
+.how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative;}
+@media(max-width:800px){.how-steps{grid-template-columns:repeat(2,1fr);}}
+.how-step{text-align:center;padding:24px 16px;}
+.how-num{width:52px;height:52px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--gold);}
+.how-step h4{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.how-step p{font-size:12.5px;color:var(--grey);line-height:1.6;}
 
-/* COMPLIANCE */
-.comp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 48px; }
-.comp-card { border: 1px solid rgba(184,146,42,0.15); border-radius: 8px; padding: 24px 20px; transition: border-color 0.2s; }
-.comp-card:hover { border-color: rgba(184,146,42,0.45); }
-.comp-badge { font-size: 9.5px; font-weight: 600; color: var(--gold); background: rgba(184,146,42,0.14); padding: 3px 9px; border-radius: 3px; letter-spacing: 0.1em; text-transform: uppercase; display: inline-block; margin-bottom: 12px; }
-.comp-card h4 { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 7px; }
-.comp-card p  { font-size: 12px; color: rgba(255,255,255,0.42); line-height: 1.6; }
+/* FSI PREVIEW */
+.fsi-preview{background:var(--navy);border-radius:14px;padding:28px;border:1px solid rgba(184,146,42,.2);}
+.fsi-score-big{font-size:72px;font-weight:700;color:#C0392B;line-height:1;}
+.fsi-bar{background:rgba(255,255,255,.1);border-radius:6px;height:12px;margin:12px 0;}
+.fsi-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#1A7A4A,#D4730A,#C0392B);}
+.fsi-signals li{font-size:12.5px;color:rgba(255,255,255,.6);margin-bottom:7px;padding-left:14px;border-left:2px solid #C0392B;list-style:none;}
 
-/* ABOUT */
-.about-wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: start; }
-@media(max-width:860px){ .about-wrap { grid-template-columns: 1fr; gap: 40px; } }
-.about-text p { font-size: 15px; color: var(--grey); line-height: 1.8; margin-bottom: 18px; }
-.about-quote { border-left: 3px solid var(--gold); padding: 12px 20px; background: var(--goldp); border-radius: 0 6px 6px 0; font-family: 'Cormorant Garamond', serif; font-size: 19px; font-style: italic; color: var(--navy); line-height: 1.55; margin: 24px 0; }
-.founder-card { background: var(--navy); border-radius: 12px; padding: 32px 28px; }
-.founder-icon { width: 60px; height: 60px; margin-bottom: 16px; }
-.founder-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 3px; }
-.founder-role { font-size: 10px; font-weight: 600; color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; display: block; }
-.founder-bio  { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; margin-bottom: 20px; }
-.founder-tags { display: flex; flex-wrap: wrap; gap: 7px; }
-.ftag { font-size: 10px; font-weight: 600; background: rgba(184,146,42,0.12); color: var(--gold); padding: 4px 10px; border-radius: 3px; letter-spacing: 0.06em; text-transform: uppercase; }
-.social-row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-.social-link { display: inline-flex; align-items: center; gap: 7px; background: rgba(184,146,42,0.1); border: 1px solid rgba(184,146,42,0.3); color: var(--gold2); padding: 8px 14px; border-radius: 5px; font-size: 12.5px; font-weight: 600; transition: background 0.2s; }
-.social-link:hover { background: rgba(184,146,42,0.2); }
-.social-link svg { width: 14px; height: 14px; fill: currentColor; }
+/* TESTIMONIALS / EVIDENCE */
+.evidence-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:800px){.evidence-grid{grid-template-columns:1fr;}}
+.ev-card{background:var(--white);border-radius:12px;padding:24px;border:1px solid rgba(11,17,32,.07);}
+.ev-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;text-transform:uppercase;letter-spacing:.05em;display:inline-block;margin-bottom:14px;}
+.ev-badge.fcca{background:#FFF0E5;color:#8B4513;}
+.ev-badge.live{background:var(--green-bg);color:var(--green);}
+.ev-badge.xero{background:#E5F8FF;color:#0077B6;}
+.ev-card h4{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.ev-card p{font-size:13px;color:var(--grey);line-height:1.65;}
+.ev-card .ev-name{font-size:12px;font-weight:600;color:var(--greyl);margin-top:14px;}
 
-/* CTA */
-.cta-section { background: var(--navy); padding: 88px 5%; text-align: center; position: relative; overflow: hidden; }
-.cta-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 500px; height: 250px; background: radial-gradient(ellipse, rgba(184,146,42,0.07) 0%, transparent 65%); pointer-events: none; }
-.cta-section h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 4vw, 46px); font-weight: 600; color: #fff; max-width: 640px; margin: 0 auto 14px; line-height: 1.2; position: relative; z-index: 1; }
-.cta-section p  { font-size: 16px; font-weight: 300; color: rgba(255,255,255,0.5); max-width: 460px; margin: 0 auto 36px; position: relative; z-index: 1; }
-.cta-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; z-index: 1; }
-.btn-email-cta { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: rgba(255,255,255,0.75); padding: 13px 24px; border-radius: 6px; font-size: 14px; font-weight: 500; border: 1px solid rgba(255,255,255,0.22); transition: border-color 0.2s, color 0.2s; }
-.btn-email-cta:hover { border-color: var(--gold); color: var(--gold2); }
-.contact-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; max-width: 760px; margin: 48px auto 0; position: relative; z-index: 1; }
-.contact-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 20px; text-align: left; }
-.contact-label { font-size: 9.5px; font-weight: 700; color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 7px; }
-.contact-val { font-size: 13px; color: rgba(255,255,255,0.65); }
-.contact-val a { color: rgba(255,255,255,0.65); transition: color 0.2s; }
-.contact-val a:hover { color: var(--gold2); }
+/* CTA SECTION */
+.cta-section{background:linear-gradient(135deg,var(--navy) 0%,#1a2a42 100%);padding:80px 5%;text-align:center;position:relative;overflow:hidden;}
+.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 70% at 50% 50%,rgba(184,146,42,.08) 0%,transparent 60%);}
+.cta-section h2{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,44px);font-weight:700;color:#fff;margin-bottom:14px;position:relative;}
+.cta-section p{font-size:16px;color:rgba(255,255,255,.55);margin-bottom:32px;position:relative;}
+.cta-btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;position:relative;}
 
 /* FOOTER */
-footer { background: #07101E; border-top: 1px solid rgba(184,146,42,0.1); padding: 32px 5%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-footer p { font-size: 12px; color: rgba(255,255,255,0.25); }
-.footer-links { display: flex; gap: 20px; align-items: center; }
-.footer-links a { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.28); letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; display: inline-flex; align-items: center; gap: 5px; }
-.footer-links a:hover { color: var(--gold); }
-.footer-links svg { width: 12px; height: 12px; fill: currentColor; }
-
-/* SHARED LOGO SVG */
-.logo-svg { display: block; }
+footer{background:var(--navy);padding:48px 5% 28px;border-top:1px solid rgba(255,255,255,.06);}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;}
+@media(max-width:800px){.footer-grid{grid-template-columns:1fr 1fr;}}
+.footer-brand p{font-size:12.5px;color:rgba(255,255,255,.4);line-height:1.7;margin-top:12px;}
+.footer-col h5{font-size:11px;font-weight:700;color:var(--gold2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;}
+.footer-col a{display:block;font-size:13px;color:rgba(255,255,255,.45);text-decoration:none;margin-bottom:8px;transition:color .2s;}
+.footer-col a:hover{color:var(--gold2);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.3);}
+.footer-disclaimer{font-size:11px;color:rgba(255,255,255,.2);margin-top:8px;line-height:1.5;}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <div class="nav-brand">
-    <svg class="nav-logo logo-svg" viewBox="0 0 120 120">
-      <defs>
-        <linearGradient id="a1" x1="30%" y1="10%" x2="70%" y2="90%"><stop offset="0%" stop-color="#1E3A6E"/><stop offset="100%" stop-color="#0B1628"/></linearGradient>
-        <linearGradient id="a2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C9A84C"/><stop offset="100%" stop-color="#E8C97A"/></linearGradient>
-      </defs>
-      <circle cx="60" cy="60" r="58" fill="url(#a1)" stroke="#C9A84C" stroke-opacity=".3" stroke-width="1.5"/>
-      <polygon points="60,22 93,41 93,79 60,98 27,79 27,41" fill="none" stroke="url(#a2)" stroke-width="2.2" stroke-opacity=".9"/>
-      <line x1="60" y1="32" x2="38" y2="84" stroke="url(#a2)" stroke-width="7" stroke-linecap="round"/>
-      <line x1="60" y1="32" x2="82" y2="84" stroke="url(#a2)" stroke-width="7" stroke-linecap="round"/>
-      <line x1="44" y1="66" x2="76" y2="66" stroke="url(#a2)" stroke-width="5" stroke-linecap="round"/>
+  <a href="/" class="nav-brand">
+    <svg class="nav-logo" viewBox="0 0 120 120">
+      <defs><linearGradient id="n1" x1="30%" y1="10%" x2="70%" y2="90%"><stop offset="0%" stop-color="#1E3A6E"/><stop offset="100%" stop-color="#0B1628"/></linearGradient><linearGradient id="n2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C9A84C"/><stop offset="100%" stop-color="#E8C97A"/></linearGradient></defs>
+      <circle cx="60" cy="60" r="58" fill="url(#n1)" stroke="#C9A84C" stroke-opacity=".3" stroke-width="1.5"/>
+      <polygon points="60,22 93,41 93,79 60,98 27,79 27,41" fill="none" stroke="url(#n2)" stroke-width="2.2" stroke-opacity=".9"/>
+      <line x1="60" y1="32" x2="38" y2="84" stroke="url(#n2)" stroke-width="7" stroke-linecap="round"/>
+      <line x1="60" y1="32" x2="82" y2="84" stroke="url(#n2)" stroke-width="7" stroke-linecap="round"/>
+      <line x1="44" y1="66" x2="76" y2="66" stroke="url(#n2)" stroke-width="5" stroke-linecap="round"/>
       <circle cx="60" cy="32" r="4" fill="#E8C97A"/>
     </svg>
-    <div>
-      <div class="nav-name">AuditMind</div>
-      <div class="nav-sub">Intelligence Ltd</div>
-    </div>
+    <div><div class="nav-name">AuditMind</div><div class="nav-sub">Intelligence Ltd</div></div>
+  </a>
+  <div class="nav-links">
+    <a href="#capabilities">Capabilities</a>
+    <a href="#compliance">Compliance</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#integrations">Integrations</a>
+    <a href="/login" class="nav-cta">Access Platform</a>
   </div>
-  <ul class="nav-links">
-    <li><a href="#features">Platform</a></li>
-    <li><a href="#how">How It Works</a></li>
-    <li><a href="#compliance">Compliance</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="mailto:shincyjithin29@gmail.com">Contact</a></li>
-    <li><a href="/login" class="nav-btn">Sign In</a></li>
-  </ul>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-grid"></div>
-  <div class="hero-glow"></div>
-  <div class="hero-content">
-    <div class="hero-logo-row">
-      <svg class="hero-logo-big logo-svg" viewBox="0 0 120 120">
-        <defs>
-          <linearGradient id="b1" x1="30%" y1="10%" x2="70%" y2="90%"><stop offset="0%" stop-color="#1E3A6E"/><stop offset="100%" stop-color="#0B1628"/></linearGradient>
-          <linearGradient id="b2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C9A84C"/><stop offset="100%" stop-color="#E8C97A"/></linearGradient>
-        </defs>
-        <circle cx="60" cy="60" r="58" fill="url(#b1)" stroke="#C9A84C" stroke-opacity=".35" stroke-width="2"/>
-        <polygon points="60,20 94,40 94,80 60,100 26,80 26,40" fill="none" stroke="url(#b2)" stroke-width="2.5" stroke-opacity=".9"/>
-        <line x1="60" y1="30" x2="37" y2="86" stroke="url(#b2)" stroke-width="8" stroke-linecap="round"/>
-        <line x1="60" y1="30" x2="83" y2="86" stroke="url(#b2)" stroke-width="8" stroke-linecap="round"/>
-        <line x1="44" y1="65" x2="76" y2="65" stroke="url(#b2)" stroke-width="6" stroke-linecap="round"/>
-        <circle cx="60" cy="30" r="5" fill="#E8C97A"/>
-      </svg>
-      <div class="hero-logo-text">
-        <div class="name">AuditMind Intelligence Ltd</div>
-        <div class="sub">AI Financial Risk Platform</div>
-      </div>
-    </div>
-    <h1>AI-Driven Financial Risk<br>Intelligence for <span>UK Construction</span><br>SMEs</h1>
-    <p>AuditMind detects payment anomalies, CIS compliance failures, VAT irregularities, and duplicate invoices in real time — purpose-built for small and medium construction companies in the UK.</p>
+  <div class="hero-inner">
+    <div class="hero-pill"><span></span>AI-Powered · UK Construction · Decision Support</div>
+    <h1>Financial Risk Intelligence<br>for UK <em>Construction SMEs</em></h1>
+    <p>AuditMind analyses your construction company transaction data and surfaces CIS compliance risks, VAT inconsistencies, duplicate payments, and financial anomalies — automatically, before HMRC does.</p>
     <div class="hero-btns">
-      <a href="/login" class="btn-access">
+      <a href="/login" class="btn-hero-primary">
+        <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Access Platform
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a href="#features" class="btn-explore">
-        Explore Features
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round"/></svg>
-      </a>
+      <a href="#capabilities" class="btn-hero-secondary">See How It Works</a>
     </div>
-  </div>
-  <div class="hero-stats">
-    <div class="stat"><span class="stat-val">£3.8B</span><span class="stat-lbl">Annual CIS Fraud Exposure</span></div>
-    <div class="stat"><span class="stat-val">280K+</span><span class="stat-lbl">UK Construction SMEs</span></div>
-    <div class="stat"><span class="stat-val">94%</span><span class="stat-lbl">Lack Compliance Tools</span></div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-val">370,770</span><span class="stat-lbl">UK Registered Construction Firms</span></div>
+      <div class="stat"><span class="stat-val">£3.8B</span><span class="stat-lbl">Annual CIS Fraud Exposure</span></div>
+      <div class="stat"><span class="stat-val">8</span><span class="stat-lbl">Named Compliance Rules</span></div>
+      <div class="stat"><span class="stat-val">92%</span><span class="stat-lbl">FSI Score on Sample Dataset</span></div>
+    </div>
   </div>
 </section>
 
-<!-- PROBLEM -->
-<section class="section white" id="problem">
-  <div class="eyebrow">The Problem</div>
-  <h2 class="sec-title">Construction SMEs Face Critical, Unaddressed Financial Risks</h2>
-  <p class="sec-body">The UK construction sector is the largest source of HMRC compliance failures. Existing tools are built for generic businesses — not the complexity of CIS deductions, reverse charge VAT, and multi-tier subcontracting.</p>
+<!-- MARKET PROBLEM -->
+<section class="section section-alt">
+  <div class="section-hdr">
+    <div class="section-label">The Problem</div>
+    <h2 class="section-title">Construction finance is complex.<br>Existing software does not protect you.</h2>
+    <p class="section-sub">Xero and Sage record your transactions. They do not analyse them for risk. AuditMind fills that gap.</p>
+  </div>
   <div class="prob-grid">
     <div class="prob-card">
-      <div class="prob-icon"><svg viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3>CIS Misreporting Penalties</h3>
-      <p>Manual CIS returns introduce systematic errors exposing firms to HMRC penalties of up to £3,000 per filing.</p>
-    </div>
-    <div class="prob-card">
-      <div class="prob-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 7a4 4 0 100 8 4 4 0 000-8z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3>Subcontractor Payment Fraud</h3>
-      <p>Ghost workers, duplicate invoices, and irregular patterns go undetected in spreadsheet-based systems used by 76% of SME contractors.</p>
-    </div>
-    <div class="prob-card">
-      <div class="prob-icon prob-icon-pound"><span style="font-family:serif;font-size:20px;font-weight:700;color:#B8922A;line-height:1;">£</span></div>
-      <h3>Irregular Cost Allocations</h3>
-      <p>Project cost misallocation inflates margins and distorts cash flow forecasting without any early warning indicators.</p>
+      <div class="prob-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3>CIS Compliance Risk</h3>
+      <p>Monthly CIS returns must account for subcontractor registration status. Penalties of up to £3,000 per incorrect return. Manual verification is slow and error-prone.</p>
     </div>
     <div class="prob-card">
       <div class="prob-icon"><svg viewBox="0 0 24 24"><path d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h3>VAT Reverse Charge Gaps</h3>
-      <p>The 2021 domestic reverse charge for construction remains widely misapplied, creating declaration risks SMEs cannot manage manually.</p>
+      <h3>VAT Reverse Charge Confusion</h3>
+      <p>Domestic reverse charge rules apply across construction supply chains. Miscoding between standard 20% and DRC 0% creates HMRC exposure on every incorrectly treated invoice.</p>
+    </div>
+    <div class="prob-card">
+      <div class="prob-icon"><svg viewBox="0 0 24 24"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3>Duplicate Payments</h3>
+      <p>Same invoice received by email and through supplier portal. Same subcontractor paid twice in the same week. Standard accounting software does not cross-check intelligently.</p>
+    </div>
+    <div class="prob-card">
+      <div class="prob-icon" style="font-family:serif;font-size:22px;font-weight:700;color:var(--gold);">£</div>
+      <h3>Irregular Cost Allocations</h3>
+      <p>Project cost misallocation inflates margins and distorts cash flow forecasting. Without automated pattern detection, these errors accumulate invisibly until year-end.</p>
+    </div>
+    <div class="prob-card">
+      <div class="prob-icon"><svg viewBox="0 0 24 24"><path d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3>Financial Stress Signals</h3>
+      <p>Payment escalation, supplier concentration, and duplicate patterns are early indicators of financial distress. No standard accounting platform surfaces these signals automatically.</p>
+    </div>
+    <div class="prob-card">
+      <div class="prob-icon"><svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3>No Internal Audit Capability</h3>
+      <p>Construction SMEs rarely have dedicated internal audit teams. Issues are found during annual accounts, external audits, or HMRC investigations — by which point it is already costly.</p>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="section navy" id="features">
-  <div class="eyebrow" style="color:var(--gold)">The Platform</div>
-  <h2 class="sec-title lt">A Comprehensive AI Risk Intelligence Engine</h2>
-  <p class="sec-body lt">AuditMind surfaces anomalies, flags compliance breaches, and generates actionable audit trails — without replacing the tools your team already uses.</p>
+<!-- THREE CAPABILITIES -->
+<section class="section" id="capabilities">
+  <div class="section-hdr">
+    <div class="section-label">Three Proprietary Capabilities</div>
+    <h2 class="section-title">Built around UK construction finance.<br>Not generic AI with a construction label.</h2>
+    <p class="section-sub">AuditMind combines three layers of proprietary intelligence that compound in value as the platform learns your firm's patterns.</p>
+  </div>
+  <div class="cap-grid">
+    <div class="cap-card">
+      <div class="cap-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3>Regulatory Logic Engine</h3>
+      <p>A living computational system encoding the interaction between CIS deductions, VAT Domestic Reverse Charge, JCT/NEC payment notices, Housing Grants Act adjudication rights, Building Safety Act liability exposure, and HMRC winding-up petition patterns. Eight named compliance rules evaluated per transaction in dependency order.</p>
+      <span class="cap-tag live">CIS + VAT Live</span>
+    </div>
+    <div class="cap-card">
+      <div class="cap-icon"><svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3>Insolvency Intelligence Graph</h3>
+      <p>As contractors onboard, the platform maps financial interdependencies across the construction supply chain. After 12 to 18 months, AuditMind will sit on a proprietary dataset of real-time construction credit risk that does not exist anywhere else. Experian reports filing history. AuditMind reports payment behaviour deterioration in real time.</p>
+      <span class="cap-tag road">Roadmap — Month 18</span>
+    </div>
+    <div class="cap-card">
+      <div class="cap-icon"><svg viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3>Embedded Workflow Lock-In</h3>
+      <p>Once connected to Xero, Sage, or COINS, the platform accumulates 12+ months of firm-specific calibrated intelligence. The AI risk models tune to your business's project mix, seasonal patterns, and subcontractor relationships. Switching means losing all calibrated context — a transition cost most £1–10M construction SMEs will not accept.</p>
+      <span class="cap-tag dev">Xero Integration In Development</span>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLIANCE RULES TABLE -->
+<section class="section section-alt" id="compliance">
+  <div class="section-hdr">
+    <div class="section-label">Compliance Rule Engine</div>
+    <h2 class="section-title">Eight named rules.<br>Mapped to live UK legislation.</h2>
+    <p class="section-sub">Every transaction is evaluated against each rule in dependency order. Rules are version-controlled and updated when HMRC guidance changes.</p>
+  </div>
+  <div style="overflow-x:auto;border-radius:12px;border:1px solid rgba(11,17,32,.08);">
+    <table class="comp-table">
+      <thead><tr><th>Rule ID</th><th>Name</th><th>Legal Basis</th><th>What It Detects</th><th>Severity</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="rule-id">RLE-01</td><td>CIS Deduction Verification</td><td>Finance Act 2004 s.61</td><td>Subcontractor paid at wrong deduction rate or without HMRC verification</td><td><span class="sev critical">Critical</span></td><td><span class="cap-tag live" style="margin:0;">Live</span></td></tr>
+        <tr><td class="rule-id">RLE-02</td><td>VAT DRC Consistency</td><td>VAT Act 1994 Sch.11A; HMRC Notice 708/6</td><td>Standard-rated (20%) coding where DRC (0%) should apply, or vice versa</td><td><span class="sev critical">Critical</span></td><td><span class="cap-tag live" style="margin:0;">Live</span></td></tr>
+        <tr><td class="rule-id">RLE-03</td><td>Gross Payment Status Cross-Reference</td><td>HMRC CIS340 Guidance</td><td>GPR subcontractor receiving deducted payments, or deduction incorrectly applied</td><td><span class="sev high">High</span></td><td><span class="cap-tag live" style="margin:0;">Live</span></td></tr>
+        <tr><td class="rule-id">RLE-04</td><td>JCT/NEC Payment Notice Timescale</td><td>HGCRA 1996 s.110-111; LDEDCA 2009</td><td>Payment outside contractually required notice window; no pay-less notice issued</td><td><span class="sev high">High</span></td><td><span class="cap-tag road" style="margin:0;">Roadmap</span></td></tr>
+        <tr><td class="rule-id">RLE-05</td><td>Housing Grants Act Adjudication Rights</td><td>HGCRA 1996 s.108</td><td>Pattern of withheld payments without valid pay-less notice — adjudication exposure</td><td><span class="sev medium">Medium</span></td><td><span class="cap-tag road" style="margin:0;">Roadmap</span></td></tr>
+        <tr><td class="rule-id">RLE-06</td><td>Building Safety Act Liability Exposure</td><td>Building Safety Act 2022 ss.38-39</td><td>Retention withheld beyond statutory period on higher-risk building contracts</td><td><span class="sev medium">Medium</span></td><td><span class="cap-tag road" style="margin:0;">Roadmap</span></td></tr>
+        <tr><td class="rule-id">RLE-07</td><td>HMRC Winding-Up Petition Pattern</td><td>Insolvency Act 1986 s.124A</td><td>Payment deterioration pattern correlated with historical HMRC petition precursors</td><td><span class="sev high">High</span></td><td><span class="cap-tag road" style="margin:0;">Roadmap</span></td></tr>
+        <tr><td class="rule-id">RLE-08</td><td>Duplicate Payment Detection</td><td>N/A — arithmetic</td><td>Invoice reference, amount, and supplier match within configurable time window</td><td><span class="sev critical">Critical</span></td><td><span class="cap-tag live" style="margin:0;">Live</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 11 FEATURES -->
+<section class="section">
+  <div class="section-hdr">
+    <div class="section-label">Platform Features</div>
+    <h2 class="section-title">Eleven product features.<br>Built for construction finance.</h2>
+  </div>
   <div class="feat-grid">
-    <div class="feat-card"><div class="feat-num">01 — Core Module</div><h3>Real-Time Anomaly Detection</h3><p>Isolation Forest ML models identify unusual patterns in invoices, subcontractor claims, and retention releases as they occur.</p><span class="feat-tag">AI / ML</span></div>
-    <div class="feat-card"><div class="feat-num">02 — Scoring</div><h3>ML Confidence Score</h3><p>Every transaction receives a model confidence score (0–1), showing how strongly the AI flags it as anomalous for precise prioritisation.</p><span class="feat-tag">Precision</span></div>
-    <div class="feat-card"><div class="feat-num">03 — Rulebook</div><h3>Structured Compliance Rulebook</h3><p>Named rules (CIS-001, DUP-001, VAT-001, ANO-001) fire against each transaction, producing a traceable audit log.</p><span class="feat-tag">HMRC Aligned</span></div>
-    <div class="feat-card"><div class="feat-num">04 — VAT</div><h3>Domestic Reverse Charge</h3><p>Transaction-level classification across Standard, Reverse, and Zero-rated supplies with live VAT return reconciliation.</p><span class="feat-tag">VAT Act 1994</span></div>
-    <div class="feat-card"><div class="feat-num">05 — Roles</div><h3>Dual-Role Dashboards</h3><p>Separate SME Owner and Accountant views — simplified summaries for owners, full detail breakdowns for advisors.</p><span class="feat-tag">Role-Based</span></div>
-    <div class="feat-card"><div class="feat-num">06 — Export</div><h3>Audit-Ready CSV Reports</h3><p>All results, confidence scores, and rules-fired logs are downloadable as structured CSVs ready for HMRC correspondence.</p><span class="feat-tag">Audit-Ready</span></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-linecap="round" stroke-linejoin="round"/></svg>F01 — Secure Data Ingestion<span class="feat-badge live">Live</span></h4><p>CSV upload from any accounting system. OAuth API integration with Xero in development. Auto-detection of 400+ accounting export formats.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" stroke-linecap="round" stroke-linejoin="round"/></svg>F02 — AI Anomaly Detection<span class="feat-badge live">Live</span></h4><p>Isolation Forest ML model with 7 construction-specific features. Anomaly score 0–1 per transaction. Firm-calibrated over time.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg>F03 — Compliance Rule Engine<span class="feat-badge live">Live</span></h4><p>Eight named UK construction compliance rules with regulatory citations. Version-controlled and updated with HMRC guidance changes.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" stroke-linecap="round" stroke-linejoin="round"/></svg>F04 — Composite Risk Scoring<span class="feat-badge live">Live</span></h4><p>CRS = 0.35×ML + 0.45×rule severity + 0.20×rule count. RED/AMBER/GREEN traffic light per transaction. Configurable thresholds.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>F05 — SME Risk Dashboard<span class="feat-badge live">Live</span></h4><p>Plain-language alerts for business owners. Top 20 flagged transactions sorted by risk. Mobile-responsive for on-site access.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>F06 — Accountant Analysis View<span class="feat-badge live">Live</span></h4><p>Full transaction table with ML scores, rule citations, regulatory references. Filter by severity, rule, supplier, or date range.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>F07 — Retention Tracker<span class="feat-badge dev">In Development</span></h4><p>Track all retention liabilities and release dates. Alert when retention is overdue. Building Safety Act exposure flags for higher-risk buildings.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>F08 — Supply Chain Credit Risk<span class="feat-badge road">Roadmap</span></h4><p>Insolvency Intelligence Graph alerts. Know when your main contractor's payment behaviour deteriorates — before Companies House filings.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>F09 — Exportable Compliance Reports<span class="feat-badge live">Live</span></h4><p>SME summary, accountant detail, and HMRC compliance evidence reports. PDF and CSV export. White-label for accountant partners.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>F10 — Accounting Integrations<span class="feat-badge dev">Xero In Development</span></h4><p>Xero OAuth developer registered and configured. QuickBooks in progress. Sage planned Month 18. COINS ERP planned Month 24.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round"/></svg>F11 — White-Label Partner Portal<span class="feat-badge road">Roadmap</span></h4><p>Multi-client dashboard for accountancy practices. Risk-sorted client list. Branded reports. 20% referral commission on client subscriptions.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>F12 — Financial Stress Indicator<span class="feat-badge live">Live</span></h4><p>5-signal FSI score (0–100) derived from transaction patterns. Detects payment escalation, supplier concentration, duplicate rates, and value concentration risk.</p></div>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="section cream" id="how">
-  <div class="eyebrow">How It Works</div>
-  <h2 class="sec-title">From Raw Data to Actionable Intelligence</h2>
-  <p class="sec-body">Five steps from CSV upload to a full risk report — no manual setup required.</p>
-  <div class="steps">
-    <div class="step"><div class="step-num">1</div><div class="step-body"><h3>Sign In</h3><p>Log in securely at the platform portal. Your session is protected and role-specific dashboards load automatically.</p></div></div>
-    <div class="step"><div class="step-num">2</div><div class="step-body"><h3>Upload Your CSV</h3><p>Drag and drop your transaction file containing Amount, Invoice ID, VAT Code, and Supplier Type. The platform validates and normalises data automatically.</p></div></div>
-    <div class="step"><div class="step-num">3</div><div class="step-body"><h3>AI Analysis Runs</h3><p>Isolation Forest ML detects anomalies, confidence scores are calculated, and four rule checks run in parallel — duplicates, VAT, CIS, and anomaly flags.</p></div></div>
-    <div class="step"><div class="step-num">4</div><div class="step-body"><h3>Review Results</h3><p>Results load instantly with metric cards, four charts, and three switchable views — SME summary, Accountant full detail, and Rulebook fired log.</p></div></div>
-    <div class="step"><div class="step-num">5</div><div class="step-body"><h3>Download Reports</h3><p>Export full results, flagged-only transactions, or the rules-fired log as CSV files ready for audit preparation or HMRC correspondence.</p></div></div>
+<section class="section section-alt">
+  <div class="section-hdr centered">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">From CSV upload to risk report in seconds.</h2>
+  </div>
+  <div class="how-steps">
+    <div class="how-step"><div class="how-num">1</div><h4>Upload or Connect</h4><p>Upload a CSV export from Xero, Sage, or QuickBooks. Or connect directly via OAuth API (in development) for automatic daily sync.</p></div>
+    <div class="how-step"><div class="how-num">2</div><h4>Map Your Columns</h4><p>Tell the system which column is your Amount, Invoice ID, VAT code, and Supplier Type. Standard names are auto-detected.</p></div>
+    <div class="how-step"><div class="how-num">3</div><h4>AI Analysis Runs</h4><p>Isolation Forest ML scores every transaction. Eight compliance rules evaluate in dependency order. Financial Stress Indicator calculated.</p></div>
+    <div class="how-step"><div class="how-num">4</div><h4>Review and Act</h4><p>SME view shows flagged transactions in plain English. Accountant view shows full evidence. Download CSV or PDF reports.</p></div>
   </div>
 </section>
 
-<!-- COMPLIANCE -->
-<section class="section navy" id="compliance">
-  <div class="eyebrow" style="color:var(--gold)">Regulatory Coverage</div>
-  <h2 class="sec-title lt">Built Around UK Construction Compliance Law</h2>
-  <p class="sec-body lt">AuditMind's rule engine is built from the ground up around UK construction finance legislation.</p>
-  <div class="comp-grid">
-    <div class="comp-card"><div class="comp-badge">CIS-001/002</div><h4>Construction Industry Scheme</h4><p>CIS deduction verification, registration checks, and high-value subcontractor flagging aligned with HMRC guidance.</p></div>
-    <div class="comp-card"><div class="comp-badge">VAT-001</div><h4>Domestic Reverse Charge</h4><p>Automated classification under the 2021 VAT domestic reverse charge rules across all supply types.</p></div>
-    <div class="comp-card"><div class="comp-badge">DUP-001</div><h4>Duplicate Invoice Prevention</h4><p>Multi-dimension deduplication across Invoice ID and amount — catching double-billing before payment approval.</p></div>
-    <div class="comp-card"><div class="comp-badge">ANO-001/002</div><h4>ML Anomaly Detection</h4><p>Isolation Forest models with confidence scoring at 0.50 and 0.70 thresholds for precise anomaly prioritisation.</p></div>
-    <div class="comp-card"><div class="comp-badge">Reporting</div><h4>Making Tax Digital</h4><p>MTD-compatible data pipelines with digital linking and audit trail requirements implemented ahead of mandate scope.</p></div>
-    <div class="comp-card"><div class="comp-badge">Audit</div><h4>Evidence-Ready Reporting</h4><p>Every rule firing is documented with rule ID, severity, and recommended remediation for accountant and HMRC use.</p></div>
+<!-- FSI PREVIEW -->
+<section class="section section-dark">
+  <div class="section-hdr">
+    <div class="section-label" style="color:var(--gold2);">Financial Stress Indicator</div>
+    <h2 class="section-title light">Detect financial stress signals<br>before they become crises.</h2>
+    <p class="section-sub light">Five transaction-pattern signals combine into a single FSI score. No balance sheet required. Your CSV data is enough.</p>
   </div>
-</section>
-
-<!-- ABOUT -->
-<section class="section white" id="about">
-  <div class="about-wrap">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
     <div>
-      <div class="eyebrow">About AuditMind</div>
-      <h2 class="sec-title">Founded on Deep Construction Finance Expertise</h2>
-      <p class="about-text">AuditMind Intelligence Ltd is a UK-based technology startup developing an AI-driven financial risk intelligence platform designed specifically for the construction industry.</p>
-      <p class="about-text">Founded after direct experience of the compliance failures and payment disputes that routinely affect SME contractors — problems that existing general-purpose accounting software is structurally unable to address.</p>
-      <div class="about-quote">"The construction industry's compliance challenges are unique, deeply technical, and completely ignored by mainstream fintech. AuditMind exists to change that."</div>
-      <p class="about-text">By combining Isolation Forest machine learning with a structured compliance rulebook built around UK construction regulations, AuditMind delivers an intelligence layer that protects firms from financial risk before it becomes a liability.</p>
-      <div class="social-row">
-        <a href="https://www.linkedin.com/company/auditmind-intelligence-ltd/" target="_blank" class="social-link">
-          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          LinkedIn
-        </a>
-        <a href="mailto:shincyjithin29@gmail.com" class="social-link" style="fill:none;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="fill:none;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          shincyjithin29@gmail.com
-        </a>
-      </div>
-    </div>
-    <div>
-      <div class="founder-card">
-        <svg class="founder-icon logo-svg" viewBox="0 0 120 120">
-          <defs>
-            <linearGradient id="c1" x1="30%" y1="10%" x2="70%" y2="90%"><stop offset="0%" stop-color="#1E3A6E"/><stop offset="100%" stop-color="#0B1628"/></linearGradient>
-            <linearGradient id="c2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C9A84C"/><stop offset="100%" stop-color="#E8C97A"/></linearGradient>
-          </defs>
-          <circle cx="60" cy="60" r="58" fill="url(#c1)" stroke="#C9A84C" stroke-opacity=".3" stroke-width="1.5"/>
-          <polygon points="60,22 93,41 93,79 60,98 27,79 27,41" fill="none" stroke="url(#c2)" stroke-width="2.2" stroke-opacity=".9"/>
-          <line x1="60" y1="32" x2="38" y2="84" stroke="url(#c2)" stroke-width="7" stroke-linecap="round"/>
-          <line x1="60" y1="32" x2="82" y2="84" stroke="url(#c2)" stroke-width="7" stroke-linecap="round"/>
-          <line x1="44" y1="66" x2="76" y2="66" stroke="url(#c2)" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="60" cy="32" r="4" fill="#E8C97A"/>
-        </svg>
-        <h3>Founder & CEO</h3>
-        <span class="founder-role">AuditMind Intelligence Ltd</span>
-        <p class="founder-bio">Domain expert in UK construction finance, CIS compliance, and subcontractor payment management. Builder of the AuditMind AI platform with deep expertise in applied machine learning for financial risk detection in the construction sector.</p>
-        <div class="founder-tags">
-          <span class="ftag">Construction Finance</span>
-          <span class="ftag">CIS Expert</span>
-          <span class="ftag">ML / AI</span>
-          <span class="ftag">RegTech</span>
-          <span class="ftag">UK Market</span>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="background:rgba(255,255,255,.05);border-radius:10px;padding:16px 18px;border-left:3px solid var(--gold);">
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">Signal 1 — Supplier Concentration</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.5);">What % of total spend goes to just 3 supplier types? High concentration = dependency risk.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.05);border-radius:10px;padding:16px 18px;border-left:3px solid var(--gold);">
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">Signal 2 — Payment Escalation</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.5);">Are recent invoices significantly larger than early invoices? 3x escalation = cost overrun signal.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.05);border-radius:10px;padding:16px 18px;border-left:3px solid var(--gold);">
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">Signal 3 — Round Number Rate</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.5);">More than 25% round number invoices? Suggests poorly documented or estimated payments.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.05);border-radius:10px;padding:16px 18px;border-left:3px solid var(--gold);">
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">Signal 4 — Duplicate Payment Rate</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.5);">Over 15% duplicate transactions indicates extremely weak payment approval controls.</div>
+        </div>
+        <div style="background:rgba(255,255,255,.05);border-radius:10px;padding:16px 18px;border-left:3px solid var(--gold);">
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">Signal 5 — High Value Concentration</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.5);">Top 3 invoices representing over 50% of total spend = severe cash flow vulnerability.</div>
         </div>
       </div>
     </div>
+    <div class="fsi-preview">
+      <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">Sample Dataset Result</div>
+      <div class="fsi-score-big">92</div>
+      <div style="font-size:18px;font-weight:700;color:#C0392B;margin-top:4px;">HIGH STRESS</div>
+      <div class="fsi-bar"><div class="fsi-fill" style="width:92%;"></div></div>
+      <div style="font-size:11px;color:rgba(255,255,255,.3);margin-bottom:20px;">92 / 100 — All five signals elevated</div>
+      <ul class="fsi-signals">
+        <li>Supplier concentration: 100% in 2 supplier types</li>
+        <li>Payment escalation: 3.16x from early to recent transactions</li>
+        <li>Round number rate: 36.7% of invoices are round numbers</li>
+        <li>Duplicate rate: 43.3% — extremely weak payment controls</li>
+        <li>£875,000 invoice = 54.5% of total dataset spend</li>
+      </ul>
+      <a href="/login" style="display:block;text-align:center;background:var(--gold);color:var(--navy);padding:12px;border-radius:8px;font-size:13.5px;font-weight:700;text-decoration:none;margin-top:16px;">Test with your own data →</a>
+    </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-section" id="contact">
-  <div class="cta-glow"></div>
-  <h2>Ready to Protect Your Business from Financial Risk?</h2>
-  <p>Sign in to the platform, upload your CSV, and see your full risk report in minutes.</p>
-  <div class="cta-btns">
-    <a href="/login" class="btn-access">
-      Access Platform
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
-    <a href="mailto:shincyjithin29@gmail.com" class="btn-email-cta">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Email Us
-    </a>
+<!-- INTEGRATIONS -->
+<section class="section section-dark" id="integrations">
+  <div class="section-hdr">
+    <div class="section-label" style="color:var(--gold2);">Integrations</div>
+    <h2 class="section-title light">Works with the software<br>you already use.</h2>
+    <p class="section-sub light">No need to change your accounting system. AuditMind sits alongside it as the missing intelligence layer.</p>
   </div>
-  <div class="contact-cards">
-    <div class="contact-card"><div class="contact-label">Company</div><div class="contact-val">AuditMind Intelligence Ltd<br>Registered in England & Wales</div></div>
-    <div class="contact-card"><div class="contact-label">Email</div><div class="contact-val"><a href="mailto:shincyjithin29@gmail.com">shincyjithin29@gmail.com</a></div></div>
-    <div class="contact-card"><div class="contact-label">LinkedIn</div><div class="contact-val"><a href="https://www.linkedin.com/company/auditmind-intelligence-ltd/" target="_blank">AuditMind Intelligence Ltd</a></div></div>
-    <div class="contact-card"><div class="contact-label">Sector</div><div class="contact-val">Financial Technology<br>RegTech / Construction</div></div>
+  <div class="int-grid">
+    <div class="int-card">
+      <div class="int-logo" style="background:#13B5EA;">X</div>
+      <h4>Xero</h4>
+      <p>Developer registered. OAuth2 configured. API integration in development.</p>
+      <span class="int-status dev">In Development</span>
+    </div>
+    <div class="int-card">
+      <div class="int-logo" style="background:#00A550;">Q</div>
+      <h4>QuickBooks</h4>
+      <p>Developer registration in progress. Sandbox testing planned Q3 2025.</p>
+      <span class="int-status dev">In Progress</span>
+    </div>
+    <div class="int-card">
+      <div class="int-logo" style="background:#00DC00;">S</div>
+      <h4>Sage</h4>
+      <p>Business Cloud Accounting API integration planned for Month 18.</p>
+      <span class="int-status plan">Planned M18</span>
+    </div>
+    <div class="int-card">
+      <div class="int-logo" style="background:#534AB7;">C</div>
+      <h4>COINS ERP</h4>
+      <p>Construction-specific ERP integration. Contract and subcontract modules planned Month 24.</p>
+      <span class="int-status plan">Planned M24</span>
+    </div>
+  </div>
+  <div style="margin-top:20px;background:rgba(184,146,42,.1);border-radius:10px;padding:16px 20px;font-size:13px;color:rgba(255,255,255,.55);border:1px solid rgba(184,146,42,.2);">
+    <strong style="color:var(--gold2);">CSV import is live now.</strong> Export from any accounting system and upload directly. All Xero, Sage, and QuickBooks VAT codes are automatically normalised to Standard, Reverse, or Zero. Any column names are supported through the column mapping interface.
+  </div>
+</section>
+
+<!-- EVIDENCE -->
+<section class="section section-alt">
+  <div class="section-hdr">
+    <div class="section-label">Validation</div>
+    <h2 class="section-title">Independently tested.<br>Professionally validated.</h2>
+  </div>
+  <div class="evidence-grid">
+    <div class="ev-card">
+      <span class="ev-badge fcca">FCCA Validated</span>
+      <h4>Professional Accounting Review</h4>
+      <p>The AuditMind platform has been tested by a Fellow Chartered Certified Accountant with specialist experience in UK construction CIS and VAT compliance. The FCCA confirmed the platform identifies genuine compliance risks that standard accounting software does not surface.</p>
+      <div class="ev-name">Independent FCCA Advisor · AuditMind Intelligence Ltd</div>
+    </div>
+    <div class="ev-card">
+      <span class="ev-badge live">Live MVP</span>
+      <h4>Deployed and Accessible</h4>
+      <p>The platform is live at www.auditmindintelligence.co.uk. Any construction firm or accountant can upload a CSV file and receive a full risk analysis report with CIS flags, VAT issues, duplicate alerts, and a Financial Stress Indicator score within seconds.</p>
+      <div class="ev-name">Company No. 17085435 · Registered England and Wales</div>
+    </div>
+    <div class="ev-card">
+      <span class="ev-badge xero">Xero Developer</span>
+      <h4>Integration Progress</h4>
+      <p>A Xero developer account has been registered and an application named AuditMind Intelligence has been created in the Xero developer portal. OAuth2 credentials have been issued. The integration is in active development targeting Month 12 commercial release.</p>
+      <div class="ev-name">Xero App Store listing application in preparation</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- WHITE LABEL SECTION -->
+<section class="section" id="white-label" style="background:linear-gradient(135deg,#0B1120 0%,#1a2a42 100%);">
+  <div style="position:relative;z-index:2;">
+    <div class="section-hdr">
+      <div class="section-label" style="color:var(--gold2);">White-Label Partner Programme</div>
+      <h2 class="section-title light">Offer AuditMind under<br>your own brand.</h2>
+      <p class="section-sub light">Accountancy practices and financial advisory firms can deploy AuditMind as their own branded financial risk intelligence service — complete with custom domain, branded reports, and a multi-client dashboard.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:20px 22px;border:1px solid rgba(184,146,42,.2);">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <div style="width:38px;height:38px;border-radius:8px;background:rgba(184,146,42,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4AE58" stroke-width="1.8"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div style="font-size:14px;font-weight:700;color:#fff;">Your Brand. Your Domain.</div>
+          </div>
+          <p style="font-size:12.5px;color:rgba(255,255,255,.5);line-height:1.6;">Deploy AuditMind on your own subdomain — for example <code style="background:rgba(255,255,255,.08);padding:2px 6px;border-radius:3px;font-size:11px;">risk.yourpractice.co.uk</code>. All client-facing dashboards and PDF reports carry your firm's logo and colours. Your clients see your brand, not ours.</p>
+        </div>
+        <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:20px 22px;border:1px solid rgba(184,146,42,.2);">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <div style="width:38px;height:38px;border-radius:8px;background:rgba(184,146,42,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4AE58" stroke-width="1.8"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div style="font-size:14px;font-weight:700;color:#fff;">Manage All Clients From One Login</div>
+          </div>
+          <p style="font-size:12.5px;color:rgba(255,255,255,.5);line-height:1.6;">A single partner login gives you a risk-sorted view of all your construction clients. See which firms need attention first, trigger on-demand analyses, and batch export reports — all without switching accounts.</p>
+        </div>
+        <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:20px 22px;border:1px solid rgba(184,146,42,.2);">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <div style="width:38px;height:38px;border-radius:8px;background:rgba(184,146,42,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4AE58" stroke-width="1.8"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div style="font-size:14px;font-weight:700;color:#fff;">20% Referral Commission</div>
+          </div>
+          <p style="font-size:12.5px;color:rgba(255,255,255,.5);line-height:1.6;">Earn 20% of the first 12 months subscription value for every construction client you refer and convert. For an accountant managing 20 clients on the Professional Plan, that is approximately £2,352 per year in passive commission income.</p>
+        </div>
+        <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:20px 22px;border:1px solid rgba(184,146,42,.2);">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+            <div style="width:38px;height:38px;border-radius:8px;background:rgba(184,146,42,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4AE58" stroke-width="1.8"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div style="font-size:14px;font-weight:700;color:#fff;">Complements Your Advisory Services</div>
+          </div>
+          <p style="font-size:12.5px;color:rgba(255,255,255,.5);line-height:1.6;">AuditMind identifies risks. You resolve them. The platform increases the value of your advisory relationship — it does not replace it. Clients who use AuditMind need more accountant input, not less.</p>
+        </div>
+      </div>
+
+      <div style="background:rgba(255,255,255,.04);border-radius:14px;border:1px solid rgba(184,146,42,.25);padding:28px;">
+        <div style="font-size:11px;font-weight:700;color:var(--gold2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px;">White-Label Partner Dashboard — Preview</div>
+        <div style="background:rgba(255,255,255,.06);border-radius:10px;padding:14px;margin-bottom:12px;">
+          <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Client Risk Summary — Your Practice</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(192,57,43,.12);border-radius:6px;border-left:3px solid #C0392B;">
+              <span style="font-size:12px;color:#fff;flex:1;">Whitmore Construction Ltd</span>
+              <span style="font-size:10px;background:#C0392B;color:#fff;padding:2px 7px;border-radius:8px;font-weight:700;">3 HIGH RISK</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(212,115,10,.12);border-radius:6px;border-left:3px solid #D4730A;">
+              <span style="font-size:12px;color:#fff;flex:1;">Bridgeton M&amp;E Services</span>
+              <span style="font-size:10px;background:#D4730A;color:#fff;padding:2px 7px;border-radius:8px;font-weight:700;">5 AMBER</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(26,122,74,.12);border-radius:6px;border-left:3px solid #1A7A4A;">
+              <span style="font-size:12px;color:#fff;flex:1;">Hartley Civil Engineering</span>
+              <span style="font-size:10px;background:#1A7A4A;color:#fff;padding:2px 7px;border-radius:8px;font-weight:700;">ALL CLEAR</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:rgba(192,57,43,.12);border-radius:6px;border-left:3px solid #C0392B;">
+              <span style="font-size:12px;color:#fff;flex:1;">Suncroft Roofing Ltd</span>
+              <span style="font-size:10px;background:#C0392B;color:#fff;padding:2px 7px;border-radius:8px;font-weight:700;">1 HIGH RISK</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+          <div style="background:rgba(192,57,43,.15);border-radius:8px;padding:12px;text-align:center;"><div style="font-size:22px;font-weight:700;color:#C0392B;">4</div><div style="font-size:10px;color:rgba(255,255,255,.4);">High Risk</div></div>
+          <div style="background:rgba(212,115,10,.15);border-radius:8px;padding:12px;text-align:center;"><div style="font-size:22px;font-weight:700;color:#D4730A;">12</div><div style="font-size:10px;color:rgba(255,255,255,.4);">Amber</div></div>
+          <div style="background:rgba(26,122,74,.15);border-radius:8px;padding:12px;text-align:center;"><div style="font-size:22px;font-weight:700;color:#4ADE80;">18</div><div style="font-size:10px;color:rgba(255,255,255,.4);">Clear</div></div>
+        </div>
+        <div style="background:rgba(184,146,42,.1);border-radius:8px;padding:14px;margin-bottom:16px;">
+          <div style="font-size:11px;font-weight:700;color:var(--gold2);margin-bottom:6px;">Commission This Month</div>
+          <div style="font-size:28px;font-weight:700;color:var(--gold2);">£196</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.35);">4 new clients referred · 20% of first year subscription</div>
+        </div>
+        <a href="mailto:info@auditmindintelligence.co.uk" style="display:block;text-align:center;background:var(--gold);color:var(--navy);padding:12px;border-radius:8px;font-size:13.5px;font-weight:700;text-decoration:none;">Enquire About White-Label Partnership</a>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px;">
+      <div style="text-align:center;padding:20px;background:rgba(255,255,255,.04);border-radius:10px;border:1px solid rgba(255,255,255,.07);">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--gold2);">50+</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:4px;">Client firms per Enterprise licence</div>
+      </div>
+      <div style="text-align:center;padding:20px;background:rgba(255,255,255,.04);border-radius:10px;border:1px solid rgba(255,255,255,.07);">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--gold2);">20%</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:4px;">Referral commission on new client subscriptions</div>
+      </div>
+      <div style="text-align:center;padding:20px;background:rgba(255,255,255,.04);border-radius:10px;border:1px solid rgba(255,255,255,.07);">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--gold2);">100%</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:4px;">White-label branding on all client-facing outputs</div>
+      </div>
+      <div style="text-align:center;padding:20px;background:rgba(255,255,255,.04);border-radius:10px;border:1px solid rgba(255,255,255,.07);">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:700;color:var(--gold2);">1</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:4px;">Login to manage all your construction clients</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="section-hdr centered">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title">Transparent pricing.<br>No long-term contracts.</h2>
+    <p class="section-sub">Start with a free pilot. Upgrade as your needs grow. Cancel any time.</p>
+  </div>
+  <div class="price-grid">
+
+    <!-- BASIC -->
+    <div class="price-card">
+      <div class="price-name">Basic</div>
+      <div class="price-desc">For smaller firms with core alerting needs</div>
+      <div class="price-amount">£19<span>/mo</span></div>
+      <div class="price-period">per user / month, billed monthly</div>
+      <div class="price-incl">Includes</div>
+      <div class="price-feats">
+        <div class="price-feat">CSV upload — unlimited</div>
+        <div class="price-feat">Up to 500 transactions per run</div>
+        <div class="price-feat">AI anomaly flag (basic)</div>
+        <div class="price-feat">8 compliance rules — rule name and action</div>
+        <div class="price-feat">Traffic light risk display</div>
+        <div class="price-feat">Top 20 flagged alerts</div>
+        <div class="price-feat">SME summary report</div>
+        <div class="price-feat">Financial Stress Indicator</div>
+        <div class="price-feat">12 months data retention</div>
+        <div class="price-feat">Email support</div>
+      </div>
+      <a href="/login" class="btn-price outline">Get Started</a>
+    </div>
+
+    <!-- PROFESSIONAL -->
+    <div class="price-card featured">
+      <div class="price-tag">Most Popular</div>
+      <div class="price-name">Professional</div>
+      <div class="price-desc">For established construction SMEs needing full coverage</div>
+      <div class="price-amount">£49<span>/mo</span></div>
+      <div class="price-period">per user / month, billed monthly</div>
+      <div class="price-incl">Everything in Basic, plus</div>
+      <div class="price-feats">
+        <div class="price-feat">Unlimited transactions per run</div>
+        <div class="price-feat">Full feature attribution on anomaly scores</div>
+        <div class="price-feat">Full rule evidence and regulatory citations</div>
+        <div class="price-feat">Numeric CRS score and breakdown</div>
+        <div class="price-feat">Full alert list with trend comparison</div>
+        <div class="price-feat">All 3 report formats including HMRC evidence</div>
+        <div class="price-feat">Retention tracker with alerts</div>
+        <div class="price-feat">Supply chain credit risk alerts</div>
+        <div class="price-feat">Xero API integration (from Month 12)</div>
+        <div class="price-feat">36 months data retention</div>
+        <div class="price-feat">Priority email support</div>
+      </div>
+      <a href="/login" class="btn-price primary">Get Started</a>
+    </div>
+
+    <!-- ACCOUNTANT PARTNER -->
+    <div class="price-card">
+      <div class="price-name">Accountant Partner</div>
+      <div class="price-desc">For accountants managing multiple construction clients</div>
+      <div class="price-amount">£99<span>/mo</span></div>
+      <div class="price-period">per user / month · up to 20 client firms</div>
+      <div class="price-incl">Everything in Professional, plus</div>
+      <div class="price-feats">
+        <div class="price-feat">Full accountant analysis view</div>
+        <div class="price-feat">Multi-client dashboard</div>
+        <div class="price-feat">Rule version history for audit</div>
+        <div class="price-feat">Configurable risk thresholds per client</div>
+        <div class="price-feat">Cross-client anomaly comparison</div>
+        <div class="price-feat">White-label PDF reports</div>
+        <div class="price-feat">Multi-platform API connections</div>
+        <div class="price-feat">Partner portal (20 client firms)</div>
+        <div class="price-feat">20% referral commission on client subs</div>
+        <div class="price-feat">Dedicated account contact</div>
+      </div>
+      <a href="/login" class="btn-price outline">Get Started</a>
+    </div>
+
+    <!-- ENTERPRISE -->
+    <div class="price-card">
+      <div class="price-name">White-Label Enterprise</div>
+      <div class="price-desc">For larger practices and enterprise construction firms</div>
+      <div class="price-amount" style="font-size:28px;color:var(--gold);">Contact for Pricing</div>
+      <div class="price-period">Tailored to your practice size and requirements</div>
+      <div class="price-incl">Everything in Partner, plus</div>
+      <div class="price-feats">
+        <div class="price-feat">Custom subdomain (risk.yourpractice.co.uk)</div>
+        <div class="price-feat">Up to 50+ client firms</div>
+        <div class="price-feat">Full white-label branding</div>
+        <div class="price-feat">Custom rule additions</div>
+        <div class="price-feat">Custom risk score weighting</div>
+        <div class="price-feat">All integrations including COINS ERP</div>
+        <div class="price-feat">Custom retention rules</div>
+        <div class="price-feat">Batch export for all clients</div>
+        <div class="price-feat">Full IIG supply chain access</div>
+        <div class="price-feat">Dedicated account manager</div>
+      </div>
+      <a href="/login" class="btn-price outline">Contact Us</a>
+    </div>
+
+  </div>
+  <p style="text-align:center;font-size:12.5px;color:var(--greyl);margin-top:24px;">All plans include a free pilot period. No credit card required to start. Prices exclude VAT.</p>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Ready to see what is hiding in your transactions?</h2>
+  <p>Upload a CSV file from Xero, Sage, or QuickBooks. Get a full risk report in seconds.</p>
+  <div class="cta-btns">
+    <a href="/login" class="btn-hero-primary">
+      <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Access Platform — Free Trial
+    </a>
+    <a href="#pricing" class="btn-hero-secondary">View Pricing</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <p>© 2025 AuditMind Intelligence Ltd. Registered in England & Wales. All rights reserved.</p>
-  <div class="footer-links">
-    <a href="mailto:shincyjithin29@gmail.com">Contact</a>
-    <a href="https://www.linkedin.com/company/auditmind-intelligence-ltd/" target="_blank">
-      <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-      LinkedIn
-    </a>
-    <a href="#">Privacy Policy</a>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;">
+        <svg width="28" height="28" viewBox="0 0 120 120"><defs><linearGradient id="f1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#C9A84C"/><stop offset="100%" stop-color="#E8C97A"/></linearGradient></defs><polygon points="60,22 93,41 93,79 60,98 27,79 27,41" fill="none" stroke="url(#f1)" stroke-width="2.5"/><line x1="60" y1="32" x2="38" y2="84" stroke="url(#f1)" stroke-width="7" stroke-linecap="round"/><line x1="60" y1="32" x2="82" y2="84" stroke="url(#f1)" stroke-width="7" stroke-linecap="round"/><line x1="44" y1="66" x2="76" y2="66" stroke="url(#f1)" stroke-width="5" stroke-linecap="round"/></svg>
+        <span style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:#fff;">AuditMind Intelligence Ltd</span>
+      </div>
+      <p>AI-powered financial risk intelligence for UK small and medium construction companies. Decision-support tool — not a compliance determination service.</p>
+      <p style="margin-top:8px;">Company No. 17085435 · Registered in England and Wales</p>
+    </div>
+    <div class="footer-col">
+      <h5>Platform</h5>
+      <a href="/login">Sign In</a>
+      <a href="/login">Register</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#capabilities">Capabilities</a>
+    </div>
+    <div class="footer-col">
+      <h5>Compliance</h5>
+      <a href="#compliance">CIS Rules</a>
+      <a href="#compliance">VAT DRC</a>
+      <a href="#compliance">JCT/NEC</a>
+      <a href="#compliance">Building Safety Act</a>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <a href="https://www.linkedin.com/company/auditmind-intelligence-ltd/" target="_blank">LinkedIn</a>
+      <a href="https://github.com/shincyjithin29/auditmind-intelligence" target="_blank">GitHub</a>
+      <a href="mailto:info@auditmindintelligence.co.uk">Contact</a>
+    </div>
   </div>
+  <div class="footer-bottom">
+    <p>© 2025 AuditMind Intelligence Ltd · Company No. 17085435 · www.auditmindintelligence.co.uk</p>
+    <p style="color:rgba(255,255,255,.25);">Built in the UK · Hosted on Render · Data processed in UK region</p>
+  </div>
+  <p class="footer-disclaimer">This platform is a decision-support tool only. All flagged transactions require human review by a qualified professional before any action is taken. AuditMind Intelligence Ltd does not make compliance determinations and is not a regulated financial or legal adviser. Consult a qualified accountant or tax adviser for definitive advice.</p>
 </footer>
 
 </body>
