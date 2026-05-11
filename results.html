@@ -200,7 +200,7 @@ tbody td{padding:10px 13px;vertical-align:top;}
         <button class="tab on"  onclick="switchTab('sme',this)">SME View — Flagged Only</button>
         <button class="tab"     onclick="switchTab('acc',this)">Accountant View — Full Detail</button>
         <button class="tab"     onclick="switchTab('rules',this)">Compliance Rulebook</button>
-        <button class="tab"     onclick="switchTab('fsi',this)"><button class="tab"     onclick="switchTab('rules',this)">Compliance Rulebook</button>#x26A0; Insolvency Dashboard</button>
+        <button class="tab"     onclick="switchTab('fsi',this)"><button class="tab"     onclick="switchTab('rules',this)">Compliance Rulebook</button>⚠ Insolvency Dashboard</button>
       </div>
 
       <!-- SME -->
@@ -401,7 +401,7 @@ new Chart(document.getElementById('ch-rules'), {
   html += '</div></div>';
   if(signals.length){
     html+='<div style="background:var(--red-bg);border-radius:10px;padding:16px;margin-bottom:14px;">';
-    html+='<div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:8px;">&#x26A0; Warning Signals Detected</div>';
+    html+='<div style="font-size:12px;font-weight:700;color:var(--red);margin-bottom:8px;">⚠ Warning Signals Detected</div>';
     signals.forEach(function(s){html+='<div style="font-size:12.5px;color:var(--red);margin-bottom:6px;padding-left:12px;border-left:3px solid var(--red);">'+s+'</div>';});
     html+='</div>';
   }

@@ -165,14 +165,14 @@ code{background:rgba(11,17,32,.06);padding:2px 5px;border-radius:3px;font-size:1
     <a class="sb-item" id="nav-compliance" onclick="showPanel('compliance')">
       <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Compliance Dashboard
-      <span class="sb-badge new">NEW</span>
+      
     </a>
     <div class="sb-divider"></div>
     <span class="sb-label">Integrations</span>
     <a class="sb-item" id="nav-xero" onclick="showPanel('xero')">
       <svg viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Xero Integration
-      <span class="sb-badge beta">DEMO</span>
+      
     </a>
     <div class="sb-divider"></div>
     <a class="sb-item" href="/">
@@ -244,7 +244,7 @@ code{background:rgba(11,17,32,.06);padding:2px 5px;border-radius:3px;font-size:1
       <div class="compliance-grid">
         <!-- CIS -->
         <div class="comp-card">
-          <div class="comp-card-header"><div class="comp-card-title">Construction Industry Scheme (CIS)</div><span class="comp-status warn">Review</span></div>
+          <div class="comp-card-header"><div class="comp-card-title">Construction Industry Scheme (CIS)</div></div>
           <div class="comp-item"><span class="comp-dot amber"></span>Subcontractor verification status</div>
           <div class="comp-item"><span class="comp-dot amber"></span>Monthly CIS return due — 19th</div>
           <div class="comp-item"><span class="comp-dot green"></span>Deduction rates applied</div>
@@ -252,7 +252,7 @@ code{background:rgba(11,17,32,.06);padding:2px 5px;border-radius:3px;font-size:1
         </div>
         <!-- VAT DRC -->
         <div class="comp-card">
-          <div class="comp-card-header"><div class="comp-card-title">VAT Domestic Reverse Charge</div><span class="comp-status warn">Review</span></div>
+          <div class="comp-card-header"><div class="comp-card-title">VAT Domestic Reverse Charge</div></div>
           <div class="comp-item"><span class="comp-dot amber"></span>DRC vs Standard coding consistency</div>
           <div class="comp-item"><span class="comp-dot amber"></span>End-user declaration status</div>
           <div class="comp-item"><span class="comp-dot green"></span>VAT registration cross-check</div>
@@ -260,7 +260,7 @@ code{background:rgba(11,17,32,.06);padding:2px 5px;border-radius:3px;font-size:1
         </div>
         <!-- JCT/NEC -->
         <div class="comp-card">
-          <div class="comp-card-header"><div class="comp-card-title">JCT / NEC Payment Notices</div><span class="comp-status roadmap">Roadmap</span></div>
+          <div class="comp-card-header"><div class="comp-card-title">JCT / NEC Payment Notices</div></div>
           <div class="comp-item"><span class="comp-dot grey"></span>Payment notice timescale monitoring</div>
           <div class="comp-item"><span class="comp-dot grey"></span>Pay-less notice compliance</div>
           <div class="comp-item"><span class="comp-dot grey"></span>HGCRA 1996 s.110-111 alignment</div>
@@ -268,7 +268,7 @@ code{background:rgba(11,17,32,.06);padding:2px 5px;border-radius:3px;font-size:1
         </div>
         <!-- Housing Grants Act -->
         <div class="comp-card">
-          <div class="comp-card-header"><div class="comp-card-title">Housing Grants Act</div><span class="comp-status roadmap">Roadmap</span></div>
+          <div class="comp-card-header"><div class="comp-card-title">Housing Grants Act</div></div>
           <div class="comp-item"><span class="comp-dot grey"></span>Adjudication rights monitoring</div>
           <div class="comp-item"><span class="comp-dot grey"></span>Payment withholding pattern detection</div>
           <div class="comp-item"><span class="comp-dot grey"></span>HGCRA s.108 compliance</div>
@@ -276,7 +276,7 @@ code{background:rgba(11,17,32,.06);padding:2px 5px;border-radius:3px;font-size:1
         </div>
         <!-- Building Safety Act -->
         <div class="comp-card">
-          <div class="comp-card-header"><div class="comp-card-title">Building Safety Act 2022</div><span class="comp-status roadmap">Roadmap</span></div>
+          <div class="comp-card-header"><div class="comp-card-title">Building Safety Act 2022</div></div>
           <div class="comp-item"><span class="comp-dot grey"></span>Retention liability exposure</div>
           <div class="comp-item"><span class="comp-dot grey"></span>Higher-risk building contracts</div>
           <div class="comp-item"><span class="comp-dot grey"></span>ss.38-39 liability accumulation</div>
@@ -284,7 +284,7 @@ code{background:rgba(11,17,32,.06);padding:2px 5px;border-radius:3px;font-size:1
         </div>
         <!-- HMRC Winding Up -->
         <div class="comp-card">
-          <div class="comp-card-header"><div class="comp-card-title">HMRC Winding-Up Petition Patterns</div><span class="comp-status roadmap">Roadmap</span></div>
+          <div class="comp-card-header"><div class="comp-card-title">HMRC Winding-Up Petition Patterns</div></div>
           <div class="comp-item"><span class="comp-dot grey"></span>Late payment deterioration signals</div>
           <div class="comp-item"><span class="comp-dot grey"></span>Partial payment pattern detection</div>
           <div class="comp-item"><span class="comp-dot grey"></span>Rounding anomaly correlation</div>
@@ -292,10 +292,7 @@ code{background:rgba(11,17,32,.06);padding:2px 5px;border-radius:3px;font-size:1
         </div>
       </div>
 
-      <div class="roadmap-note">
-        <svg viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span><strong>CIS and VAT DRC checks</strong> are live in the current MVP. JCT/NEC payment notices, Housing Grants Act adjudication monitoring, Building Safety Act retention tracking, and HMRC petition pattern detection are in development — targeted for Phase 2 (months 6–12).</span>
-      </div>
+      
 
       <div class="card" style="margin-top:18px;">
         <div class="card-title"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>Upload data to run live compliance checks</div>
@@ -306,13 +303,13 @@ code{background:rgba(11,17,32,.06);padding:2px 5px;border-radius:3px;font-size:1
 
     <!-- ── XERO INTEGRATION PANEL ── -->
     <div class="panel" id="panel-xero">
-      <div class="page-title">Xero Integration <span style="font-size:13px;background:var(--amber-bg);color:var(--amber);padding:3px 10px;border-radius:10px;font-weight:700;margin-left:10px;vertical-align:middle;">DEMO</span></div>
+      <div class="page-title">Xero Integration </div>
       <div class="page-sub">Direct API connection to Xero — automatic financial data sync and real-time risk analysis.</div>
 
       <div class="xero-banner">
         <div class="xero-logo">X</div>
         <div class="xero-text">
-          <h3>Connect your Xero account <span class="demo-badge">Coming M12</span></h3>
+          <h3>Connect your Xero account </h3>
           <p>Once connected, AuditMind will automatically pull invoices, purchase orders, bank transactions, and VAT data from Xero — no CSV upload required.</p>
         </div>
         <button class="xero-btn" onclick="showXeroDemo()">Demo Connection</button>

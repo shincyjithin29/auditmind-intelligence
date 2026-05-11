@@ -266,7 +266,7 @@ footer{background:var(--navy);padding:48px 5% 28px;border-top:1px solid rgba(255
       <p>Same invoice received by email and through supplier portal. Same subcontractor paid twice in the same week. Standard accounting software does not cross-check intelligently.</p>
     </div>
     <div class="prob-card">
-      <div class="prob-icon" style="font-family:serif;font-size:22px;font-weight:700;color:var(--gold);">£</div>
+      <div class="prob-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 19h12M6 14h8a4 4 0 000-8H8v8M6 14v2M10 6V4"/></svg></div>
       <h3>Irregular Cost Allocations</h3>
       <p>Project cost misallocation inflates margins and distorts cash flow forecasting. Without automated pattern detection, these errors accumulate invisibly until year-end.</p>
     </div>
@@ -295,19 +295,16 @@ footer{background:var(--navy);padding:48px 5% 28px;border-top:1px solid rgba(255
       <div class="cap-icon"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h3>Regulatory Logic Engine</h3>
       <p>A living computational system encoding the interaction between CIS deductions, VAT Domestic Reverse Charge, JCT/NEC payment notices, Housing Grants Act adjudication rights, Building Safety Act liability exposure, and HMRC winding-up petition patterns. Eight named compliance rules evaluated per transaction in dependency order.</p>
-      <span class="cap-tag live">CIS + VAT Live</span>
     </div>
     <div class="cap-card">
       <div class="cap-icon"><svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h3>Insolvency Intelligence Graph</h3>
       <p>As contractors onboard, the platform maps financial interdependencies across the construction supply chain. After 12 to 18 months, AuditMind will sit on a proprietary dataset of real-time construction credit risk that does not exist anywhere else. Experian reports filing history. AuditMind reports payment behaviour deterioration in real time.</p>
-      <span class="cap-tag road">Roadmap — Month 18</span>
     </div>
     <div class="cap-card">
       <div class="cap-icon"><svg viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h3>Embedded Workflow Lock-In</h3>
       <p>Once connected to Xero, Sage, or COINS, the platform accumulates 12+ months of firm-specific calibrated intelligence. The AI risk models tune to your business's project mix, seasonal patterns, and subcontractor relationships. Switching means losing all calibrated context — a transition cost most £1–10M construction SMEs will not accept.</p>
-      <span class="cap-tag dev">Xero Integration In Development</span>
     </div>
   </div>
 </section>
@@ -321,16 +318,16 @@ footer{background:var(--navy);padding:48px 5% 28px;border-top:1px solid rgba(255
   </div>
   <div style="overflow-x:auto;border-radius:12px;border:1px solid rgba(11,17,32,.08);">
     <table class="comp-table">
-      <thead><tr><th>Rule ID</th><th>Name</th><th>Legal Basis</th><th>What It Detects</th><th>Severity</th><th>Status</th></tr></thead>
+      <thead><tr><th>Rule ID</th><th>Name</th><th>Legal Basis</th><th>What It Detects</th><th>Severity</th></tr></thead>
       <tbody>
-        <tr><td class="rule-id">RLE-01</td><td>CIS Deduction Verification</td><td>Finance Act 2004 s.61</td><td>Subcontractor paid at wrong deduction rate or without HMRC verification</td><td><span class="sev critical">Critical</span></td><td><span class="cap-tag live" style="margin:0;">Live</span></td></tr>
-        <tr><td class="rule-id">RLE-02</td><td>VAT DRC Consistency</td><td>VAT Act 1994 Sch.11A; HMRC Notice 708/6</td><td>Standard-rated (20%) coding where DRC (0%) should apply, or vice versa</td><td><span class="sev critical">Critical</span></td><td><span class="cap-tag live" style="margin:0;">Live</span></td></tr>
-        <tr><td class="rule-id">RLE-03</td><td>Gross Payment Status Cross-Reference</td><td>HMRC CIS340 Guidance</td><td>GPR subcontractor receiving deducted payments, or deduction incorrectly applied</td><td><span class="sev high">High</span></td><td><span class="cap-tag live" style="margin:0;">Live</span></td></tr>
-        <tr><td class="rule-id">RLE-04</td><td>JCT/NEC Payment Notice Timescale</td><td>HGCRA 1996 s.110-111; LDEDCA 2009</td><td>Payment outside contractually required notice window; no pay-less notice issued</td><td><span class="sev high">High</span></td><td><span class="cap-tag road" style="margin:0;">Roadmap</span></td></tr>
-        <tr><td class="rule-id">RLE-05</td><td>Housing Grants Act Adjudication Rights</td><td>HGCRA 1996 s.108</td><td>Pattern of withheld payments without valid pay-less notice — adjudication exposure</td><td><span class="sev medium">Medium</span></td><td><span class="cap-tag road" style="margin:0;">Roadmap</span></td></tr>
-        <tr><td class="rule-id">RLE-06</td><td>Building Safety Act Liability Exposure</td><td>Building Safety Act 2022 ss.38-39</td><td>Retention withheld beyond statutory period on higher-risk building contracts</td><td><span class="sev medium">Medium</span></td><td><span class="cap-tag road" style="margin:0;">Roadmap</span></td></tr>
-        <tr><td class="rule-id">RLE-07</td><td>HMRC Winding-Up Petition Pattern</td><td>Insolvency Act 1986 s.124A</td><td>Payment deterioration pattern correlated with historical HMRC petition precursors</td><td><span class="sev high">High</span></td><td><span class="cap-tag road" style="margin:0;">Roadmap</span></td></tr>
-        <tr><td class="rule-id">RLE-08</td><td>Duplicate Payment Detection</td><td>N/A — arithmetic</td><td>Invoice reference, amount, and supplier match within configurable time window</td><td><span class="sev critical">Critical</span></td><td><span class="cap-tag live" style="margin:0;">Live</span></td></tr>
+        <tr><td class="rule-id">RLE-01</td><td>CIS Deduction Verification</td><td>Finance Act 2004 s.61</td><td>Subcontractor paid at wrong deduction rate or without HMRC verification</td><td><span class="sev critical">Critical</span></td></tr>
+        <tr><td class="rule-id">RLE-02</td><td>VAT DRC Consistency</td><td>VAT Act 1994 Sch.11A; HMRC Notice 708/6</td><td>Standard-rated (20%) coding where DRC (0%) should apply, or vice versa</td><td><span class="sev critical">Critical</span></td></tr>
+        <tr><td class="rule-id">RLE-03</td><td>Gross Payment Status Cross-Reference</td><td>HMRC CIS340 Guidance</td><td>GPR subcontractor receiving deducted payments, or deduction incorrectly applied</td><td><span class="sev high">High</span></td></tr>
+        <tr><td class="rule-id">RLE-04</td><td>JCT/NEC Payment Notice Timescale</td><td>HGCRA 1996 s.110-111; LDEDCA 2009</td><td>Payment outside contractually required notice window; no pay-less notice issued</td><td><span class="sev high">High</span></td></tr>
+        <tr><td class="rule-id">RLE-05</td><td>Housing Grants Act Adjudication Rights</td><td>HGCRA 1996 s.108</td><td>Pattern of withheld payments without valid pay-less notice — adjudication exposure</td><td><span class="sev medium">Medium</span></td></tr>
+        <tr><td class="rule-id">RLE-06</td><td>Building Safety Act Liability Exposure</td><td>Building Safety Act 2022 ss.38-39</td><td>Retention withheld beyond statutory period on higher-risk building contracts</td><td><span class="sev medium">Medium</span></td></tr>
+        <tr><td class="rule-id">RLE-07</td><td>HMRC Winding-Up Petition Pattern</td><td>Insolvency Act 1986 s.124A</td><td>Payment deterioration pattern correlated with historical HMRC petition precursors</td><td><span class="sev high">High</span></td></tr>
+        <tr><td class="rule-id">RLE-08</td><td>Duplicate Payment Detection</td><td>N/A — arithmetic</td><td>Invoice reference, amount, and supplier match within configurable time window</td><td><span class="sev critical">Critical</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -343,18 +340,18 @@ footer{background:var(--navy);padding:48px 5% 28px;border-top:1px solid rgba(255
     <h2 class="section-title">Eleven product features.<br>Built for construction finance.</h2>
   </div>
   <div class="feat-grid">
-    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-linecap="round" stroke-linejoin="round"/></svg>F01 — Secure Data Ingestion<span class="feat-badge live">Live</span></h4><p>CSV upload from any accounting system. OAuth API integration with Xero in development. Auto-detection of 400+ accounting export formats.</p></div>
-    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" stroke-linecap="round" stroke-linejoin="round"/></svg>F02 — AI Anomaly Detection<span class="feat-badge live">Live</span></h4><p>Isolation Forest ML model with 7 construction-specific features. Anomaly score 0–1 per transaction. Firm-calibrated over time.</p></div>
-    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg>F03 — Compliance Rule Engine<span class="feat-badge live">Live</span></h4><p>Eight named UK construction compliance rules with regulatory citations. Version-controlled and updated with HMRC guidance changes.</p></div>
-    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" stroke-linecap="round" stroke-linejoin="round"/></svg>F04 — Composite Risk Scoring<span class="feat-badge live">Live</span></h4><p>CRS = 0.35×ML + 0.45×rule severity + 0.20×rule count. RED/AMBER/GREEN traffic light per transaction. Configurable thresholds.</p></div>
-    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>F05 — SME Risk Dashboard<span class="feat-badge live">Live</span></h4><p>Plain-language alerts for business owners. Top 20 flagged transactions sorted by risk. Mobile-responsive for on-site access.</p></div>
-    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>F06 — Accountant Analysis View<span class="feat-badge live">Live</span></h4><p>Full transaction table with ML scores, rule citations, regulatory references. Filter by severity, rule, supplier, or date range.</p></div>
-    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>F07 — Retention Tracker<span class="feat-badge dev">In Development</span></h4><p>Track all retention liabilities and release dates. Alert when retention is overdue. Building Safety Act exposure flags for higher-risk buildings.</p></div>
-    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>F08 — Supply Chain Credit Risk<span class="feat-badge road">Roadmap</span></h4><p>Insolvency Intelligence Graph alerts. Know when your main contractor's payment behaviour deteriorates — before Companies House filings.</p></div>
-    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>F09 — Exportable Compliance Reports<span class="feat-badge live">Live</span></h4><p>SME summary, accountant detail, and HMRC compliance evidence reports. PDF and CSV export. White-label for accountant partners.</p></div>
-    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>F10 — Accounting Integrations<span class="feat-badge dev">Xero In Development</span></h4><p>Xero OAuth developer registered and configured. QuickBooks in progress. Sage planned Month 18. COINS ERP planned Month 24.</p></div>
-    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round"/></svg>F11 — White-Label Partner Portal<span class="feat-badge road">Roadmap</span></h4><p>Multi-client dashboard for accountancy practices. Risk-sorted client list. Branded reports. 20% referral commission on client subscriptions.</p></div>
-    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>F12 — Financial Stress Indicator<span class="feat-badge live">Live</span></h4><p>5-signal FSI score (0–100) derived from transaction patterns. Detects payment escalation, supplier concentration, duplicate rates, and value concentration risk.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-linecap="round" stroke-linejoin="round"/></svg>F01 — Secure Data Ingestion</h4><p>CSV upload from any accounting system. OAuth API integration with Xero in development. Auto-detection of 400+ accounting export formats.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" stroke-linecap="round" stroke-linejoin="round"/></svg>F02 — AI Anomaly Detection</h4><p>Isolation Forest ML model with 7 construction-specific features. Anomaly score 0–1 per transaction. Firm-calibrated over time.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round"/></svg>F03 — Compliance Rule Engine</h4><p>Eight named UK construction compliance rules with regulatory citations. Version-controlled and updated with HMRC guidance changes.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" stroke-linecap="round" stroke-linejoin="round"/></svg>F04 — Composite Risk Scoring</h4><p>CRS = 0.35×ML + 0.45×rule severity + 0.20×rule count. RED/AMBER/GREEN traffic light per transaction. Configurable thresholds.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>F05 — SME Risk Dashboard</h4><p>Plain-language alerts for business owners. Top 20 flagged transactions sorted by risk. Mobile-responsive for on-site access.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>F06 — Accountant Analysis View</h4><p>Full transaction table with ML scores, rule citations, regulatory references. Filter by severity, rule, supplier, or date range.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>F07 — Retention Tracker</h4><p>Track all retention liabilities and release dates. Alert when retention is overdue. Building Safety Act exposure flags for higher-risk buildings.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>F08 — Supply Chain Credit Risk</h4><p>Insolvency Intelligence Graph alerts. Know when your main contractor's payment behaviour deteriorates — before Companies House filings.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>F09 — Exportable Compliance Reports</h4><p>SME summary, accountant detail, and HMRC compliance evidence reports. PDF and CSV export. White-label for accountant partners.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>F10 — Accounting Integrations</h4><p>Xero OAuth developer registered and configured. QuickBooks in progress. Sage planned Month 18. COINS ERP planned Month 24.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round"/></svg>F11 — White-Label Partner Portal</h4><p>Multi-client dashboard for accountancy practices. Risk-sorted client list. Branded reports. 20% referral commission on client subscriptions.</p></div>
+    <div class="feat-item"><h4><svg viewBox="0 0 24 24"><path d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>F12 — Financial Stress Indicator</h4><p>5-signal FSI score (0–100) derived from transaction patterns. Detects payment escalation, supplier concentration, duplicate rates, and value concentration risk.</p></div>
   </div>
 </section>
 
@@ -434,25 +431,21 @@ footer{background:var(--navy);padding:48px 5% 28px;border-top:1px solid rgba(255
       <div class="int-logo" style="background:#13B5EA;">X</div>
       <h4>Xero</h4>
       <p>Developer registered. OAuth2 configured. API integration in development.</p>
-      <span class="int-status dev">In Development</span>
     </div>
     <div class="int-card">
       <div class="int-logo" style="background:#00A550;">Q</div>
       <h4>QuickBooks</h4>
       <p>Developer registration in progress. Sandbox testing planned Q3 2025.</p>
-      <span class="int-status dev">In Progress</span>
     </div>
     <div class="int-card">
       <div class="int-logo" style="background:#00DC00;">S</div>
       <h4>Sage</h4>
       <p>Business Cloud Accounting API integration planned for Month 18.</p>
-      <span class="int-status plan">Planned M18</span>
     </div>
     <div class="int-card">
       <div class="int-logo" style="background:#534AB7;">C</div>
       <h4>COINS ERP</h4>
       <p>Construction-specific ERP integration. Contract and subcontract modules planned Month 24.</p>
-      <span class="int-status plan">Planned M24</span>
     </div>
   </div>
   <div style="margin-top:20px;background:rgba(184,146,42,.1);border-radius:10px;padding:16px 20px;font-size:13px;color:rgba(255,255,255,.55);border:1px solid rgba(184,146,42,.2);">
