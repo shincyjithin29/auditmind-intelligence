@@ -45,6 +45,27 @@ logging.basicConfig(
     format="%(asctime)s | %(levelname)s | %(message)s"
 )
 logger = logging.getLogger("auditmind")
+# ── Supabase client ───────────────────────────────────────────
+try:
+    from supabase import create_client, Client as SupabaseClient
+    SUPABASE_AVAILABLE = True
+except ImportError:
+    SUPABASE_AVAILABLE = False
+    logger.warning("supabase package not installed — registration disabled")
+
+from passlib.context import CryptContext
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+SUPABASE_URL = os.getenv("SUPABASE_URL", "")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")
+
+def get_supabase():
+    if not SUPABASE_AVAILABLE:
+        raise RuntimeError("Supabase not available")
+    if not SUPABASE_URL or not SUPABASE_KEY:
+        raise RuntimeError("Supabase credentials not configured")
+    return create_client(SUPABASE_URL, SUPABASE_KEY)
+
 
 # ── Folder where main.py lives ────────────────────────────────
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -78,11 +99,9 @@ app.add_middleware(
 )
 
 # ============================================================
-# VALID USERS
+# ADMIN CREDENTIALS — fallback always works
 # ============================================================
-VALID_USERS = {
-    "admin": os.getenv("AUDITMIND_ADMIN_PASSWORD", "secure123")
-}
+ADMIN_PASSWORD = os.getenv("AUDITMIND_ADMIN_PASSWORD", "secure123")
 
 # ============================================================
 # FLEXIBLE SUBCONTRACTOR DETECTION
@@ -628,15 +647,107 @@ def health():
 async def login(credentials: dict):
     username = str(credentials.get("username", "")).strip().lower()
     password = str(credentials.get("password", ""))
-    if VALID_USERS.get(username) == password:
+
+    # Admin fallback — always works
+    if username == "admin" and password == ADMIN_PASSWORD:
+        logger.info("Admin login successful")
+        return {
+            "success":      True,
+            "username":     "admin",
+            "access_token": "admin",
+            "role":         "admin",
+        }
+
+    # Check Supabase for registered users
+    try:
+        sb = get_supabase()
+        result = sb.table("platform_users")                    .select("*")                    .eq("username", username)                    .eq("is_active", True)                    .execute()
+
+        if not result.data:
+            logger.warning(f"Login failed — user not found: {username}")
+            raise HTTPException(status_code=401, detail="Invalid username or password")
+
+        user = result.data[0]
+
+        if not pwd_context.verify(password, user["hashed_password"]):
+            logger.warning(f"Login failed — wrong password: {username}")
+            raise HTTPException(status_code=401, detail="Invalid username or password")
+
         logger.info(f"Login successful: {username}")
         return {
             "success":      True,
             "username":     username,
             "access_token": username,
+            "role":         user.get("role", "user"),
+            "company":      user.get("company_name", ""),
         }
-    logger.warning(f"Failed login: {username!r}")
-    raise HTTPException(status_code=401, detail="Invalid username or password")
+
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error(f"Supabase login error: {exc}")
+        raise HTTPException(status_code=401, detail="Invalid username or password")
+
+
+@app.post("/api/register")
+async def register(data: dict):
+    """Register a new company user and save to Supabase."""
+    username        = str(data.get("username", "")).strip().lower()
+    password        = str(data.get("password", ""))
+    email           = str(data.get("email", "")).strip().lower()
+    first_name      = str(data.get("first_name", "")).strip()
+    last_name       = str(data.get("last_name", "")).strip()
+    company_name    = str(data.get("company_name", "")).strip()
+    companies_house = str(data.get("companies_house", "")).strip()
+    company_type    = str(data.get("company_type", "")).strip()
+
+    if not username or len(username) < 3:
+        raise HTTPException(status_code=400, detail="Username must be at least 3 characters.")
+    if not password or len(password) < 6:
+        raise HTTPException(status_code=400, detail="Password must be at least 6 characters.")
+    if not email or "@" not in email:
+        raise HTTPException(status_code=400, detail="Please provide a valid email address.")
+    if not company_name:
+        raise HTTPException(status_code=400, detail="Company name is required.")
+
+    try:
+        sb = get_supabase()
+
+        existing = sb.table("platform_users").select("username").eq("username", username).execute()
+        if existing.data:
+            raise HTTPException(status_code=409, detail="Username already taken. Please choose another.")
+
+        existing_email = sb.table("platform_users").select("email").eq("email", email).execute()
+        if existing_email.data:
+            raise HTTPException(status_code=409, detail="Email already registered. Please sign in instead.")
+
+        hashed = pwd_context.hash(password)
+
+        sb.table("platform_users").insert({
+            "username":        username,
+            "email":           email,
+            "hashed_password": hashed,
+            "first_name":      first_name,
+            "last_name":       last_name,
+            "company_name":    company_name,
+            "companies_house": companies_house,
+            "company_type":    company_type,
+            "role":            "user",
+            "is_active":       True,
+        }).execute()
+
+        logger.info(f"New user registered: {username} | company: {company_name}")
+        return {
+            "success":  True,
+            "username": username,
+            "message":  "Account created successfully.",
+        }
+
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error(f"Registration error: {exc}")
+        raise HTTPException(status_code=500, detail="Registration failed. Please try again.")
 
 
 @app.post("/api/columns")
