@@ -40,6 +40,13 @@ body{font-family:'Outfit',sans-serif;background:var(--navy);min-height:100vh;dis
 .btn-primary:disabled{background:var(--greyl);cursor:not-allowed;}
 .terms{font-size:11.5px;color:var(--greyl);text-align:center;margin-top:12px;line-height:1.5;}
 .terms a{color:var(--gold);text-decoration:none;}
+
+.pw-wrap{position:relative;display:flex;align-items:center;}
+.pw-wrap input{padding-right:40px;width:100%;}
+.eye-btn{position:absolute;right:10px;background:none;border:none;cursor:pointer;padding:4px;color:var(--greyl);display:flex;align-items:center;justify-content:center;transition:color .2s;}
+.eye-btn:hover{color:var(--navy);}
+.eye-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;}
+
 .contact-note{background:var(--goldp);border:1px solid rgba(184,146,42,.3);border-radius:8px;padding:10px 14px;font-size:12.5px;color:var(--grey);margin-bottom:18px;text-align:center;line-height:1.5;}
 .contact-note a{color:var(--gold);font-weight:600;text-decoration:none;}
 </style>
@@ -88,7 +95,12 @@ body{font-family:'Outfit',sans-serif;background:var(--navy);min-height:100vh;dis
     </div>
     <div class="field">
       <label>Password</label>
-      <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password">
+      <div class="pw-wrap">
+        <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password">
+        <button type="button" class="eye-btn" onclick="togglePw('password',this)" tabindex="-1" aria-label="Show password">
+          <svg id="eye-password" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
     </div>
     <button class="btn-primary" id="login-btn" onclick="doLogin()">Sign In</button>
   </div>
@@ -106,7 +118,13 @@ body{font-family:'Outfit',sans-serif;background:var(--navy);min-height:100vh;dis
     <div class="field"><label>Email Address</label><input type="email" id="reg-email" placeholder="you@company.co.uk"></div>
     <div class="field-row">
       <div class="field"><label>Username</label><input type="text" id="reg-user" placeholder="Choose a username"></div>
-      <div class="field"><label>Password</label><input type="password" id="reg-pass" placeholder="Min 6 characters"></div>
+      <div class="field"><label>Password</label>
+      <div class="pw-wrap">
+        <input type="password" id="reg-pass" placeholder="Min 6 characters">
+        <button type="button" class="eye-btn" onclick="togglePw('reg-pass',this)" tabindex="-1" aria-label="Show password">
+          <svg id="eye-reg-pass" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div></div>
     </div>
     <div class="field">
       <label>Company Type</label>
@@ -249,6 +267,20 @@ async function doRegister() {
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !document.getElementById('login-btn').disabled) doLogin();
 });
+
+function togglePw(fieldId, btn) {
+  const input = document.getElementById(fieldId);
+  const isHidden = input.type === 'password';
+  input.type = isHidden ? 'text' : 'password';
+  // Swap icon between open-eye and crossed-eye
+  const svg = btn.querySelector('svg');
+  if (isHidden) {
+    svg.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" stroke-linecap="round" stroke-linejoin="round"/><line x1="1" y1="1" x2="23" y2="23" stroke-linecap="round" stroke-linejoin="round"/>';
+  } else {
+    svg.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke-linecap="round" stroke-linejoin="round"/>';
+  }
+}
+
 </script>
 </body>
 </html>
