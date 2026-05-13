@@ -408,51 +408,95 @@ new Chart(document.getElementById('ch-rules'), {
   html+='<div style="font-size:11.5px;color:var(--greyl);background:var(--cream);border-radius:8px;padding:12px;line-height:1.6;">'+FSI.fsi_disclaimer+'</div>';
   document.getElementById("fsi-content").innerHTML=html;
 
-  // Fixed SVG Radar — does not zoom or distort
+  // Fixed SVG Radar — pure SVG no zoom distortion
   (function(){
-    var labs=["Supplier\nConc.","Payment\nEscal.","Round\nNumbers","Duplicate\nRate","High Value\nConc."];
+    var labs=["Supplier Conc.","Payment Escal.","Round Numbers","Duplicate Rate","High Value Conc."];
     var vals=[(det.supplier_concentration||{}).points||0,(det.payment_escalation||{}).points||0,(det.round_number_rate||{}).points||0,(det.duplicate_payment_rate||{}).points||0,(det.high_value_concentration||{}).points||0];
-    var cx=200,cy=200,maxR=140,maxVal=20;
+    // Canvas dimensions — extra padding for labels on all sides
+    var cx=220,cy=230,maxR=130,maxVal=20;
     var angles=vals.map(function(_,i){return(Math.PI*2*i/5)-(Math.PI/2);});
     function pt(r,i){return{x:cx+r*Math.cos(angles[i]),y:cy+r*Math.sin(angles[i])};}
+
     // Grid rings
     var gridSVG="";
     [5,10,15,20].forEach(function(v){
       var r=maxR*(v/maxVal);
       var pts=angles.map(function(_,i){var p=pt(r,i);return p.x+","+p.y;}).join(" ");
-      gridSVG+="<polygon points=\""+pts+"\" fill=\"none\" stroke=\"rgba(11,17,32,0.08)\" stroke-width=\"1\"/>";
-      gridSVG+="<text x=\""+(cx+4)+"\" y=\""+(cy-r+4)+"\" font-size=\"9\" fill=\"#8D97A8\">"+v+"</text>";
+      gridSVG+="<polygon points=\""+pts+"\" fill=\""+(v===20?"rgba(11,17,32,0.04)":"none")+"\" stroke=\"rgba(11,17,32,0.1)\" stroke-width=\"1\"/>";
     });
+
     // Axis lines
     var axisSVG="";
     angles.forEach(function(_,i){
       var p=pt(maxR,i);
-      axisSVG+="<line x1=\""+cx+"\" y1=\""+cy+"\" x2=\""+p.x+"\" y2=\""+p.y+"\" stroke=\"rgba(11,17,32,0.08)\" stroke-width=\"1\"/>";
+      axisSVG+="<line x1=\""+cx+"\" y1=\""+cy+"\" x2=\""+p.x+"\" y2=\""+p.y+"\" stroke=\"rgba(11,17,32,0.1)\" stroke-width=\"1\"/>";
     });
+
+    // Ring value labels — placed on the top axis
+    var ringLabels="";
+    [5,10,15,20].forEach(function(v){
+      var r=maxR*(v/maxVal);
+      ringLabels+="<text x=\""+(cx+4)+"\" y=\""+(cy-r+4)+"\" font-size=\"9\" fill=\"#AAAAAA\" font-family=\"Arial,sans-serif\">"+v+"</text>";
+    });
+
     // Data polygon
     var dataPts=vals.map(function(v,i){var r=maxR*(Math.min(v,20)/maxVal);var p=pt(r,i);return p.x+","+p.y;}).join(" ");
-    // Labels
+
+    // Labels — carefully positioned with extra offset per quadrant
     var labelSVG="";
     labs.forEach(function(lab,i){
-      var r=maxR+30;var p=pt(r,i);
-      var parts=lab.split("\n");
-      var dy=parts.length>1?-7:0;
-      labelSVG+="<text x=\""+p.x+"\" y=\""+p.y+"\" text-anchor=\"middle\" dominant-baseline=\"central\" font-size=\"11\" fill=\"#5A6478\" font-family=\"Arial,sans-serif\">";
-      parts.forEach(function(part,pi){labelSVG+="<tspan x=\""+p.x+"\" dy=\""+(pi===0?dy:14)+"\">"+part+"</tspan>";});
-      labelSVG+="</text>";
-      // Score dot
-      var dr=maxR*(Math.min(vals[i],20)/maxVal);var dp=pt(dr,i);
-      labelSVG+="<circle cx=\""+dp.x+"\" cy=\""+dp.y+"\" r=\"5\" fill=\"#C0392B\"/>";
-      // Score label
-      if(vals[i]>0){labelSVG+="<text x=\""+(dp.x+8)+"\" y=\""+(dp.y-8)+"\" font-size=\"10\" fill=\"#C0392B\" font-weight=\"700\" font-family=\"Arial,sans-serif\">"+vals[i]+"pts</text>";}
+      var angle=angles[i];
+      var labelR=maxR+52;
+      var p=pt(labelR,i);
+      var anchor="middle";
+      // Adjust anchor based on angle position
+      var cosA=Math.cos(angle);
+      if(cosA>0.3) anchor="start";
+      else if(cosA<-0.3) anchor="end";
+
+      // Extra nudge for top label (index 0) to clear the chart
+      var extraY=0;
+      if(i===0) extraY=-10;
+
+      // Score value label
+      var scoreLabel="";
+      if(vals[i]>0){
+        var dr=maxR*(Math.min(vals[i],20)/maxVal);
+        var dp=pt(dr,i);
+        // Position score label away from center
+        var offX=Math.cos(angle)*14;
+        var offY=Math.sin(angle)*14;
+        scoreLabel="<text x=\""+(dp.x+offX)+"\" y=\""+(dp.y+offY)+"\" font-size=\"10\" font-weight=\"700\" fill=\"#C0392B\" font-family=\"Arial,sans-serif\" text-anchor=\"middle\" dominant-baseline=\"central\">"+vals[i]+"</text>";
+      }
+
+      // Score dot on axis
+      var dr2=maxR*(Math.min(vals[i],20)/maxVal);
+      var dp2=pt(dr2,i);
+      var dot="<circle cx=\""+dp2.x+"\" cy=\""+dp2.y+"\" r=\"5\" fill=\"#C0392B\" stroke=\"#fff\" stroke-width=\"1.5\"/>";
+
+      // Background pill for label readability
+      var bgW=lab.length*6.5;
+      var bgH=20;
+      var bg="<rect x=\""+(p.x-(anchor==="middle"?bgW/2:anchor==="start"?0:bgW))+"\" y=\""+(p.y+extraY-bgH/2)+"\" width=\""+bgW+"\" height=\""+bgH+"\" rx=\"4\" fill=\"rgba(242,243,245,0.9)\"/>";
+
+      labelSVG+=bg;
+      labelSVG+="<text x=\""+p.x+"\" y=\""+(p.y+extraY)+"\" text-anchor=\""+anchor+"\" dominant-baseline=\"central\" font-size=\"11\" font-weight=\"600\" fill=\"#2D2D2D\" font-family=\"Arial,sans-serif\">"+lab+"</text>";
+      labelSVG+=dot;
+      labelSVG+=scoreLabel;
     });
-    var svgStr="<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"30 40 340 320\" width=\"100%\" style=\"display:block;max-height:320px;\">"
-      +gridSVG+axisSVG
-      +"<polygon points=\""+dataPts+"\" fill=\"rgba(192,57,43,0.15)\" stroke=\"#C0392B\" stroke-width=\"2\"/>"
-      +labelSVG+"</svg>";
+
+    // pts/20 legend
+    var legend="<text x=\""+cx+"\" y=\""+(cy+maxR+28)+"\" text-anchor=\"middle\" font-size=\"10\" fill=\"#8D97A8\" font-family=\"Arial,sans-serif\">Each axis max = 20 pts · Score shown on dot</text>";
+
+    var svgStr="<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 440 470\" width=\"100%\" style=\"display:block;\">"
+      +"<rect width=\"440\" height=\"470\" fill=\"white\"/>"
+      +gridSVG+axisSVG+ringLabels
+      +"<polygon points=\""+dataPts+"\" fill=\"rgba(192,57,43,0.15)\" stroke=\"#C0392B\" stroke-width=\"2.5\"/>"
+      +labelSVG+legend+"</svg>";
+
     var chartWrap=document.createElement("div");
-    chartWrap.style.cssText="background:var(--white);border-radius:12px;padding:16px;margin-bottom:16px;";
-    chartWrap.innerHTML="<div style=\"font-size:12px;font-weight:700;color:var(--navy);margin-bottom:10px;\">FSI Signal Scores — Radar Chart</div>"+svgStr;
+    chartWrap.style.cssText="background:var(--white);border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid rgba(11,17,32,0.07);";
+    chartWrap.innerHTML="<div style=\"font-size:12px;font-weight:700;color:var(--navy);margin-bottom:12px;\">FSI Signal Scores — Radar Chart</div>"+svgStr;
     document.getElementById("fsi-content").prepend(chartWrap);
   })();
 })();
