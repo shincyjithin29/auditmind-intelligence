@@ -54,6 +54,8 @@ except ImportError:
     logger.warning("supabase package not installed — registration disabled")
 
 from passlib.context import CryptContext
+import warnings
+warnings.filterwarnings("ignore", ".*bcrypt.*")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 SUPABASE_URL = os.getenv("SUPABASE_URL", "")
