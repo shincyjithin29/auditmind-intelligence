@@ -1,5 +1,5 @@
 # ============================================================
-# AuditMind Intelligence Ltd — main.py v3.2.0
+# AuditMind Intelligence Ltd — main.py v3.2.1
 # ============================================================
 # LOCAL:   python -m uvicorn main:app --reload --port 8000
 # RENDER:  python -m uvicorn main:app --host 0.0.0.0 --port 8000
@@ -11,18 +11,16 @@
 #   GET  /results     -> results.html
 #
 # API:
-#   GET  /api/health  -> health check
+#   GET  /api/health  -> health check (GET + HEAD)
 #   POST /api/login   -> authenticate user
+#   POST /api/register -> register new company user
 #   POST /api/columns -> read CSV headers for column mapping
 #   POST /api/analyse -> run full risk analysis (+ FSI)
 #
-# CHANGES IN v3.2.0:
-#   - Financial Stress Indicator (FSI) added to /api/analyse
-#   - FSI measures 5 signals: supplier concentration,
-#     payment escalation, round number rate,
-#     duplicate payment rate, high value concentration
-#   - FSI score 0-100, levels: Low/Moderate/Elevated/High
-#   - All existing v3.1.0 features retained unchanged
+# CHANGES IN v3.2.1:
+#   - Replaced passlib with direct bcrypt — fixes registration
+#   - Health endpoint now accepts HEAD requests (UptimeRobot)
+#   - All v3.2.0 features retained unchanged
 # ============================================================
 
 import os
@@ -30,6 +28,7 @@ import io
 import re
 import traceback
 import logging
+import bcrypt
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
@@ -45,6 +44,7 @@ logging.basicConfig(
     format="%(asctime)s | %(levelname)s | %(message)s"
 )
 logger = logging.getLogger("auditmind")
+
 # ── Supabase client ───────────────────────────────────────────
 try:
     from supabase import create_client, Client as SupabaseClient
@@ -53,11 +53,23 @@ except ImportError:
     SUPABASE_AVAILABLE = False
     logger.warning("supabase package not installed — registration disabled")
 
-from passlib.context import CryptContext
-import warnings
-warnings.filterwarnings("ignore", ".*bcrypt.*")
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# ── Password hashing — direct bcrypt (no passlib) ────────────
+def hash_password(password: str) -> str:
+    return bcrypt.hashpw(
+        password.encode("utf-8"),
+        bcrypt.gensalt()
+    ).decode("utf-8")
 
+def verify_password(password: str, hashed: str) -> bool:
+    try:
+        return bcrypt.checkpw(
+            password.encode("utf-8"),
+            hashed.encode("utf-8")
+        )
+    except Exception:
+        return False
+
+# ── Supabase setup ────────────────────────────────────────────
 SUPABASE_URL = os.getenv("SUPABASE_URL", "")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")
 
@@ -68,7 +80,6 @@ def get_supabase():
         raise RuntimeError("Supabase credentials not configured")
     return create_client(SUPABASE_URL, SUPABASE_KEY)
 
-
 # ── Folder where main.py lives ────────────────────────────────
 BASE = os.path.dirname(os.path.abspath(__file__))
 
@@ -77,7 +88,7 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 # ============================================================
 app = FastAPI(
     title="AuditMind Intelligence — Decision Support API",
-    version="3.2.0",
+    version="3.2.1",
     docs_url=None,
     redoc_url=None,
 )
@@ -96,7 +107,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["GET", "POST"],
+    allow_methods=["GET", "POST", "HEAD"],
     allow_headers=["Content-Type", "Authorization"],
 )
 
@@ -249,10 +260,6 @@ def anomaly_label(score: float) -> str:
 # ============================================================
 # FINANCIAL STRESS INDICATOR — v1.0
 # ============================================================
-# Estimates financial stress from transaction patterns only.
-# NOT a formal insolvency score.
-# All findings require review by a qualified professional.
-# ============================================================
 FSI_VERSION = "2025.06.v1"
 
 def compute_financial_stress_indicator(df: pd.DataFrame) -> dict:
@@ -270,9 +277,7 @@ def compute_financial_stress_indicator(df: pd.DataFrame) -> dict:
             "fsi_signals":  [],
             "fsi_details":  {},
             "fsi_version":  FSI_VERSION,
-            "fsi_disclaimer": (
-                "Minimum 5 transactions required for FSI calculation."
-            ),
+            "fsi_disclaimer": "Minimum 5 transactions required for FSI calculation.",
         }
 
     # Signal 1 — Supplier concentration
@@ -286,10 +291,7 @@ def compute_financial_stress_indicator(df: pd.DataFrame) -> dict:
         "points":         s1,
     }
     if s1 >= 12:
-        signals.append(
-            f"Supplier concentration: top 3 supplier types account for "
-            f"{top3_pct:.0f}% of total spend — dependency risk."
-        )
+        signals.append(f"Supplier concentration: top 3 supplier types account for {top3_pct:.0f}% of total spend — dependency risk.")
 
     # Signal 2 — Payment escalation
     if total_count >= 6:
@@ -307,10 +309,7 @@ def compute_financial_stress_indicator(df: pd.DataFrame) -> dict:
             "points":           s2,
         }
         if s2 >= 12:
-            signals.append(
-                f"Payment escalation: average invoice amount has increased "
-                f"{esc_ratio:.1f}x from early to recent transactions."
-            )
+            signals.append(f"Payment escalation: average invoice amount has increased {esc_ratio:.1f}x from early to recent transactions.")
     else:
         details["payment_escalation"] = {"risk_level": "Insufficient data", "points": 0}
 
@@ -326,10 +325,7 @@ def compute_financial_stress_indicator(df: pd.DataFrame) -> dict:
         "points":         s3,
     }
     if s3 >= 12:
-        signals.append(
-            f"Round number rate: {rnd_pct:.0f}% of invoices are round numbers "
-            f"(>=£1,000 divisible by 1,000) — possible documentation weakness."
-        )
+        signals.append(f"Round number rate: {rnd_pct:.0f}% of invoices are round numbers — possible documentation weakness.")
 
     # Signal 4 — Duplicate payment rate
     dup_count = int(df.duplicated(subset=["Amount", "Supplier_Type"], keep=False).sum())
@@ -343,10 +339,7 @@ def compute_financial_stress_indicator(df: pd.DataFrame) -> dict:
         "points":          s4,
     }
     if s4 >= 12:
-        signals.append(
-            f"Duplicate payments: {dup_pct:.0f}% of transactions show duplicate "
-            f"amount-supplier combinations — weak payment controls."
-        )
+        signals.append(f"Duplicate payments: {dup_pct:.0f}% of transactions show duplicate amount-supplier combinations — weak payment controls.")
 
     # Signal 5 — High value concentration
     top3_inv_pct = float(df["Amount"].nlargest(3).sum() / total_spend * 100)
@@ -358,10 +351,7 @@ def compute_financial_stress_indicator(df: pd.DataFrame) -> dict:
         "points":           s5,
     }
     if s5 >= 12:
-        signals.append(
-            f"High value concentration: top 3 invoices represent "
-            f"{top3_inv_pct:.0f}% of total spend — lumpy cash outflow risk."
-        )
+        signals.append(f"High value concentration: top 3 invoices represent {top3_inv_pct:.0f}% of total spend — lumpy cash outflow risk.")
 
     fsi_level = (
         "Low"      if score <= 25 else
@@ -382,8 +372,7 @@ def compute_financial_stress_indicator(df: pd.DataFrame) -> dict:
             "The Financial Stress Indicator is derived from transaction patterns only "
             "and is not a formal insolvency assessment. A complete solvency evaluation "
             "requires full balance sheet and profit and loss data reviewed by a qualified "
-            "accountant. All findings must be reviewed by a professional before any "
-            "action is taken."
+            "accountant. All findings must be reviewed by a professional before any action is taken."
         ),
     }
 
@@ -393,88 +382,52 @@ def compute_financial_stress_indicator(df: pd.DataFrame) -> dict:
 # ============================================================
 
 def analyse_dataframe(df: pd.DataFrame) -> dict:
-    """
-    Full decision-support risk analysis.
-    Combines ML anomaly detection, compliance rulebook, and FSI.
-    All flags require human review before action is taken.
-    """
     required = ["Amount", "Invoice_ID", "VAT_Code", "Supplier_Type"]
     missing  = [c for c in required if c not in df.columns]
     if missing:
-        raise ValueError(
-            f"Missing required columns: {missing}. "
-            f"Your CSV has: {list(df.columns)}"
-        )
+        raise ValueError(f"Missing required columns: {missing}. Your CSV has: {list(df.columns)}")
 
     df["Amount"] = pd.to_numeric(df["Amount"], errors="coerce")
     df = df.dropna(subset=["Amount"]).copy()
 
     if len(df) == 0:
-        raise ValueError(
-            "No valid numeric values found in the Amount column. "
-            "Please check your data and column mapping."
-        )
+        raise ValueError("No valid numeric values found in the Amount column.")
 
     df["Invoice_ID"]    = df["Invoice_ID"].astype(str).str.strip()
     df["Supplier_Type"] = df["Supplier_Type"].astype(str).str.strip()
 
-    # VAT normalisation
     df["VAT_Code_Original"] = df["VAT_Code"].astype(str).str.strip()
     df["VAT_Code"]          = df["VAT_Code_Original"].apply(normalise_vat)
 
-    # Feature engineering
     avg_amount    = df["Amount"].mean()
     median_amount = df["Amount"].median()
 
     df["log_amount"]       = np.log1p(df["Amount"])
     df["amount_ratio"]     = df["Amount"] / (avg_amount + 1e-9)
-    df["is_round_number"]  = (
-        (df["Amount"] >= 1000) & (df["Amount"] % 1000 == 0)
-    ).astype(int)
-    df["is_subcontractor"] = df["Supplier_Type"].apply(
-        lambda x: 1 if is_subcontractor(x) else 0
-    )
-    df["vat_is_valid"] = df["VAT_Code"].isin(
-        ["Standard", "Reverse", "Zero"]
-    ).astype(int)
-    df["high_value"] = (df["Amount"] > 5000).astype(int)
+    df["is_round_number"]  = ((df["Amount"] >= 1000) & (df["Amount"] % 1000 == 0)).astype(int)
+    df["is_subcontractor"] = df["Supplier_Type"].apply(lambda x: 1 if is_subcontractor(x) else 0)
+    df["vat_is_valid"]     = df["VAT_Code"].isin(["Standard", "Reverse", "Zero"]).astype(int)
+    df["high_value"]       = (df["Amount"] > 5000).astype(int)
 
-    FEATURES = [
-        "Amount", "log_amount", "amount_ratio",
-        "is_round_number", "is_subcontractor",
-        "vat_is_valid", "high_value",
-    ]
+    FEATURES = ["Amount", "log_amount", "amount_ratio", "is_round_number", "is_subcontractor", "vat_is_valid", "high_value"]
 
-    # Isolation Forest
     ml_applied = len(df) >= 10
     if ml_applied:
         model = IsolationForest(contamination=0.05, random_state=42, n_estimators=100)
         model.fit(df[FEATURES])
         df["anomaly_raw"]      = model.predict(df[FEATURES])
         df["high_anomaly"]     = (df["anomaly_raw"] == -1).astype(int)
-        df["confidence_score"] = np.clip(
-            1 - model.decision_function(df[FEATURES]), 0, 1
-        )
+        df["confidence_score"] = np.clip(1 - model.decision_function(df[FEATURES]), 0, 1)
         logger.info(f"Isolation Forest | rows={len(df)} | anomalies={df['high_anomaly'].sum()}")
     else:
         logger.info(f"ML skipped — {len(df)} rows (minimum 10)")
         df["high_anomaly"]     = 0
         df["confidence_score"] = 0.0
 
-    # Duplicate detection
-    df["duplicate"] = df.duplicated(
-        subset=["Amount", "Supplier_Type"], keep=False
-    ).astype(int)
+    df["duplicate"] = df.duplicated(subset=["Amount", "Supplier_Type"], keep=False).astype(int)
+    df["vat_issue"] = (~df["VAT_Code"].isin(["Standard", "Reverse", "Zero"])).astype(int)
+    df["cis_issue"] = df["Supplier_Type"].apply(lambda x: 1 if is_subcontractor(x) else 0)
 
-    # VAT and CIS checks
-    df["vat_issue"] = (
-        ~df["VAT_Code"].isin(["Standard", "Reverse", "Zero"])
-    ).astype(int)
-    df["cis_issue"] = df["Supplier_Type"].apply(
-        lambda x: 1 if is_subcontractor(x) else 0
-    )
-
-    # Composite risk score
     df["risk_score"] = (
         df["high_anomaly"]    * 2 +
         df["duplicate"]       * 2 +
@@ -522,10 +475,7 @@ def analyse_dataframe(df: pd.DataFrame) -> dict:
     df["explanation"] = df.apply(explain, axis=1)
     df["action"]      = df.apply(recommend, axis=1)
 
-    df = df.sort_values(
-        by=["risk_score", "confidence_score", "Amount"],
-        ascending=[False, False, False]
-    )
+    df = df.sort_values(by=["risk_score", "confidence_score", "Amount"], ascending=[False, False, False])
 
     results = []
     for _, row in df.iterrows():
@@ -577,21 +527,12 @@ def analyse_dataframe(df: pd.DataFrame) -> dict:
     for rf in rules_fired:
         rid = rf["rule_id"]
         if rid not in rs_dict:
-            rs_dict[rid] = {
-                "rule_id":     rid,
-                "description": rf["description"],
-                "severity":    rf["severity"],
-                "times_fired": 0,
-            }
+            rs_dict[rid] = {"rule_id": rid, "description": rf["description"], "severity": rf["severity"], "times_fired": 0}
         rs_dict[rid]["times_fired"] += 1
 
-    # Financial Stress Indicator
     fsi = compute_financial_stress_indicator(df)
 
-    logger.info(
-        f"Analysis complete | total={len(results)} | flagged={len(flagged)} | "
-        f"high={summary['high_risk']} | fsi={fsi['fsi_score']} ({fsi['fsi_level']})"
-    )
+    logger.info(f"Analysis complete | total={len(results)} | flagged={len(flagged)} | high={summary['high_risk']} | fsi={fsi['fsi_score']} ({fsi['fsi_level']})")
 
     return {
         "summary":                    summary,
@@ -635,11 +576,12 @@ def serve_results():
 # ============================================================
 
 @app.get("/api/health")
+@app.head("/api/health")
 def health():
     return {
         "status":           "ok",
         "service":          "AuditMind Intelligence — Decision Support API",
-        "version":          "3.2.0",
+        "version":          "3.2.1",
         "rulebook_version": RULEBOOK_VERSION,
         "fsi_version":      FSI_VERSION,
     }
@@ -653,17 +595,12 @@ async def login(credentials: dict):
     # Admin fallback — always works
     if username == "admin" and password == ADMIN_PASSWORD:
         logger.info("Admin login successful")
-        return {
-            "success":      True,
-            "username":     "admin",
-            "access_token": "admin",
-            "role":         "admin",
-        }
+        return {"success": True, "username": "admin", "access_token": "admin", "role": "admin"}
 
     # Check Supabase for registered users
     try:
         sb = get_supabase()
-        result = sb.table("platform_users")                    .select("*")                    .eq("username", username)                    .eq("is_active", True)                    .execute()
+        result = sb.table("platform_users").select("*").eq("username", username).eq("is_active", True).execute()
 
         if not result.data:
             logger.warning(f"Login failed — user not found: {username}")
@@ -671,7 +608,7 @@ async def login(credentials: dict):
 
         user = result.data[0]
 
-        if not pwd_context.verify(password, user["hashed_password"]):
+        if not verify_password(password, user["hashed_password"]):
             logger.warning(f"Login failed — wrong password: {username}")
             raise HTTPException(status_code=401, detail="Invalid username or password")
 
@@ -693,7 +630,6 @@ async def login(credentials: dict):
 
 @app.post("/api/register")
 async def register(data: dict):
-    """Register a new company user and save to Supabase."""
     username        = str(data.get("username", "")).strip().lower()
     password        = str(data.get("password", ""))
     email           = str(data.get("email", "")).strip().lower()
@@ -723,7 +659,7 @@ async def register(data: dict):
         if existing_email.data:
             raise HTTPException(status_code=409, detail="Email already registered. Please sign in instead.")
 
-        hashed = pwd_context.hash(password)
+        hashed = hash_password(password)
 
         sb.table("platform_users").insert({
             "username":        username,
@@ -739,11 +675,7 @@ async def register(data: dict):
         }).execute()
 
         logger.info(f"New user registered: {username} | company: {company_name}")
-        return {
-            "success":  True,
-            "username": username,
-            "message":  "Account created successfully.",
-        }
+        return {"success": True, "username": username, "message": "Account created successfully."}
 
     except HTTPException:
         raise
@@ -805,25 +737,20 @@ async def analyse(
         raise HTTPException(status_code=422, detail="Could not parse CSV file.")
 
     rename_map = {}
-
     if amount_col and amount_col in df.columns and amount_col != "Amount":
         rename_map[amount_col] = "Amount"
-
     if invoice_col and invoice_col in df.columns and invoice_col != "Invoice_ID":
         rename_map[invoice_col] = "Invoice_ID"
     elif not invoice_col or invoice_col not in df.columns:
         df["Invoice_ID"] = [f"ROW-{i+1}" for i in range(len(df))]
-
     if vat_col and vat_col in df.columns and vat_col != "VAT_Code":
         rename_map[vat_col] = "VAT_Code"
     elif not vat_col or vat_col not in df.columns:
         df["VAT_Code"] = "Standard"
-
     if supplier_col and supplier_col in df.columns and supplier_col != "Supplier_Type":
         rename_map[supplier_col] = "Supplier_Type"
     elif not supplier_col or supplier_col not in df.columns:
         df["Supplier_Type"] = "Supplier"
-
     if rename_map:
         df = df.rename(columns=rename_map)
 
@@ -834,7 +761,4 @@ async def analyse(
         raise HTTPException(status_code=422, detail=str(exc))
     except Exception:
         logger.error(f"Analysis error: {traceback.format_exc()}")
-        raise HTTPException(
-            status_code=500,
-            detail="Analysis could not be completed. Please check your data and try again."
-        )
+        raise HTTPException(status_code=500, detail="Analysis could not be completed. Please check your data and try again.")
